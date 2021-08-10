@@ -3,7 +3,7 @@ version: ${project.version}
 main: dev.siebrenvde.doylcraft.Main
 api-version: 1.13
 authors: [Siebrenvde]
-depend: [LuckPerms, WorldGuard, DiscordSRV, Essentials]
+depend: [LuckPerms, WorldGuard, DiscordSRV, Essentials, TameableAxolotls]
 commands:
   pvp:
     description: Toggle PvP on or off
