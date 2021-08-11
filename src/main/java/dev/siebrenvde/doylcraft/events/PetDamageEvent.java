@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -35,9 +36,18 @@ public class PetDamageEvent implements Listener {
         DecimalFormat df = new DecimalFormat("#.#");
         df.setRoundingMode(RoundingMode.CEILING);
 
-        if(event.getDamager() instanceof Player) {
+        Entity damagerE = event.getDamager();
 
-            Player damager = ((Player) event.getDamager()).getPlayer();
+        if(damagerE instanceof Projectile) {
+            ProjectileSource source = ((Projectile) damagerE).getShooter();
+            if(source instanceof Player) {
+                damagerE = ((Player) source);
+            }
+        }
+
+        if(damagerE instanceof Player) {
+
+            Player damager = (Player) damagerE;
             Entity e = event.getEntity();
 
             Player owner;
