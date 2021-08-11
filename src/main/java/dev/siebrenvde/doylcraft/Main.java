@@ -43,6 +43,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatEvent(this), this);
         getServer().getPluginManager().registerEvents(new DPlayerJoinEvent(this), this);
         getServer().getPluginManager().registerEvents(new DPlayerDeathEvent(sbHandler), this);
+        getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
     }
 
     public LuckPermsHandler getLuckPermsHandler() { return lpHandler; }
