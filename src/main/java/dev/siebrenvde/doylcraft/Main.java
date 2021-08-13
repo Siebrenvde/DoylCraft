@@ -9,6 +9,7 @@ import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;
 import dev.siebrenvde.doylcraft.tabcompleters.PvPCompleter;
 import dev.siebrenvde.doylcraft.tabcompleters.RankCompleter;
+import github.scarsz.discordsrv.DiscordSRV;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
@@ -26,6 +27,7 @@ public final class Main extends JavaPlugin {
         discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
+        DiscordSRV.api.subscribe(new DiscordSRVListener());
         registerCommands();
         registerEvents();
     }
