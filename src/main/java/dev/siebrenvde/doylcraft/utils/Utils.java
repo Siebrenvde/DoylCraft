@@ -19,9 +19,7 @@ public class Utils {
     public static void broadcastHover(String streamer, String title, String url) {
         for(Player p : Bukkit.getOnlinePlayers()) {
 
-            TextComponent text = Component.text("[").color(TextColor.fromHexString("#6441a5"))
-                    .append(Component.text("Twitch").color(TextColor.fromHexString("#6441a5")))
-                    .append(Component.text("] ").color(TextColor.fromHexString("#6441a5")))
+            TextComponent text = Component.text("[Twitch]").color(TextColor.fromHexString("#6441a5"))
                     .append(Component.text(streamer).color(TextColor.fromHexString("#6441a5")))
                     .append(Component.text(" is now live!").color(TextColor.fromHexString("#6441a5")));
 
