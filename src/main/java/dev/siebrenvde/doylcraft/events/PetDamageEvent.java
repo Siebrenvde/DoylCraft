@@ -78,12 +78,12 @@ public class PetDamageEvent implements Listener {
                 owner.sendMessage(ChatColor.RED + damager.getName() + " did " + df.format(damage) + " damage to " + petName + ".");
             }
 
-            dUtils.sendDiscordMessage("pet-log", "❤ " + damager.getName() + " did " + df.format(damage) + " damage to " + petName + " (" + owner.getName() + ").");
+            dUtils.sendDiscordMessage("pet-log", "❤ " + damager.getName().replaceAll("_", "\\_") + " did " + df.format(damage) + " damage to " + petName + " (" + owner.getName().replaceAll("_", "\\_") + ").");
 
             if((health - damage) <= 0.0) {
 
                 Utils.broadcastMessage(ChatColor.RED + damager.getName() + " just MURDERED " + owner.getName() + "'s " + type + "!");
-                dUtils.sendDiscordMessage("pet-log", "\uD83D\uDC80 " + damager.getName() + " killed " + petName + " (" + owner.getName() + ").");
+                dUtils.sendDiscordMessage("pet-log", "\uD83D\uDC80 " + damager.getName().replaceAll("_", "\\_") + " killed " + petName + " (" + owner.getName().replaceAll("_", "\\_") + ").");
 
                 damager.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 600, 1, false, false, false));
                 damager.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 600, 5, false, false ,false));
