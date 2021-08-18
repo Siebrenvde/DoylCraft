@@ -10,3 +10,5 @@ commands:
   rank:
     aliases: [group]
     description: Change a players' group
+  playtime:
+    description: Get your time played

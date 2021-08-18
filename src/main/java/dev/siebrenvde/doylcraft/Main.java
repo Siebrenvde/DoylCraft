@@ -1,12 +1,10 @@
 package dev.siebrenvde.doylcraft;
 
+import dev.siebrenvde.doylcraft.commands.PlayTime;
 import dev.siebrenvde.doylcraft.commands.PvP;
 import dev.siebrenvde.doylcraft.commands.Rank;
 import dev.siebrenvde.doylcraft.events.*;
-import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
-import dev.siebrenvde.doylcraft.handlers.LuckPermsHandler;
-import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
-import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;
+import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.PvPCompleter;
 import dev.siebrenvde.doylcraft.tabcompleters.RankCompleter;
 import github.scarsz.discordsrv.DiscordSRV;
@@ -19,6 +17,7 @@ public final class Main extends JavaPlugin {
     private DiscordHandler discordHandler;
     private WorldGuardHandler wgHandler;
     private ScoreboardHandler sbHandler;
+    private TimeHandler timeHandler;
 
     @Override
     public void onEnable() {
@@ -27,6 +26,7 @@ public final class Main extends JavaPlugin {
         discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
+        timeHandler = new TimeHandler();
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         registerCommands();
         registerEvents();
@@ -37,13 +37,14 @@ public final class Main extends JavaPlugin {
         getCommand("pvp").setTabCompleter(new PvPCompleter());
         getCommand("rank").setExecutor(new Rank(lpHandler));
         getCommand("rank").setTabCompleter(new RankCompleter(lpHandler));
+        getCommand("playtime").setExecutor(new PlayTime(this));
     }
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new PetDamageEvent(this), this);
         getServer().getPluginManager().registerEvents(new AFKEvent(this), this);
         getServer().getPluginManager().registerEvents(new ChatEvent(this), this);
-        getServer().getPluginManager().registerEvents(new DPlayerJoinEvent(this), this);
+        getServer().getPluginManager().registerEvents(new ConnectionEvents(this), this);
         getServer().getPluginManager().registerEvents(new DPlayerDeathEvent(sbHandler), this);
         getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
     }
@@ -52,6 +53,7 @@ public final class Main extends JavaPlugin {
     public DiscordHandler getDiscordHandler() { return discordHandler; }
     public WorldGuardHandler getWorlgGuardHandler() { return wgHandler; }
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
+    public TimeHandler getTimeHandler() { return timeHandler; }
 
     public static Main getInstance() { return instance; }
 
