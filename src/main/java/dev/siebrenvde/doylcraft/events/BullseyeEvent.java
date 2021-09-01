@@ -20,7 +20,9 @@ public class BullseyeEvent implements Listener {
             Player player = (Player) shooter;
 
             if(event.getSignalStrength() == 15) {
-                Utils.broadcastMessage(ChatColor.LIGHT_PURPLE + player.getName() + " hit a bullseye!");
+                if(player.getLocation().distance(event.getHitBlock().getLocation()) >= 30) {
+                    Utils.broadcastMessage(ChatColor.LIGHT_PURPLE + player.getName() + " hit a bullseye!");
+                }
             }
 
         }
