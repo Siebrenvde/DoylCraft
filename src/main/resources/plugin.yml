@@ -12,3 +12,5 @@ commands:
     description: Change a players' group
   playtime:
     description: Get your time played
+  streams:
+    description: Get a list of online streamers

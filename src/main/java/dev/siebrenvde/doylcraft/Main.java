@@ -3,10 +3,12 @@ package dev.siebrenvde.doylcraft;
 import dev.siebrenvde.doylcraft.commands.PlayTime;
 import dev.siebrenvde.doylcraft.commands.PvP;
 import dev.siebrenvde.doylcraft.commands.Rank;
+import dev.siebrenvde.doylcraft.commands.Streams;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.PvPCompleter;
 import dev.siebrenvde.doylcraft.tabcompleters.RankCompleter;
+import dev.siebrenvde.doylcraft.utils.Requests;
 import github.scarsz.discordsrv.DiscordSRV;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -38,6 +40,7 @@ public final class Main extends JavaPlugin {
         getCommand("rank").setExecutor(new Rank(lpHandler));
         getCommand("rank").setTabCompleter(new RankCompleter(lpHandler));
         getCommand("playtime").setExecutor(new PlayTime(this));
+        getCommand("streams").setExecutor(new Streams(this));
     }
 
     private void registerEvents() {
