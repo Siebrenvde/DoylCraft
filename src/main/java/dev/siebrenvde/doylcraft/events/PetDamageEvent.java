@@ -59,13 +59,20 @@ public class PetDamageEvent implements Listener {
             if(e instanceof Cat) { type = "Cat"; }
             if(e instanceof Wolf) { type = "Wolf"; }
             if(e instanceof Parrot) { type = "Parrot"; }
+            if(e instanceof Horse) { type = "Horse"; }
+            if(e instanceof Donkey) { type = "Donkey"; }
+            if(e instanceof Mule) { type = "Mule"; }
+            if(e instanceof Llama) { type = "Llama"; }
+            if(e instanceof SkeletonHorse) { type = "Skeleton Horse"; }
+            if(e instanceof ZombieHorse) { type = "Zombie Horse"; }
+            if(e instanceof TraderLlama) { type = "Trader LLama"; }
             if(petName == null) { petName = type; }
 
             if(e instanceof Axolotl) {
                 owner = main.getServer().getPlayer(UUID.fromString(aHandler.getOwner(e)));
                 health = ((Axolotl) e).getHealth();
             }
-            else if(e instanceof Cat || e instanceof Wolf || e instanceof Parrot) {
+            else if(e instanceof Cat || e instanceof Wolf || e instanceof Parrot || e instanceof AbstractHorse) {
                 Tameable pet = (Tameable) e;
                 owner = (Player) pet.getOwner();
                 health = pet.getHealth();
