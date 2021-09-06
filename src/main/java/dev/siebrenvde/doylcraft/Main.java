@@ -1,16 +1,16 @@
 package dev.siebrenvde.doylcraft;
 
-import dev.siebrenvde.doylcraft.commands.PlayTime;
-import dev.siebrenvde.doylcraft.commands.PvP;
-import dev.siebrenvde.doylcraft.commands.Rank;
-import dev.siebrenvde.doylcraft.commands.Streams;
+import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.PvPCompleter;
 import dev.siebrenvde.doylcraft.tabcompleters.RankCompleter;
-import dev.siebrenvde.doylcraft.utils.Requests;
 import github.scarsz.discordsrv.DiscordSRV;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Main extends JavaPlugin {
 
@@ -41,6 +41,7 @@ public final class Main extends JavaPlugin {
         getCommand("rank").setTabCompleter(new RankCompleter(lpHandler));
         getCommand("playtime").setExecutor(new PlayTime(this));
         getCommand("streams").setExecutor(new Streams(this));
+        getCommand("getowner").setExecutor(new GetOwner(this));
     }
 
     private void registerEvents() {
@@ -50,6 +51,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ConnectionEvents(this), this);
         getServer().getPluginManager().registerEvents(new DPlayerDeathEvent(sbHandler), this);
         getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
+        getServer().getPluginManager().registerEvents(new TameableInteractEvent(this), this);
     }
 
     public LuckPermsHandler getLuckPermsHandler() { return lpHandler; }
@@ -59,5 +61,10 @@ public final class Main extends JavaPlugin {
     public TimeHandler getTimeHandler() { return timeHandler; }
 
     public static Main getInstance() { return instance; }
+
+    private List<Player> list = new ArrayList<>();
+    public boolean listContains(Player player) { return list.contains(player); }
+    public void addListPlayer(Player player) { list.add(player); }
+    public void removeListPlayer(Player player) { list.remove(player); }
 
 }

@@ -14,3 +14,5 @@ commands:
     description: Get your time played
   streams:
     description: Get a list of online streamers
+  getowner:
+    description: Get the owner of an entity
