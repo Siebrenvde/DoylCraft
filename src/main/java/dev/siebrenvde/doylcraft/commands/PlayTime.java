@@ -39,8 +39,8 @@ public class PlayTime implements CommandExecutor {
              sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or is offline.");
              return false;
          }
-            sender.sendMessage(ChatColor.YELLOW + player.getName() + "Current Online Time: " + ChatColor.GRAY + handler.formatTime(handler.getOnlineTime(player) / 1000));
-            sender.sendMessage(ChatColor.YELLOW + player.getName() + "Total Time Played: " + ChatColor.GRAY + handler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
+            sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Current Online Time: " + ChatColor.GRAY + handler.formatTime(handler.getOnlineTime(player) / 1000));
+            sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Total Time Played: " + ChatColor.GRAY + handler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
             return true;
         }
 
