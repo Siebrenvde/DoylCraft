@@ -5,6 +5,7 @@ import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
 import dev.siebrenvde.doylcraft.utils.Utils;
 import dev.siebrenvde.tameableaxolotls.handlers.DataHandler;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -50,7 +51,7 @@ public class PetDamageEvent implements Listener {
             Player damager = (Player) damagerE;
             Entity e = event.getEntity();
 
-            Player owner;
+            OfflinePlayer owner;
             double damage = event.getDamage();
             double health;
             String petName = e.getCustomName();
@@ -65,16 +66,16 @@ public class PetDamageEvent implements Listener {
             if(e instanceof Llama) { type = "Llama"; }
             if(e instanceof SkeletonHorse) { type = "Skeleton Horse"; }
             if(e instanceof ZombieHorse) { type = "Zombie Horse"; }
-            if(e instanceof TraderLlama) { type = "Trader LLama"; }
+            if(e instanceof TraderLlama) { type = "Trader Llama"; }
             if(petName == null) { petName = type; }
 
             if(e instanceof Axolotl) {
-                owner = main.getServer().getPlayer(UUID.fromString(aHandler.getOwner(e)));
+                owner = main.getServer().getOfflinePlayer(UUID.fromString(aHandler.getOwner(e)));
                 health = ((Axolotl) e).getHealth();
             }
             else if(e instanceof Cat || e instanceof Wolf || e instanceof Parrot || e instanceof AbstractHorse) {
                 Tameable pet = (Tameable) e;
-                owner = (Player) pet.getOwner();
+                owner = (OfflinePlayer) pet.getOwner();
                 health = pet.getHealth();
             }
             else {
@@ -82,21 +83,14 @@ public class PetDamageEvent implements Listener {
             }
 
             if(owner.isOnline()) {
-                owner.sendMessage(ChatColor.RED + damager.getName() + " did " + df.format(damage) + " damage to " + petName + ".");
+                ((Player) owner).sendMessage(ChatColor.RED + damager.getName() + " did " + df.format(damage) + " damage to " + petName + ".");
             }
 
             dUtils.sendDiscordMessage("pet-log", "❤ " + damager.getName().replaceAll("_", "\\_") + " did " + df.format(damage) + " damage to " + petName + " (" + owner.getName().replaceAll("_", "\\_") + ").");
 
             if((health - damage) <= 0.0) {
-
                 Utils.broadcastMessage(ChatColor.RED + damager.getName() + " just MURDERED " + owner.getName() + "'s " + type + "!");
                 dUtils.sendDiscordMessage("pet-log", "\uD83D\uDC80 " + damager.getName().replaceAll("_", "\\_") + " killed " + petName + " (" + owner.getName().replaceAll("_", "\\_") + ").");
-
-                damager.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 600, 1, false, false, false));
-                damager.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 600, 5, false, false ,false));
-                damager.playSound(damager.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1f, 1f);
-                damager.sendTitle(ChatColor.DARK_RED + "MURDERER!", ChatColor.RED + "How dare you murder an innocent " + type + ".", 0, 600, 10);
-
             }
 
             return true;
