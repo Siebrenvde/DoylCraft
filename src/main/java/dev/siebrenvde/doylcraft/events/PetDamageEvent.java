@@ -70,12 +70,20 @@ public class PetDamageEvent implements Listener {
             if(petName == null) { petName = type; }
 
             if(e instanceof Axolotl) {
-                owner = main.getServer().getOfflinePlayer(UUID.fromString(aHandler.getOwner(e)));
+                if(aHandler.hasOwner(e)) {
+                    owner = main.getServer().getOfflinePlayer(UUID.fromString(aHandler.getOwner(e)));
+                } else {
+                    return false;
+                }
                 health = ((Axolotl) e).getHealth();
             }
             else if(e instanceof Cat || e instanceof Wolf || e instanceof Parrot || e instanceof AbstractHorse) {
                 Tameable pet = (Tameable) e;
-                owner = (OfflinePlayer) pet.getOwner();
+                if(pet.isTamed()) {
+                    owner = (OfflinePlayer) pet.getOwner();
+                } else {
+                    return false;
+                }
                 health = pet.getHealth();
             }
             else {
