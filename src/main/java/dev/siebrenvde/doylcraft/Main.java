@@ -51,7 +51,7 @@ public final class Main extends JavaPlugin {
 
     public LuckPermsHandler getLuckPermsHandler() { return lpHandler; }
     public DiscordHandler getDiscordHandler() { return discordHandler; }
-    public WorldGuardHandler getWorlgGuardHandler() { return wgHandler; }
+    public WorldGuardHandler getWorldGuardHandler() { return wgHandler; }
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
     public TimeHandler getTimeHandler() { return timeHandler; }
 

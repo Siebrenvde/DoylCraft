@@ -23,7 +23,7 @@ public class PvP implements CommandExecutor {
 
     public PvP(Main m) {
         main = m;
-        handler = m.getWorlgGuardHandler();
+        handler = m.getWorldGuardHandler();
         worlds.add("world");
         worlds.add("world_nether");
         worlds.add("world_the_end");
