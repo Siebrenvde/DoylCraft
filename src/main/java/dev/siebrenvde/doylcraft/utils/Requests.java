@@ -1,48 +1,40 @@
 package dev.siebrenvde.doylcraft.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import dev.siebrenvde.doylcraft.Main;
+import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
+import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.awt.*;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.concurrent.CompletableFuture;
 
 public class Requests {
 
-    public HashMap<String, Object> get(String url) {
+    DiscordHandler dcHandler;
+
+    public Requests(Main main) {
+        dcHandler = main.getDiscordHandler();
+    }
+
+    public JSONObject get(String url) {
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .build();
+
+        CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
 
         try {
-
-            CloseableHttpClient client = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet(url);
-
-            CloseableHttpResponse response = client.execute(httpGet);
-
-            if(response.getStatusLine().getStatusCode() != 200) {
-                return null;
-            }
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-            String inputLine;
-            StringBuffer buffer = new StringBuffer();
-
-            while ((inputLine = reader.readLine()) != null) {
-                buffer.append(inputLine);
-            }
-
-            reader.close();
-            client.close();
-
-            return new Gson().fromJson(buffer.toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
-
-        } catch(IOException e) {
-            e.printStackTrace();
+            return new JSONObject(response.thenApply(HttpResponse::body).get());
+        } catch(Exception e) {
+            dcHandler.sendDiscordMessage("errors", "<@213752213879783425>");
+            dcHandler.sendDiscordEmbed("global", new EmbedBuilder().setTitle(e.getClass().getSimpleName()).setDescription(e.getMessage()).setColor(Color.decode("#E3242B")));
             return null;
         }
 
