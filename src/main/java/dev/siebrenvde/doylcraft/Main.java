@@ -5,6 +5,7 @@ import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.PvPCompleter;
 import dev.siebrenvde.doylcraft.tabcompleters.RankCompleter;
+import dev.siebrenvde.doylcraft.utils.Requests;
 import github.scarsz.discordsrv.DiscordSRV;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ public final class Main extends JavaPlugin {
     private WorldGuardHandler wgHandler;
     private ScoreboardHandler sbHandler;
     private TimeHandler timeHandler;
+    private Requests requests;
 
     @Override
     public void onEnable() {
@@ -29,6 +31,7 @@ public final class Main extends JavaPlugin {
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
         timeHandler = new TimeHandler();
+        requests = new Requests(this);
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         registerCommands();
         registerEvents();
@@ -59,6 +62,7 @@ public final class Main extends JavaPlugin {
     public WorldGuardHandler getWorlgGuardHandler() { return wgHandler; }
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
     public TimeHandler getTimeHandler() { return timeHandler; }
+    public Requests getRequests() { return requests; }
 
     public static Main getInstance() { return instance; }
 
