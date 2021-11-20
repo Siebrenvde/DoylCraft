@@ -28,7 +28,7 @@ public class TimeHandler {
         loginTimes.remove(player);
     }
 
-    public String formatTime(long secondsL) {
+    public static String formatTime(long secondsL) {
 
         // https://stackoverflow.com/questions/19667473/
 
