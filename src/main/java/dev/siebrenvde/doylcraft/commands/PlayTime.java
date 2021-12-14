@@ -22,10 +22,9 @@ public class PlayTime implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
         if(args.length == 0) {
-            if(sender instanceof Player) {
-                Player player = (Player) sender;
-                sender.sendMessage(ChatColor.YELLOW + "Current Online Time: " + ChatColor.GRAY + handler.formatTime(handler.getOnlineTime(player) / 1000));
-                sender.sendMessage(ChatColor.YELLOW + "Total Time Played: " + ChatColor.GRAY + handler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
+            if(sender instanceof Player player) {
+                sender.sendMessage(ChatColor.YELLOW + "Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(handler.getOnlineTime(player) / 1000));
+                sender.sendMessage(ChatColor.YELLOW + "Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
                 return true;
             } else {
                 sender.sendMessage(ChatColor.RED + "Only players can execute this command.");
@@ -39,13 +38,13 @@ public class PlayTime implements CommandExecutor {
              sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or is offline.");
              return false;
          }
-            sender.sendMessage(ChatColor.YELLOW + player.getName() + "Current Online Time: " + ChatColor.GRAY + handler.formatTime(handler.getOnlineTime(player) / 1000));
-            sender.sendMessage(ChatColor.YELLOW + player.getName() + "Total Time Played: " + ChatColor.GRAY + handler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
+            sender.sendMessage(ChatColor.YELLOW + player.getName() + "Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(handler.getOnlineTime(player) / 1000));
+            sender.sendMessage(ChatColor.YELLOW + player.getName() + "Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
             return true;
         }
 
         else {
-            sender.sendMessage(Messages.usageMessage("/playtime [<player>]"));
+            sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PLAYTIME));
             return false;
         }
 

@@ -23,7 +23,7 @@ public class PvP implements CommandExecutor {
 
     public PvP(Main m) {
         main = m;
-        handler = m.getWorlgGuardHandler();
+        handler = m.getWorldGuardHandler();
         worlds.add("world");
         worlds.add("world_nether");
         worlds.add("world_the_end");
@@ -76,14 +76,14 @@ public class PvP implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "Disabled " + ChatColor.GRAY + "PvP in all worlds.");
                 return true;
             } else {
-                sender.sendMessage(Messages.usageMessage("/pvp [on/off] [<world>]"));
+                sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PVP));
                 return false;
             }
         }
 
         if(args.length == 2) {
             if(!args[0].equalsIgnoreCase("on") && !args[0].equalsIgnoreCase("off")) {
-                sender.sendMessage(Messages.usageMessage("/pvp [on/off] [<world>]"));
+                sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PVP));
                 return false;
             }
             String world = args[1].toLowerCase();
@@ -103,7 +103,7 @@ public class PvP implements CommandExecutor {
         }
 
         else {
-            sender.sendMessage(Messages.usageMessage("/pvp [on/off] [<world>]"));
+            sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PVP));
             return false;
         }
 

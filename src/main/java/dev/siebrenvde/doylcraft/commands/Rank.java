@@ -59,7 +59,7 @@ public class Rank implements CommandExecutor {
         }
 
         else {
-            sender.sendMessage(Messages.usageMessage("/rank <player> [<group>]"));
+            sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.RANK));
             return false;
         }
         return false;
