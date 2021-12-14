@@ -25,11 +25,6 @@ public class Rank implements CommandExecutor {
             return false;
         }
 
-        if(args.length == 0) {
-            sender.sendMessage(Messages.usageMessage("/rank <player> [<group>]"));
-            return false;
-        }
-
         else if(args.length == 1) {
             Player player = Bukkit.getPlayerExact(args[0]);
             if(player != null) {
@@ -64,7 +59,7 @@ public class Rank implements CommandExecutor {
         }
 
         else {
-            sender.sendMessage(Messages.usageMessage("/rank <player> <group>"));
+            sender.sendMessage(Messages.usageMessage("/rank <player> [<group>]"));
             return false;
         }
         return false;
