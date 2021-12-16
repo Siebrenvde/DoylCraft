@@ -25,8 +25,8 @@ public class ConnectionEvents implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
 
         Player player = event.getPlayer();
-        handler.showScoreboard(player);
-        handler.updatePlayer(player);
+
+        handler.initPlayer(player);
 
         time.addLoginTime(player);
 
@@ -35,6 +35,7 @@ public class ConnectionEvents implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         time.removeLoginTime(event.getPlayer());
+        handler.removePlayer(event.getPlayer());
     }
 
 }

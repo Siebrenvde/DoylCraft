@@ -9,5 +9,19 @@ public class Messages {
     public static String usageMessage(String usage) {
         return ChatColor.RED + "Usage: " + usage;
     }
+    public static String usageMessage(CommandUsage commandUsage) { return usageMessage(commandUsage.usage); }
+
+    public enum CommandUsage {
+        // TEMP: Move to file later
+
+        PLAYTIME("/playtime [<player>]"),
+        PVP("/pvp [on/off] [<world>]"),
+        RANK("/rank <player> [<group>]");
+
+        public final String usage;
+        private CommandUsage(String usage) {
+            this.usage = usage;
+        }
+    }
 
 }
