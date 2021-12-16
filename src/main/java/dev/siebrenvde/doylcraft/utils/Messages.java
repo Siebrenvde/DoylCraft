@@ -14,7 +14,6 @@ public class Messages {
     public enum CommandUsage {
         // TEMP: Move to file later
 
-        MAINTENANCE("/maintenance [<command>] [-k/<player>]"),
         PLAYTIME("/playtime [<player>]"),
         PVP("/pvp [on/off] [<world>]"),
         RANK("/rank <player> [<group>]");

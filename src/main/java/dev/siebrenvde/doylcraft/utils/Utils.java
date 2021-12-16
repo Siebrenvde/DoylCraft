@@ -12,8 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 public class Utils {
 
@@ -92,6 +91,20 @@ public class Utils {
         // Divide by 1000 because formatTime uses seconds
         return TimeHandler.formatTime(difference / 1000);
 
+    }
+
+    public static List<String> autoCompleter(String arg, List<String> list) {
+        if(arg.length() > 0) {
+            List<String> nList = new ArrayList<>();
+            for(String s : list) {
+                if(s.toLowerCase().startsWith(arg.toLowerCase())) {
+                    nList.add(s);
+                }
+            }
+            return nList;
+        }
+
+        return list;
     }
 
 }

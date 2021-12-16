@@ -3,15 +3,14 @@ package dev.siebrenvde.doylcraft;
 import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
-import dev.siebrenvde.doylcraft.tabcompleters.PvPCompleter;
-import dev.siebrenvde.doylcraft.tabcompleters.RankCompleter;
+import dev.siebrenvde.doylcraft.tabcompleters.*;
 import dev.siebrenvde.doylcraft.utils.Requests;
 import github.scarsz.discordsrv.DiscordSRV;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
@@ -23,9 +22,12 @@ public final class Main extends JavaPlugin {
     private TimeHandler timeHandler;
     private Requests requests;
 
-    @Override
+    private List<Player> list = new ArrayList();
+    private FileConfiguration config = this.getConfig();
+
     public void onEnable() {
         instance = this;
+        saveDefaultConfig();
         lpHandler = new LuckPermsHandler(this);
         discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
@@ -59,16 +61,23 @@ public final class Main extends JavaPlugin {
 
     public LuckPermsHandler getLuckPermsHandler() { return lpHandler; }
     public DiscordHandler getDiscordHandler() { return discordHandler; }
-    public WorldGuardHandler getWorlgGuardHandler() { return wgHandler; }
+    public WorldGuardHandler getWorldGuardHandler() { return wgHandler; }
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
     public TimeHandler getTimeHandler() { return timeHandler; }
     public Requests getRequests() { return requests; }
 
     public static Main getInstance() { return instance; }
 
-    private List<Player> list = new ArrayList<>();
-    public boolean listContains(Player player) { return list.contains(player); }
-    public void addListPlayer(Player player) { list.add(player); }
-    public void removeListPlayer(Player player) { list.remove(player); }
+    public boolean listContains(Player player) {
+        return list.contains(player);
+    }
+
+    public void addListPlayer(Player player) {
+        list.add(player);
+    }
+
+    public void removeListPlayer(Player player) {
+        list.remove(player);
+    }
 
 }
