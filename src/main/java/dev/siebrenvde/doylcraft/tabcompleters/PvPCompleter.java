@@ -1,5 +1,7 @@
 package dev.siebrenvde.doylcraft.tabcompleters;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -31,7 +33,9 @@ public class PvPCompleter implements TabCompleter {
 
         else if(args.length == 2) {
             List<String> worlds = new ArrayList<>();
-            worlds.add("world"); worlds.add("world_nether"); worlds.add("world_the_end");
+            for(World bWorld : Bukkit.getWorlds()) {
+                worlds.add(bWorld.getName());
+            }
 
             if(args[1].length() > 0) {
                 List<String> nWorlds = new ArrayList<>();

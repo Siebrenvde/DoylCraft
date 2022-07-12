@@ -7,7 +7,9 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;
 import dev.siebrenvde.doylcraft.utils.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,9 +27,9 @@ public class PvP implements CommandExecutor {
     public PvP(Main m) {
         main = m;
         handler = m.getWorldGuardHandler();
-        worlds.add("world");
-        worlds.add("world_nether");
-        worlds.add("world_the_end");
+        for(World world : Bukkit.getWorlds()) {
+            worlds.add(world.getName());
+        }
     }
 
     @Override
@@ -50,14 +52,14 @@ public class PvP implements CommandExecutor {
                 }
             }
 
-            if(enabled.size() == 3 && disabled.size() == 0) {
+            if(enabled.size() == worlds.size() && disabled.size() == 0) {
                 sender.sendMessage(ChatColor.GRAY + "PvP is " + ChatColor.GREEN + "enabled" + ChatColor.GRAY + " in all worlds.");
                 return true;
             } else if(enabled.size() > 0) {
                 sender.sendMessage(ChatColor.GRAY + "PvP is " + ChatColor.GREEN + "enabled" + ChatColor.GRAY + " in " + String.join(", ", enabled) + ".");
             }
 
-            if(disabled.size() == 3 && enabled.size() == 0) {
+            if(disabled.size() == worlds.size() && enabled.size() == 0) {
                 sender.sendMessage(ChatColor.GRAY + "PvP is " + ChatColor.RED + "disabled" + ChatColor.GRAY + " in all worlds.");
                 return true;
             } else if(disabled.size() > 0) {
