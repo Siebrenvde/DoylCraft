@@ -21,7 +21,7 @@ public class ChatEvent implements Listener {
     }
 
     @EventHandler
-    public boolean onPlayerChat(AsyncChatEvent event) {
+    public void onPlayerChat(AsyncChatEvent event) {
         Component component = event.originalMessage();
         for(Member member : handler.getMembers()) {
             TextReplacementConfig config = TextReplacementConfig.builder()
@@ -31,7 +31,6 @@ public class ChatEvent implements Listener {
             component = component.replaceText(config);
         }
         event.message(component);
-        return true;
     }
 
 }
