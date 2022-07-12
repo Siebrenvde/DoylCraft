@@ -27,7 +27,6 @@ public final class Main extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        saveDefaultConfig();
         lpHandler = new LuckPermsHandler(this);
         discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
