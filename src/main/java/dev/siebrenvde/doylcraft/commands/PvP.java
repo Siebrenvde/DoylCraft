@@ -2,6 +2,7 @@ package dev.siebrenvde.doylcraft.commands;
 
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;
@@ -75,6 +76,14 @@ public class PvP implements CommandExecutor {
                 setAllStates(false);
                 sender.sendMessage(ChatColor.RED + "Disabled " + ChatColor.GRAY + "PvP in all worlds.");
                 return true;
+            } else if(args[0].equalsIgnoreCase("createglobalregions")) {
+                try{
+                    handler.createGlobalRegions();
+                    sender.sendMessage(ChatColor.GREEN + "Created global regions.");
+                } catch (Exception e){
+                    e.printStackTrace();
+                    sender.sendMessage(ChatColor.RED + "Could not create global regions.");
+                }
             } else {
                 sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PVP));
                 return false;

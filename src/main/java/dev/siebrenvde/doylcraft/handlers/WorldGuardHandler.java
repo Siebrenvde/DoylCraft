@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.Bukkit;
@@ -41,6 +42,13 @@ public class WorldGuardHandler {
             return false;
         }
 
+    }
+
+    public void createGlobalRegions() {
+        for(World world : Bukkit.getWorlds()) {
+            GlobalProtectedRegion region = new GlobalProtectedRegion("__global__");
+            getRegionManager(world).addRegion(region);
+        }
     }
 
 }
