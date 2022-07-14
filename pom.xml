@@ -74,10 +74,6 @@
             <id>essentials-snapshots</id>
             <url>https://repo.essentialsx.net/releases/</url>
         </repository>
-        <repository>
-            <id>siebrenvde</id>
-            <url>https://siebrenvde.dev/repo/maven/</url>
-        </repository>
     </repositories>
 
     <dependencies>

@@ -28,6 +28,10 @@ public class TimeHandler {
         loginTimes.remove(player);
     }
 
+    public void setLoginTime(Player player, Long time) {
+        loginTimes.put(player, time);
+    }
+
     public static String formatTime(long secondsL) {
 
         // https://stackoverflow.com/questions/19667473/

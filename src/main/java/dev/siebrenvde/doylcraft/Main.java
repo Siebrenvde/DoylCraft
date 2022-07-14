@@ -4,11 +4,11 @@ import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.*;
+import dev.siebrenvde.doylcraft.utils.ReloadHandler;
 import dev.siebrenvde.doylcraft.utils.Requests;
 import github.scarsz.discordsrv.DiscordSRV;
 import java.util.ArrayList;
 import java.util.List;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,9 +21,9 @@ public final class Main extends JavaPlugin {
     private ScoreboardHandler sbHandler;
     private TimeHandler timeHandler;
     private Requests requests;
+    private ReloadHandler reloadHandler;
 
     private List<Player> list = new ArrayList();
-    private FileConfiguration config = this.getConfig();
 
     public void onEnable() {
         instance = this;
@@ -33,9 +33,20 @@ public final class Main extends JavaPlugin {
         sbHandler = new ScoreboardHandler();
         timeHandler = new TimeHandler();
         requests = new Requests(this);
+        reloadHandler = new ReloadHandler(this);
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         registerCommands();
         registerEvents();
+        if(System.getProperty("ENABLED") == null) {
+            System.setProperty("ENABLED", "TRUE");
+        } else {
+            getLogger().warning("Reloaded detected. Loading reload data.");
+            reloadHandler.loadData();
+        }
+    }
+
+    public void onDisable() {
+        reloadHandler.saveData();
     }
 
     private void registerCommands() {

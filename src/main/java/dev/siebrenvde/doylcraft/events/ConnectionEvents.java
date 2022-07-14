@@ -23,13 +23,8 @@ public class ConnectionEvents implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-
-        Player player = event.getPlayer();
-
-        handler.initPlayer(player);
-
-        time.addLoginTime(player);
-
+        handler.initPlayer(event.getPlayer());
+        time.addLoginTime(event.getPlayer());
     }
 
     @EventHandler
