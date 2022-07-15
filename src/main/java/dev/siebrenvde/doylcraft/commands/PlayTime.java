@@ -5,6 +5,7 @@ import dev.siebrenvde.doylcraft.handlers.TimeHandler;
 import dev.siebrenvde.doylcraft.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,14 +34,23 @@ public class PlayTime implements CommandExecutor {
         }
 
         else if(args.length == 1) {
-            Player player = Bukkit.getPlayerExact(args[0]);
-         if(player == null) {
-             sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or is offline.");
-             return false;
-         }
-            sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Current Online Time: " + ChatColor.GRAY + handler.formatTime(handler.getOnlineTime(player) / 1000));
-            sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Total Time Played: " + ChatColor.GRAY + handler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
+
+            OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(args[0]);
+
+            if(player == null) {
+                sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or has not joined the server before.");
+                return false;
+            }
+
+            if(player.isOnline()) {
+                sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(handler.getOnlineTime(player.getPlayer()) / 1000));
+                sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
+                return true;
+            }
+
+            sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
             return true;
+
         }
 
         else {
