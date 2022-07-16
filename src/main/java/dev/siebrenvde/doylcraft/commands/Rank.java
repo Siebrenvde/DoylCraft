@@ -4,10 +4,10 @@ import dev.siebrenvde.doylcraft.handlers.LuckPermsHandler;
 import dev.siebrenvde.doylcraft.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class Rank implements CommandExecutor {
 
@@ -26,27 +26,36 @@ public class Rank implements CommandExecutor {
         }
 
         else if(args.length == 1) {
-            Player player = Bukkit.getPlayerExact(args[0]);
-            if(player != null) {
-                String group = handler.getPlayerGroup(player);
+
+            OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(args[0]);
+
+            if(player == null) {
+                sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or has not joined the server before.");
+                return false;
+            }
+
+            handler.getPlayerGroup(player).thenAcceptAsync(group -> {
+
                 if(group != null) {
                     sender.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " is a member of " + ChatColor.YELLOW + group + ChatColor.GRAY + ".");
                 } else {
                     sender.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " is not in any groups.");
-                    return false;
                 }
-            } else {
-                sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or is offline.");
-                return false;
-            }
+
+            });
+
+            return true;
         }
 
         else if(args.length == 2) {
-            Player player = Bukkit.getPlayerExact(args[0]);
+
+            OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(args[0]);
+
             if(player == null) {
-                sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or is offline.");
+                sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or has not joined the server before.");
                 return false;
             }
+
             String group = args[1];
             if(!handler.groupExists(group)) {
                 sender.sendMessage(ChatColor.GRAY + "Group " + ChatColor.RED + group + ChatColor.GRAY + " does not exist.");
@@ -62,7 +71,6 @@ public class Rank implements CommandExecutor {
             sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.RANK));
             return false;
         }
-        return false;
     }
 
 }
