@@ -50,17 +50,22 @@ public class PetDamageEvent implements Listener {
                     double damage = event.getDamage();
                     double health = pet.getHealth();
                     String petType = Utils.getTameableName(pet);
-                    String petName = pet.customName() != null ? ((TextComponent) pet.customName()).content() : petType;
+                    String petName = pet.customName() != null ? ((TextComponent) pet.customName()).content() : null;
 
-                    if(owner.isOnline()) {
-                        ((Player) owner).sendMessage(ChatColor.RED + damager.getName() + " did " + df.format(damage) + " damage to " + petName + ".");
+                    if(damager.equals(owner)) {
+                        damager.sendMessage(ChatColor.RED + "You did " + df.format(damage) + " damage to your " + petType + (petName != null ? ", " + petName : "") + ".");
+                    } else {
+                        if(owner.isOnline()) {
+                            ((Player) owner).sendMessage(ChatColor.RED + damager.getName() + " did " + df.format(damage) + " damage to your " + petType + (petName != null ? ", " + petName : "") + ".");
+                        }
+                        damager.sendMessage(ChatColor.RED + "You did " + df.format(damage) + " damage to " + owner.getName() + "'s " + petType + ".");
                     }
 
-                    dUtils.sendDiscordMessage("pet-log", "❤ " + damager.getName().replaceAll("_", "\\_") + " did " + df.format(damage) + " damage to " + petName + " (" + petType + ", " + owner.getName().replaceAll("_", "\\_") + ").");
+                    dUtils.sendDiscordMessage("pet-log", "❤ " + damager.getName().replaceAll("_", "\\_") + " did " + df.format(damage) + " damage to " + (petName != null ? petName : petType) + " (" + (petName != null ? petType + ", " : "") + owner.getName().replaceAll("_", "\\_") + ").");
 
                     if((health - damage) <= 0.0) {
                         Utils.broadcastMessage(ChatColor.RED + damager.getName() + " killed " + owner.getName() + "'s " + petType + "!");
-                        dUtils.sendDiscordMessage("pet-log", "\uD83D\uDC80 " + damager.getName().replaceAll("_", "\\_") + " killed " + petName + " (" + petType + ", " + owner.getName().replaceAll("_", "\\_") + ").");
+                        dUtils.sendDiscordMessage("pet-log", "\uD83D\uDC80 " + damager.getName().replaceAll("_", "\\_") + " killed " + (petName != null ? petName : petType) + " (" + (petName != null ? petType + ", " : "") + owner.getName().replaceAll("_", "\\_") + ").");
                     }
 
                 }
