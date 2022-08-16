@@ -4,7 +4,7 @@ import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.*;
-import dev.siebrenvde.doylcraft.utils.ReloadHandler;
+import dev.siebrenvde.doylcraft.handlers.ReloadHandler;
 import dev.siebrenvde.doylcraft.utils.Requests;
 import github.scarsz.discordsrv.DiscordSRV;
 import java.util.ArrayList;

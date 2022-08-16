@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.utils;
+package dev.siebrenvde.doylcraft.handlers;
 
 import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
