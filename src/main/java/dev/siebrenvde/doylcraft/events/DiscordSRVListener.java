@@ -11,7 +11,7 @@ public class DiscordSRVListener {
     @Subscribe(priority = ListenerPriority.MONITOR)
     public void discordMessageReceived(DiscordGuildMessageReceivedEvent event) {
 
-        if(event.getAuthor().getId().equals("856151903736954912")) {
+        if(event.getAuthor().getId().equals("864703528496398356")) {
 
             String[] strings = event.getMessage().getContentRaw().split("\n");
 
