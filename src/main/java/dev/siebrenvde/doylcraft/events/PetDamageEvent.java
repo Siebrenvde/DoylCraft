@@ -31,6 +31,10 @@ public class PetDamageEvent implements Listener {
         DecimalFormat df = new DecimalFormat("#.#");
         df.setRoundingMode(RoundingMode.CEILING);
 
+        if(event.getDamage() == 0) {
+            return;
+        }
+
         Entity damagerE = event.getDamager();
 
         if(damagerE instanceof Projectile) {
