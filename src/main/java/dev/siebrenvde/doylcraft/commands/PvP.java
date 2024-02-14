@@ -2,7 +2,6 @@ package dev.siebrenvde.doylcraft.commands;
 
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;

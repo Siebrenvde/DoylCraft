@@ -3,7 +3,6 @@ package dev.siebrenvde.doylcraft.events;
 import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.handlers.TimeHandler;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

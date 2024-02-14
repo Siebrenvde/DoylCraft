@@ -1,8 +1,6 @@
 package dev.siebrenvde.doylcraft.handlers;
 
 import dev.siebrenvde.doylcraft.Main;
-import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
-import dev.siebrenvde.doylcraft.handlers.TimeHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
