@@ -11,19 +11,19 @@ import java.awt.*;
 
 public class AFKEvent implements Listener {
 
-    DiscordHandler handler;
+    DiscordHandler discordHandler;
 
     public AFKEvent(DiscordHandler discordHandler) {
-        handler = discordHandler;
+        this.discordHandler = discordHandler;
     }
 
     @EventHandler
     public void onAFKStateChange(AfkStatusChangeEvent event) {
         Player affected = event.getAffected().getBase();
         if(event.getValue()) {
-            handler.sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is now AFK.", null, "https://crafatar.com/avatars/" + affected.getUniqueId() + "?overlay").setColor(Color.decode("#ff0000")));
+            discordHandler.sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is now AFK.", null, "https://crafatar.com/avatars/" + affected.getUniqueId() + "?overlay").setColor(Color.decode("#ff0000")));
         } else {
-            handler.sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is no longer AFK.", null, "https://crafatar.com/avatars/" + affected.getUniqueId() + "?overlay").setColor(Color.decode("#00ff00")));
+            discordHandler.sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is no longer AFK.", null, "https://crafatar.com/avatars/" + affected.getUniqueId() + "?overlay").setColor(Color.decode("#00ff00")));
         }
     }
 

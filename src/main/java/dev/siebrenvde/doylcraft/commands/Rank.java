@@ -11,10 +11,10 @@ import org.bukkit.command.CommandSender;
 
 public class Rank implements CommandExecutor {
 
-    private LuckPermsHandler handler;
+    private LuckPermsHandler luckPermsHandler;
 
-    public Rank(LuckPermsHandler lp) {
-        handler = lp;
+    public Rank(LuckPermsHandler luckPermsHandler) {
+        this.luckPermsHandler = luckPermsHandler;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Rank implements CommandExecutor {
                 return false;
             }
 
-            handler.getPlayerGroup(player).thenAcceptAsync(group -> {
+            luckPermsHandler.getPlayerGroup(player).thenAcceptAsync(group -> {
 
                 if(group != null) {
                     sender.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " is a member of " + ChatColor.YELLOW + group + ChatColor.GRAY + ".");
@@ -57,12 +57,12 @@ public class Rank implements CommandExecutor {
             }
 
             String group = args[1];
-            if(!handler.groupExists(group)) {
+            if(!luckPermsHandler.groupExists(group)) {
                 sender.sendMessage(ChatColor.GRAY + "Group " + ChatColor.RED + group + ChatColor.GRAY + " does not exist.");
                 return false;
             }
 
-            handler.setPlayerGroup(player, group);
+            luckPermsHandler.setPlayerGroup(player, group);
             sender.sendMessage(ChatColor.GRAY + "Changed " + ChatColor.GREEN + player.getName() + ChatColor.GRAY + "'s group to " + ChatColor.GREEN + group + ChatColor.GRAY + ".");
             return true;
         }

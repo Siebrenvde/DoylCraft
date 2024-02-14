@@ -16,10 +16,10 @@ import java.text.DecimalFormat;
 
 public class PetDamageEvent implements Listener {
 
-    private DiscordHandler dUtils;
+    private DiscordHandler discordHandler;
 
     public PetDamageEvent(DiscordHandler discordHandler) {
-        dUtils = discordHandler;
+        this.discordHandler = discordHandler;
     }
 
     @EventHandler
@@ -62,11 +62,11 @@ public class PetDamageEvent implements Listener {
                         damager.sendMessage(ChatColor.RED + "You did " + df.format(damage) + " damage to " + owner.getName() + "'s " + petType + ".");
                     }
 
-                    dUtils.sendDiscordMessage("pet-log", "❤ " + damager.getName().replaceAll("_", "\\_") + " did " + df.format(damage) + " damage to " + (petName != null ? petName : petType) + " (" + (petName != null ? petType + ", " : "") + owner.getName().replaceAll("_", "\\_") + ").");
+                    discordHandler.sendDiscordMessage("pet-log", "❤ " + damager.getName().replaceAll("_", "\\_") + " did " + df.format(damage) + " damage to " + (petName != null ? petName : petType) + " (" + (petName != null ? petType + ", " : "") + owner.getName().replaceAll("_", "\\_") + ").");
 
                     if((health - damage) <= 0.0) {
                         Utils.broadcastMessage(ChatColor.RED + damager.getName() + " killed " + owner.getName() + "'s " + petType + "!");
-                        dUtils.sendDiscordMessage("pet-log", "\uD83D\uDC80 " + damager.getName().replaceAll("_", "\\_") + " killed " + (petName != null ? petName : petType) + " (" + (petName != null ? petType + ", " : "") + owner.getName().replaceAll("_", "\\_") + ").");
+                        discordHandler.sendDiscordMessage("pet-log", "\uD83D\uDC80 " + damager.getName().replaceAll("_", "\\_") + " killed " + (petName != null ? petName : petType) + " (" + (petName != null ? petType + ", " : "") + owner.getName().replaceAll("_", "\\_") + ").");
                     }
 
                 }

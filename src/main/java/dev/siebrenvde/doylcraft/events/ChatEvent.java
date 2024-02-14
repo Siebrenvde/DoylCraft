@@ -13,16 +13,16 @@ import java.util.regex.Pattern;
 
 public class ChatEvent implements Listener {
 
-    private DiscordHandler handler;
+    private DiscordHandler discordHandler;
 
     public ChatEvent(DiscordHandler discordHandler) {
-        handler = discordHandler;
+        this.discordHandler = discordHandler;
     }
 
     @EventHandler
     public void onPlayerChat(AsyncChatEvent event) {
         Component component = event.originalMessage();
-        for(Member member : handler.getMembers()) {
+        for(Member member : discordHandler.getMembers()) {
             TextReplacementConfig config = TextReplacementConfig.builder()
                     .match(Pattern.compile("@" + member.getEffectiveName(), Pattern.CASE_INSENSITIVE))
                     .replacement(Component.text(ChatColor.BLUE + "@" + member.getEffectiveName() + ChatColor.RESET))

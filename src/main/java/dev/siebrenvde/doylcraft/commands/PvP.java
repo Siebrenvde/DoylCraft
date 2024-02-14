@@ -19,13 +19,13 @@ import java.util.List;
 public class PvP implements CommandExecutor {
 
     private Main main;
-    private WorldGuardHandler handler;
+    private WorldGuardHandler worldGuardHandler;
 
     private List<String> worlds = new ArrayList<>();
 
-    public PvP(Main m) {
-        main = m;
-        handler = m.getWorldGuardHandler();
+    public PvP(Main main) {
+        this.main = main;
+        worldGuardHandler = main.getWorldGuardHandler();
         for(World world : Bukkit.getWorlds()) {
             worlds.add(world.getName());
         }
@@ -79,7 +79,7 @@ public class PvP implements CommandExecutor {
                 return true;
             } else if(args[0].equalsIgnoreCase("createglobalregions")) {
                 try{
-                    handler.createGlobalRegions();
+                    worldGuardHandler.createGlobalRegions();
                     sender.sendMessage(ChatColor.GREEN + "Created global regions.");
                 } catch (Exception e){
                     e.printStackTrace();
@@ -122,7 +122,7 @@ public class PvP implements CommandExecutor {
     private void logInfo(String message) { main.getLogger().info(message); }
 
     private void setState(String world, boolean state) {
-        ProtectedRegion region = handler.getRegion(world, "__global__");
+        ProtectedRegion region = worldGuardHandler.getRegion(world, "__global__");
         if(state) {
             region.setFlag(Flags.PVP, StateFlag.State.ALLOW);
             logInfo("Set PvP to ALLOW in " + world);
@@ -139,7 +139,7 @@ public class PvP implements CommandExecutor {
     }
 
     private boolean getState(String world) {
-        ProtectedRegion region = handler.getRegion(world, "__global__");
+        ProtectedRegion region = worldGuardHandler.getRegion(world, "__global__");
         StateFlag.State state = region.getFlag(Flags.PVP);
         if(state == StateFlag.State.ALLOW || state == null) {
             return true;

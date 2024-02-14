@@ -1,6 +1,5 @@
 package dev.siebrenvde.doylcraft.utils;
 
-import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import org.json.JSONObject;
@@ -14,10 +13,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class Requests {
 
-    DiscordHandler dcHandler;
+    DiscordHandler discordHandler;
 
-    public Requests(Main main) {
-        dcHandler = main.getDiscordHandler();
+    public Requests(DiscordHandler discordHandler) {
+        this.discordHandler = discordHandler;
     }
 
     public JSONObject get(String url) {
@@ -33,8 +32,8 @@ public class Requests {
         try {
             return new JSONObject(response.thenApply(HttpResponse::body).get());
         } catch(Exception e) {
-            dcHandler.sendDiscordMessage("errors", "<@213752213879783425>");
-            dcHandler.sendDiscordEmbed("global", new EmbedBuilder().setTitle(e.getClass().getSimpleName()).setDescription(e.getMessage()).setColor(Color.decode("#E3242B")));
+            discordHandler.sendDiscordMessage("errors", "<@213752213879783425>");
+            discordHandler.sendDiscordEmbed("global", new EmbedBuilder().setTitle(e.getClass().getSimpleName()).setDescription(e.getMessage()).setColor(Color.decode("#E3242B")));
             return null;
         }
 

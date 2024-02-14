@@ -32,7 +32,7 @@ public final class Main extends JavaPlugin {
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
         timeHandler = new TimeHandler();
-        requests = new Requests(this);
+        requests = new Requests(discordHandler);
         reloadHandler = new ReloadHandler(this);
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         registerCommands();

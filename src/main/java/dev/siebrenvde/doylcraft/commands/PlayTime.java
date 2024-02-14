@@ -13,17 +13,17 @@ import org.bukkit.entity.Player;
 
 public class PlayTime implements CommandExecutor {
 
-    private TimeHandler handler;
+    private TimeHandler timeHandler;
 
     public PlayTime(TimeHandler timeHandler) {
-        handler = timeHandler;
+        this.timeHandler = timeHandler;
     }
 
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
         if(args.length == 0) {
             if(sender instanceof Player player) {
-                sender.sendMessage(ChatColor.YELLOW + "Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(handler.getOnlineTime(player) / 1000));
+                sender.sendMessage(ChatColor.YELLOW + "Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(timeHandler.getOnlineTime(player) / 1000));
                 sender.sendMessage(ChatColor.YELLOW + "Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
                 return true;
             } else {
@@ -42,7 +42,7 @@ public class PlayTime implements CommandExecutor {
             }
 
             if(player.isOnline()) {
-                sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(handler.getOnlineTime(player.getPlayer()) / 1000));
+                sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(timeHandler.getOnlineTime(player.getPlayer()) / 1000));
                 sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
                 return true;
             }

@@ -10,24 +10,24 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectionEvents implements Listener {
 
-    private ScoreboardHandler handler;
-    private TimeHandler time;
+    private ScoreboardHandler scoreboardHandler;
+    private TimeHandler timeHandler;
 
     public ConnectionEvents(Main main) {
-        handler = main.getScoreboardHandler();
-        time = main.getTimeHandler();
+        this.scoreboardHandler = main.getScoreboardHandler();
+        this.timeHandler = main.getTimeHandler();
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        handler.initPlayer(event.getPlayer());
-        time.addLoginTime(event.getPlayer());
+        scoreboardHandler.initPlayer(event.getPlayer());
+        timeHandler.addLoginTime(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        time.removeLoginTime(event.getPlayer());
-        handler.removePlayer(event.getPlayer());
+        timeHandler.removeLoginTime(event.getPlayer());
+        scoreboardHandler.removePlayer(event.getPlayer());
     }
 
 }

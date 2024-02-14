@@ -8,17 +8,17 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DPlayerDeathEvent implements Listener {
 
-    private ScoreboardHandler handler;
+    private ScoreboardHandler scoreboardHandler;
 
-    public DPlayerDeathEvent(ScoreboardHandler handler) {
-        this.handler = handler;
+    public DPlayerDeathEvent(ScoreboardHandler scoreboardHandler) {
+        this.scoreboardHandler = scoreboardHandler;
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
 
         Player player = event.getEntity();
-        handler.updatePlayer(player);
+        scoreboardHandler.updatePlayer(player);
 
     }
 
