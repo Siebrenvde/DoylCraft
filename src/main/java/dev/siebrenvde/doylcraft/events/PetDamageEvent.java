@@ -51,7 +51,17 @@ public class PetDamageEvent implements Listener {
                     double damage = event.getDamage();
                     double health = pet.getHealth();
                     String petType = Utils.getTameableName(pet);
-                    String petName = pet.customName() != null ? ((TextComponent) pet.customName()).content() : null;
+                    //String petName = pet.customName() != null ? ((TextComponent) pet.customName()).content() : null;
+                    String petName;
+                    if(pet.customName() != null) {
+                        petName = ((TextComponent) pet.customName()).content();
+                        if(petName.isEmpty()) {
+                            // Temporary fix
+                            petName = ((TextComponent) pet.customName().children().get(0)).content();
+                        }
+                    } else {
+                        petName = null;
+                    }
 
                     if(damager.equals(owner)) {
                         damager.sendMessage(ChatColor.RED + "You did " + df.format(damage) + " damage to your " + petType + (petName != null ? ", " + petName : "") + ".");
