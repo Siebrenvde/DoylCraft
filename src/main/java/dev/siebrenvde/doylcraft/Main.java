@@ -54,15 +54,15 @@ public final class Main extends JavaPlugin {
         getCommand("pvp").setTabCompleter(new PvPCompleter());
         getCommand("rank").setExecutor(new Rank(lpHandler));
         getCommand("rank").setTabCompleter(new RankCompleter(lpHandler));
-        getCommand("playtime").setExecutor(new PlayTime(this));
+        getCommand("playtime").setExecutor(new PlayTime(timeHandler));
         getCommand("streams").setExecutor(new Streams(this));
         getCommand("getowner").setExecutor(new GetOwner(this));
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PetDamageEvent(this), this);
-        getServer().getPluginManager().registerEvents(new AFKEvent(this), this);
-        getServer().getPluginManager().registerEvents(new ChatEvent(this), this);
+        getServer().getPluginManager().registerEvents(new PetDamageEvent(discordHandler), this);
+        getServer().getPluginManager().registerEvents(new AFKEvent(discordHandler), this);
+        getServer().getPluginManager().registerEvents(new ChatEvent(discordHandler), this);
         getServer().getPluginManager().registerEvents(new ConnectionEvents(this), this);
         getServer().getPluginManager().registerEvents(new DPlayerDeathEvent(sbHandler), this);
         getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);

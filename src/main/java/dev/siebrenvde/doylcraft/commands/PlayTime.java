@@ -1,6 +1,5 @@
 package dev.siebrenvde.doylcraft.commands;
 
-import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.TimeHandler;
 import dev.siebrenvde.doylcraft.utils.Messages;
 import org.bukkit.Bukkit;
@@ -16,8 +15,8 @@ public class PlayTime implements CommandExecutor {
 
     private TimeHandler handler;
 
-    public PlayTime(Main main) {
-        handler = main.getTimeHandler();
+    public PlayTime(TimeHandler timeHandler) {
+        handler = timeHandler;
     }
 
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {

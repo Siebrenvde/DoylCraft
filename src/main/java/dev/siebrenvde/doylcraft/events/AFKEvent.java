@@ -1,6 +1,5 @@
 package dev.siebrenvde.doylcraft.events;
 
-import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import net.ess3.api.events.AfkStatusChangeEvent;
@@ -14,8 +13,8 @@ public class AFKEvent implements Listener {
 
     DiscordHandler handler;
 
-    public AFKEvent(Main main) {
-        handler = main.getDiscordHandler();
+    public AFKEvent(DiscordHandler discordHandler) {
+        handler = discordHandler;
     }
 
     @EventHandler

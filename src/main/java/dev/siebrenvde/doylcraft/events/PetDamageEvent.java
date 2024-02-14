@@ -1,6 +1,5 @@
 package dev.siebrenvde.doylcraft.events;
 
-import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
 import dev.siebrenvde.doylcraft.utils.Utils;
 import net.kyori.adventure.text.TextComponent;
@@ -17,12 +16,10 @@ import java.text.DecimalFormat;
 
 public class PetDamageEvent implements Listener {
 
-    private Main main;
     private DiscordHandler dUtils;
 
-    public PetDamageEvent(Main m) {
-        main = m;
-        dUtils = m.getDiscordHandler();
+    public PetDamageEvent(DiscordHandler discordHandler) {
+        dUtils = discordHandler;
     }
 
     @EventHandler

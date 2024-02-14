@@ -10,12 +10,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectionEvents implements Listener {
 
-    private Main main;
     private ScoreboardHandler handler;
     private TimeHandler time;
 
     public ConnectionEvents(Main main) {
-        this.main = main;
         handler = main.getScoreboardHandler();
         time = main.getTimeHandler();
     }

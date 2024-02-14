@@ -1,6 +1,5 @@
 package dev.siebrenvde.doylcraft.events;
 
-import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -16,8 +15,8 @@ public class ChatEvent implements Listener {
 
     private DiscordHandler handler;
 
-    public ChatEvent(Main main) {
-        handler = main.getDiscordHandler();
+    public ChatEvent(DiscordHandler discordHandler) {
+        handler = discordHandler;
     }
 
     @EventHandler
