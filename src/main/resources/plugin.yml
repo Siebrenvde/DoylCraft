@@ -9,7 +9,7 @@ commands:
     description: Toggle PvP on or off
   rank:
     aliases: [group]
-    description: Change a players' group
+    description: Change a player's group
   playtime:
     description: Get your time played
   streams:
