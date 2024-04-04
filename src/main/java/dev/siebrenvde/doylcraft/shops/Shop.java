@@ -27,10 +27,6 @@ public class Shop {
         this.secondaryChest = secondaryChest;
     }
 
-    public Shop(OfflinePlayer owner, ItemStack item, ItemStack price, Sign sign, Chest chest) {
-        this(owner, item, price, sign, chest, null);
-    }
-
     public void update() {
         NamespacedKey key = new NamespacedKey(Main.getInstance(), "shop_data");
         String serialised = serialise();
