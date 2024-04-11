@@ -3,6 +3,7 @@ package dev.siebrenvde.doylcraft;
 import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
+import dev.siebrenvde.doylcraft.shops.events.ShopCreateEvent;
 import dev.siebrenvde.doylcraft.tabcompleters.*;
 import dev.siebrenvde.doylcraft.handlers.ReloadHandler;
 import dev.siebrenvde.doylcraft.utils.Requests;
@@ -67,6 +68,9 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new DPlayerDeathEvent(sbHandler), this);
         getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
         getServer().getPluginManager().registerEvents(new TameableInteractEvent(this), this);
+
+        // Shop events
+        getServer().getPluginManager().registerEvents(new ShopCreateEvent(), this);
     }
 
     public LuckPermsHandler getLuckPermsHandler() { return lpHandler; }
