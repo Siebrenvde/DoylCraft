@@ -15,9 +15,7 @@ public class BullseyeEvent implements Listener {
 
         ProjectileSource shooter = event.getEntity().getShooter();
 
-        if(shooter instanceof Player) {
-
-            Player player = (Player) shooter;
+        if(shooter instanceof Player player) {
 
             if(event.getSignalStrength() == 15) {
                 if(player.getLocation().distance(event.getHitBlock().getLocation()) >= 30) {

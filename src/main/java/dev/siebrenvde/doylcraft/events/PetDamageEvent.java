@@ -34,10 +34,10 @@ public class PetDamageEvent implements Listener {
 
         Entity damagerE = event.getDamager();
 
-        if(damagerE instanceof Projectile) {
-            ProjectileSource source = ((Projectile) damagerE).getShooter();
-            if(source instanceof Player) {
-                damagerE = ((Player) source);
+        if(damagerE instanceof Projectile projectile) {
+            ProjectileSource source = projectile.getShooter();
+            if(source instanceof Player damager) {
+                damagerE = damager;
             }
         }
 

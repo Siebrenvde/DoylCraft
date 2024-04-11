@@ -29,13 +29,12 @@ public class TameableInteractEvent implements Listener {
 
             event.setCancelled(true);
 
-            if(entity instanceof Tameable) {
+            if(entity instanceof Tameable tameable) {
 
-                Tameable e = (Tameable) entity;
-                String type = (Utils.getTameableName(e) != null) ? Utils.getTameableName(e) : "Unknown Entity";
+                String type = (Utils.getTameableName(tameable) != null) ? Utils.getTameableName(tameable) : "Unknown Entity";
 
-                if(e.isTamed()) {
-                    OfflinePlayer owner = (OfflinePlayer) e.getOwner();
+                if(tameable.isTamed()) {
+                    OfflinePlayer owner = (OfflinePlayer) tameable.getOwner();
                     player.sendMessage(ChatColor.GREEN + type + "'s owner is " + owner.getName() + ".");
                 } else {
                     player.sendMessage(ChatColor.RED + type + " doesn't have an owner.");

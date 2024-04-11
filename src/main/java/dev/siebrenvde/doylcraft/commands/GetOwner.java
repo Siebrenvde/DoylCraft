@@ -18,9 +18,7 @@ public class GetOwner implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
-        if(sender instanceof Player) {
-
-            Player player = (Player) sender;
+        if(sender instanceof Player player) {
 
             if(!main.listContains(player)) {
                 main.addListPlayer(player);
