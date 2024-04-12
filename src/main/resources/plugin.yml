@@ -12,7 +12,5 @@ commands:
     description: Change a player's group
   playtime:
     description: Get your time played
-  streams:
-    description: Get a list of online streamers
   getowner:
     description: Get the owner of an entity
