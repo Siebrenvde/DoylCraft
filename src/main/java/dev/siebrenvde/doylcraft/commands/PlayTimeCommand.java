@@ -13,11 +13,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class PlayTime implements CommandExecutor {
+public class PlayTimeCommand implements CommandExecutor {
 
     private TimeHandler timeHandler;
 
-    public PlayTime(TimeHandler timeHandler) {
+    public PlayTimeCommand(TimeHandler timeHandler) {
         this.timeHandler = timeHandler;
     }
 

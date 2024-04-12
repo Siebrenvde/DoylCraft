@@ -10,11 +10,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class GetOwner implements CommandExecutor {
+public class GetOwnerCommand implements CommandExecutor {
 
     private Main main;
 
-    public GetOwner(Main main) {
+    public GetOwnerCommand(Main main) {
         this.main = main;
     }
 

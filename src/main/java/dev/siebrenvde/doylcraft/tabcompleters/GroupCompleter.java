@@ -10,11 +10,11 @@ import org.bukkit.command.TabCompleter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankCompleter implements TabCompleter {
+public class GroupCompleter implements TabCompleter {
 
     private LuckPermsHandler handler;
 
-    public RankCompleter(LuckPermsHandler lp) {
+    public GroupCompleter(LuckPermsHandler lp) {
         handler = lp;
     }
 

@@ -47,12 +47,12 @@ public final class Main extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("pvp").setExecutor(new PvP(this));
+        getCommand("pvp").setExecutor(new PvPCommand(this));
         getCommand("pvp").setTabCompleter(new PvPCompleter());
-        getCommand("rank").setExecutor(new Rank(lpHandler));
-        getCommand("rank").setTabCompleter(new RankCompleter(lpHandler));
-        getCommand("playtime").setExecutor(new PlayTime(timeHandler));
-        getCommand("getowner").setExecutor(new GetOwner(this));
+        getCommand("group").setExecutor(new GroupCommand(lpHandler));
+        getCommand("group").setTabCompleter(new GroupCompleter(lpHandler));
+        getCommand("playtime").setExecutor(new PlayTimeCommand(timeHandler));
+        getCommand("getowner").setExecutor(new GetOwnerCommand(this));
     }
 
     private void registerEvents() {

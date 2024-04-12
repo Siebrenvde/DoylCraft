@@ -11,18 +11,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class Rank implements CommandExecutor {
+public class GroupCommand implements CommandExecutor {
 
     private LuckPermsHandler luckPermsHandler;
 
-    public Rank(LuckPermsHandler luckPermsHandler) {
+    public GroupCommand(LuckPermsHandler luckPermsHandler) {
         this.luckPermsHandler = luckPermsHandler;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
-        if(!sender.hasPermission("doylcraft.rank")) {
+        if(!sender.hasPermission("doylcraft.group")) {
             sender.sendMessage(Messages.NO_PERMISSION);
             return false;
         }
@@ -112,7 +112,7 @@ public class Rank implements CommandExecutor {
         }
 
         else {
-            sender.sendMessage(Messages.usage("/rank <player> [<group>]"));
+            sender.sendMessage(Messages.usage("/group <player> [<group>]"));
             return false;
         }
     }

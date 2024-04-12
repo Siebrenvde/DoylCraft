@@ -18,14 +18,14 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PvP implements CommandExecutor {
+public class PvPCommand implements CommandExecutor {
 
     private Main main;
     private WorldGuardHandler worldGuardHandler;
 
     private final String USAGE = "/pvp [on/off] [<world>]";
 
-    public PvP(Main main) {
+    public PvPCommand(Main main) {
         this.main = main;
         worldGuardHandler = main.getWorldGuardHandler();
     }

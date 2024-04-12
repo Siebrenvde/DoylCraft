@@ -7,8 +7,8 @@ depend: [LuckPerms, WorldGuard, DiscordSRV, Essentials]
 commands:
   pvp:
     description: Toggle PvP on or off
-  rank:
-    aliases: [group]
+  group:
+    aliases: [rank]
     description: Change a player's group
   playtime:
     description: Get your time played
