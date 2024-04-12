@@ -1,6 +1,7 @@
 package dev.siebrenvde.doylcraft.tabcompleters;
 
 import dev.siebrenvde.doylcraft.handlers.LuckPermsHandler;
+import dev.siebrenvde.doylcraft.utils.Utils;
 import net.luckperms.api.model.group.Group;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -9,11 +10,11 @@ import org.bukkit.command.TabCompleter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankCompleter implements TabCompleter {
+public class GroupCompleter implements TabCompleter {
 
     private LuckPermsHandler handler;
 
-    public RankCompleter(LuckPermsHandler lp) {
+    public GroupCompleter(LuckPermsHandler lp) {
         handler = lp;
     }
 
@@ -25,7 +26,7 @@ public class RankCompleter implements TabCompleter {
             for(Group group : handler.getGroups()) {
                 groups.add(group.getName());
             }
-            return groups;
+            return Utils.autoCompleter(args[1], groups);
         }
 
         return null;

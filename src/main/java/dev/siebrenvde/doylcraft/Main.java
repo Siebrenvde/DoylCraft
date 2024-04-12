@@ -6,7 +6,6 @@ import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.shops.events.ShopCreateEvent;
 import dev.siebrenvde.doylcraft.tabcompleters.*;
 import dev.siebrenvde.doylcraft.handlers.ReloadHandler;
-import dev.siebrenvde.doylcraft.utils.Requests;
 import github.scarsz.discordsrv.DiscordSRV;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,6 @@ public final class Main extends JavaPlugin {
     private WorldGuardHandler wgHandler;
     private ScoreboardHandler sbHandler;
     private TimeHandler timeHandler;
-    private Requests requests;
     private ReloadHandler reloadHandler;
 
     private List<Player> list = new ArrayList();
@@ -33,7 +31,6 @@ public final class Main extends JavaPlugin {
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
         timeHandler = new TimeHandler();
-        requests = new Requests(discordHandler);
         reloadHandler = new ReloadHandler(this);
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         registerCommands();
@@ -51,13 +48,12 @@ public final class Main extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("pvp").setExecutor(new PvP(this));
+        getCommand("pvp").setExecutor(new PvPCommand(this));
         getCommand("pvp").setTabCompleter(new PvPCompleter());
-        getCommand("rank").setExecutor(new Rank(lpHandler));
-        getCommand("rank").setTabCompleter(new RankCompleter(lpHandler));
-        getCommand("playtime").setExecutor(new PlayTime(timeHandler));
-        getCommand("streams").setExecutor(new Streams(this));
-        getCommand("getowner").setExecutor(new GetOwner(this));
+        getCommand("group").setExecutor(new GroupCommand(lpHandler));
+        getCommand("group").setTabCompleter(new GroupCompleter(lpHandler));
+        getCommand("playtime").setExecutor(new PlayTimeCommand(timeHandler));
+        getCommand("getowner").setExecutor(new GetOwnerCommand(this));
     }
 
     private void registerEvents() {
@@ -78,7 +74,6 @@ public final class Main extends JavaPlugin {
     public WorldGuardHandler getWorldGuardHandler() { return wgHandler; }
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
     public TimeHandler getTimeHandler() { return timeHandler; }
-    public Requests getRequests() { return requests; }
 
     public static Main getInstance() { return instance; }
 

@@ -1,5 +1,6 @@
 package dev.siebrenvde.doylcraft.tabcompleters;
 
+import dev.siebrenvde.doylcraft.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -17,18 +18,7 @@ public class PvPCompleter implements TabCompleter {
         if(args.length == 1) {
             List<String> states = new ArrayList<>();
             states.add("on"); states.add("off");
-
-            if(args[0].length() > 0) {
-                List<String> nStates = new ArrayList<>();
-                for(String state : states) {
-                    if(state.startsWith(args[0])) {
-                        nStates.add(state);
-                    }
-                }
-                return nStates;
-            }
-
-            return states;
+            return Utils.autoCompleter(args[0], states);
         }
 
         else if(args.length == 2) {
@@ -36,18 +26,7 @@ public class PvPCompleter implements TabCompleter {
             for(World bWorld : Bukkit.getWorlds()) {
                 worlds.add(bWorld.getName());
             }
-
-            if(args[1].length() > 0) {
-                List<String> nWorlds = new ArrayList<>();
-                for(String world : worlds) {
-                    if(world.startsWith(args[1])) {
-                        nWorlds.add(world);
-                    }
-                }
-                return nWorlds;
-            }
-
-            return worlds;
+            return Utils.autoCompleter(args[1], worlds);
         }
 
         return null;

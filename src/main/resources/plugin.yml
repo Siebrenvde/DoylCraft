@@ -7,12 +7,10 @@ depend: [LuckPerms, WorldGuard, DiscordSRV, Essentials]
 commands:
   pvp:
     description: Toggle PvP on or off
-  rank:
-    aliases: [group]
-    description: Change a players' group
+  group:
+    aliases: [rank]
+    description: Change a player's group
   playtime:
     description: Get your time played
-  streams:
-    description: Get a list of online streamers
   getowner:
     description: Get the owner of an entity
