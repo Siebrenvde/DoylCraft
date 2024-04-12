@@ -17,12 +17,6 @@ public class DiscordSRVListener {
 
             String streamer = strings[0].split(" ")[0].replace("\\", "");
 
-            if(streamer.equalsIgnoreCase("doyl_official")) {
-                streamer = "Code";
-            } else if(streamer.equalsIgnoreCase("Bitzbreaker_")) {
-                streamer = "Bitzbreaker";
-            }
-
             Utils.broadcastHover(streamer, strings[1], strings[2]);
             Bukkit.getLogger().info(streamer + ", " + strings[1] + ", " + strings[2]);
 

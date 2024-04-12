@@ -5,9 +5,11 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;
+import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Messages;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,21 +23,18 @@ public class PvP implements CommandExecutor {
     private Main main;
     private WorldGuardHandler worldGuardHandler;
 
-    private List<String> worlds = new ArrayList<>();
+    private final String USAGE = "/pvp [on/off] [<world>]";
 
     public PvP(Main main) {
         this.main = main;
         worldGuardHandler = main.getWorldGuardHandler();
-        for(World world : Bukkit.getWorlds()) {
-            worlds.add(world.getName());
-        }
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
         if(!sender.hasPermission("doylcraft.pvp.toggle")) {
-            sender.sendMessage(Messages.permissionMessage);
+            sender.sendMessage(Messages.NO_PERMISSION);
             return false;
         }
 
@@ -43,7 +42,7 @@ public class PvP implements CommandExecutor {
             List<String> enabled = new ArrayList<>();
             List<String> disabled = new ArrayList<>();
 
-            for(String world : worlds) {
+            for(String world : getWorlds()) {
                 if(getState(world)) {
                     enabled.add(world);
                 } else {
@@ -51,18 +50,40 @@ public class PvP implements CommandExecutor {
                 }
             }
 
-            if(enabled.size() == worlds.size() && disabled.size() == 0) {
-                sender.sendMessage(ChatColor.GRAY + "PvP is " + ChatColor.GREEN + "enabled" + ChatColor.GRAY + " in all worlds.");
+            if(enabled.size() == getWorlds().size() && disabled.isEmpty()) {
+                sender.sendMessage(
+                    Component.text("PvP is ", Colours.GENERIC)
+                    .append(Component.text("enabled", Colours.POSITIVE))
+                    .append(Component.text(" in ", Colours.GENERIC))
+                    .append(Component.text("all worlds", Colours.GENERIC)
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(String.join("\n", getWorlds())))))
+                    .append(Component.text(".", Colours.GENERIC))
+                );
                 return true;
-            } else if(enabled.size() > 0) {
-                sender.sendMessage(ChatColor.GRAY + "PvP is " + ChatColor.GREEN + "enabled" + ChatColor.GRAY + " in " + String.join(", ", enabled) + ".");
+            } else if(!enabled.isEmpty()) {
+                sender.sendMessage(
+                    Component.text("PvP is ", Colours.GENERIC)
+                    .append(Component.text("enabled", Colours.POSITIVE))
+                    .append(Component.text(" in " + String.join(", ", enabled) + ".", Colours.GENERIC))
+                );
             }
 
-            if(disabled.size() == worlds.size() && enabled.size() == 0) {
-                sender.sendMessage(ChatColor.GRAY + "PvP is " + ChatColor.RED + "disabled" + ChatColor.GRAY + " in all worlds.");
+            if(disabled.size() == getWorlds().size() && enabled.isEmpty()) {
+                sender.sendMessage(
+                    Component.text("PvP is ", Colours.GENERIC)
+                    .append(Component.text("disabled", Colours.NEGATIVE))
+                    .append(Component.text(" in ", Colours.GENERIC))
+                    .append(Component.text("all worlds", Colours.GENERIC)
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(String.join("\n", getWorlds())))))
+                    .append(Component.text(".", Colours.GENERIC))
+                );
                 return true;
-            } else if(disabled.size() > 0) {
-                sender.sendMessage(ChatColor.GRAY + "PvP is " + ChatColor.RED + "disabled" + ChatColor.GRAY + " in " + String.join(", ", disabled) + ".");
+            } else if(!disabled.isEmpty()) {
+                sender.sendMessage(
+                    Component.text("PvP is ", Colours.GENERIC)
+                    .append(Component.text("disabled", Colours.NEGATIVE))
+                    .append(Component.text(" in " + String.join(", ", disabled) + ".", Colours.GENERIC))
+                );
             }
 
             return true;
@@ -71,49 +92,96 @@ public class PvP implements CommandExecutor {
         if(args.length == 1) {
             if(args[0].equalsIgnoreCase("on")) {
                 setAllStates(true);
-                sender.sendMessage(ChatColor.GREEN + "Enabled " + ChatColor.GRAY + "PvP in all worlds.");
+                sender.sendMessage(
+                    Component.text("Enabled ", Colours.POSITIVE)
+                    .append(Component.text(" in ", Colours.GENERIC))
+                    .append(Component.text("all worlds", Colours.GENERIC)
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(String.join("\n", getWorlds())))))
+                    .append(Component.text(".", Colours.GENERIC))
+                );
                 return true;
             } else if(args[0].equalsIgnoreCase("off")) {
                 setAllStates(false);
-                sender.sendMessage(ChatColor.RED + "Disabled " + ChatColor.GRAY + "PvP in all worlds.");
+                sender.sendMessage(
+                    Component.text("Disabled ", Colours.NEGATIVE)
+                    .append(Component.text(" in ", Colours.GENERIC))
+                    .append(Component.text("all worlds", Colours.GENERIC)
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(String.join("\n", getWorlds())))))
+                    .append(Component.text(".", Colours.GENERIC))
+                );
                 return true;
             } else if(args[0].equalsIgnoreCase("createglobalregions")) {
                 try{
                     worldGuardHandler.createGlobalRegions();
-                    sender.sendMessage(ChatColor.GREEN + "Created global regions.");
+                    sender.sendMessage(
+                        Component.text("Created global regions.", Colours.GENERIC)
+                    );
+                    return true;
                 } catch (Exception e){
+                    sender.sendMessage(Messages.error("Failed to create global regions.", e));
                     e.printStackTrace();
-                    sender.sendMessage(ChatColor.RED + "Could not create global regions.");
+                    return false;
                 }
             } else {
-                sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PVP));
+                sender.sendMessage(Messages.usage(USAGE));
                 return false;
             }
         }
 
         if(args.length == 2) {
-            if(!args[0].equalsIgnoreCase("on") && !args[0].equalsIgnoreCase("off")) {
-                sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PVP));
-                return false;
-            }
+
             String world = args[1].toLowerCase();
-            if(!worlds.contains(world)) {
-                sender.sendMessage(ChatColor.RED + "Unknown world \"" + world + "\".\n" + Messages.usageMessage("/pvp [on/off] [<world>]"));
+            if(!getWorlds().contains(world) && !world.equals("fakeworld")) {
+                sender.sendMessage(
+                    Component.text("World ", Colours.ERROR)
+                    .append(Component.text(world, Colours.DATA))
+                    .append(Component.text(" does not exist.", Colours.ERROR))
+                );
                 return false;
             }
 
             if(args[0].equalsIgnoreCase("on")) {
-                setState(world, true);
-                sender.sendMessage(ChatColor.GREEN + "Enabled " + ChatColor.GRAY + "PvP in " + world + ".");
+                try {
+                    setState(world, true);
+                    sender.sendMessage(
+                        Component.text("Enabled", Colours.POSITIVE)
+                        .append(Component.text(" PvP in " + world + ".", Colours.GENERIC))
+                    );
+                    return true;
+                } catch(Exception exception) {
+                    sender.sendMessage(Messages.error(
+                        Component.text("Failed to enable PvP in ", Colours.ERROR)
+                        .append(Component.text(world, Colours.DATA))
+                        .append(Component.text(".", Colours.ERROR)), exception
+                    ));
+                    exception.printStackTrace();
+                    return false;
+                }
             } else if(args[0].equalsIgnoreCase("off")) {
-                setState(world, false);
-                sender.sendMessage(ChatColor.RED + "Disabled " + ChatColor.GRAY + "PvP in " + world + ".");
+                try {
+                    setState(world, false);
+                    sender.sendMessage(
+                        Component.text("Disabled", Colours.NEGATIVE)
+                        .append(Component.text(" PvP in " + world + ".", Colours.GENERIC))
+                    );
+                    return true;
+                } catch(Exception exception) {
+                    sender.sendMessage(Messages.error(
+                        Component.text("Failed to enable PvP in ", Colours.ERROR)
+                        .append(Component.text(world, Colours.DATA))
+                        .append(Component.text(".", Colours.ERROR)), exception
+                    ));
+                    exception.printStackTrace();
+                    return false;
+                }
+            } else {
+                sender.sendMessage(Messages.usage(USAGE));
+                return false;
             }
-            return true;
         }
 
         else {
-            sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PVP));
+            sender.sendMessage(Messages.usage(USAGE));
             return false;
         }
 
@@ -133,7 +201,7 @@ public class PvP implements CommandExecutor {
     }
 
     private void setAllStates(boolean state) {
-        for(String world : worlds) {
+        for(String world : getWorlds()) {
             setState(world, state);
         }
     }
@@ -146,6 +214,14 @@ public class PvP implements CommandExecutor {
         } else {
             return false;
         }
+    }
+
+    private List<String> getWorlds() {
+        List<String> worlds = new ArrayList<>();
+        for(World world : Bukkit.getWorlds()) {
+            worlds.add(world.getName());
+        }
+        return worlds;
     }
 
 }

@@ -40,7 +40,7 @@ public class Streams implements CommandExecutor {
                     return;
                 }
 
-                TextComponent text = Component.text("Online Streamers:").color(Colours.twitch);
+                TextComponent text = Component.text("Online Streamers:").color(Colours.TWITCH);
 
                 for(int i = 0; i < onlineStreams.length(); i++) {
 
@@ -48,11 +48,11 @@ public class Streams implements CommandExecutor {
                     TextComponent streamText = Component.text("\n" + stream.getString("user_name")).color(TextColor.fromHexString("#ffffff"));
 
                     streamText = streamText.hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            Component.text("Title: ").color(Colours.twitch)
+                            Component.text("Title: ").color(Colours.TWITCH)
                             .append(Component.text(stream.getString("title")).color(TextColor.fromHexString("#ffffff")))
-                            .append(Component.text("\nGame: ").color(Colours.twitch))
+                            .append(Component.text("\nGame: ").color(Colours.TWITCH))
                             .append(Component.text(stream.getString("game_name")).color(TextColor.fromHexString("#ffffff")))
-                            .append(Component.text("\nDuration: ").color(Colours.twitch))
+                            .append(Component.text("\nDuration: ").color(Colours.TWITCH))
                             .append(Component.text(Utils.getStreamDuration(stream.getString("started_at"))).color(TextColor.fromHexString("#ffffff")))
                     ));
 

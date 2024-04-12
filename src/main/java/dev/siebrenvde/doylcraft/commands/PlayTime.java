@@ -1,9 +1,11 @@
 package dev.siebrenvde.doylcraft.commands;
 
 import dev.siebrenvde.doylcraft.handlers.TimeHandler;
+import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Messages;
+import dev.siebrenvde.doylcraft.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.command.Command;
@@ -23,11 +25,16 @@ public class PlayTime implements CommandExecutor {
 
         if(args.length == 0) {
             if(sender instanceof Player player) {
-                sender.sendMessage(ChatColor.YELLOW + "Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(timeHandler.getOnlineTime(player) / 1000));
-                sender.sendMessage(ChatColor.YELLOW + "Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
+                player.sendMessage(
+                    Component.text("Current Online Time: ", Colours.GENERIC)
+                    .append(Component.text(TimeHandler.formatTime(timeHandler.getOnlineTime(player) / 1000), Colours.DATA))
+                    .append(Component.newline())
+                    .append(Component.text("Total Time Played: ", Colours.GENERIC))
+                    .append(Component.text(TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20), Colours.DATA))
+                );
                 return true;
             } else {
-                sender.sendMessage(ChatColor.RED + "Only players can execute this command.");
+                sender.sendMessage(Messages.PLAYER_ONLY);
                 return false;
             }
         }
@@ -37,23 +44,37 @@ public class PlayTime implements CommandExecutor {
             OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(args[0]);
 
             if(player == null) {
-                sender.sendMessage(ChatColor.GRAY + "Player " + ChatColor.RED + args[0] + ChatColor.GRAY + " does not exist or has not joined the server before.");
+                sender.sendMessage(Messages.playerNotFound(args[0]));
                 return false;
             }
 
             if(player.isOnline()) {
-                sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Current Online Time: " + ChatColor.GRAY + TimeHandler.formatTime(timeHandler.getOnlineTime(player.getPlayer()) / 1000));
-                sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
+                sender.sendMessage(
+                    Component.empty()
+                    .append(Utils.entityComponent(Component.text(player.getName(), Colours.GENERIC), player))
+                    .append(Component.text("'s Current Online Time: ", Colours.GENERIC))
+                    .append(Component.text(TimeHandler.formatTime(timeHandler.getOnlineTime(player.getPlayer()) / 1000), Colours.DATA))
+                    .append(Component.newline())
+                    .append(Utils.entityComponent(Component.text(player.getName(), Colours.GENERIC), player))
+                    .append(Component.text("'s Total Time Played: ", Colours.GENERIC))
+                    .append(Component.text(TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20), Colours.DATA))
+                );
+
                 return true;
             }
 
-            sender.sendMessage(ChatColor.YELLOW + player.getName() + "'s Total Time Played: " + ChatColor.GRAY + TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20));
-            return true;
+            sender.sendMessage(
+                Component.empty()
+                .append(Utils.entityComponent(Component.text(player.getName(), Colours.GENERIC), player))
+                .append(Component.text("'s Total Time Played: ", Colours.GENERIC))
+                .append(Component.text(TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20), Colours.DATA))
+            );
 
+            return true;
         }
 
         else {
-            sender.sendMessage(Messages.usageMessage(Messages.CommandUsage.PLAYTIME));
+            sender.sendMessage(Messages.usage("/playtime [<player>]"));
             return false;
         }
 

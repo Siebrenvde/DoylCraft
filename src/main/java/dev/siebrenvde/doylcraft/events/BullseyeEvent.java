@@ -2,7 +2,8 @@ package dev.siebrenvde.doylcraft.events;
 
 import dev.siebrenvde.doylcraft.utils.Utils;
 import io.papermc.paper.event.block.TargetHitEvent;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,8 +19,13 @@ public class BullseyeEvent implements Listener {
         if(shooter instanceof Player player) {
 
             if(event.getSignalStrength() == 15) {
-                if(player.getLocation().distance(event.getHitBlock().getLocation()) >= 30) {
-                    Utils.broadcastMessage(ChatColor.LIGHT_PURPLE + player.getName() + " hit a bullseye!");
+                double distance = player.getLocation().distance(event.getHitBlock().getLocation());
+                if(distance >= 30) {
+                    Utils.broadcastMessage(
+                        Component.empty()
+                        .append(Utils.entityComponent(Component.text(player.getName(), NamedTextColor.LIGHT_PURPLE), player))
+                        .append(Component.text(" hit a bullseye from " + ((int) distance) + " blocks away!", NamedTextColor.LIGHT_PURPLE))
+                    );
                 }
             }
 
