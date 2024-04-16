@@ -1,6 +1,7 @@
 package dev.siebrenvde.doylcraft.shops.events;
 
 import dev.siebrenvde.doylcraft.shops.Shop;
+import dev.siebrenvde.doylcraft.utils.Messages;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -39,8 +40,7 @@ public class ShopCreateEvent implements Listener {
         Player player = event.getPlayer();
 
         if(!(attachedBlock.getBlockData() instanceof Chest chestData)) {
-            TextComponent tc = Component.text("A shop sign must be placed on a chest.").color(NamedTextColor.RED);
-            player.sendMessage(tc);
+            player.sendMessage(Messages.error("A shop sign must be placed on a chest."));
             return;
         }
 
