@@ -2,9 +2,7 @@ package dev.siebrenvde.doylcraft.shops.events;
 
 import dev.siebrenvde.doylcraft.shops.Shop;
 import dev.siebrenvde.doylcraft.utils.Messages;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Sign;
@@ -64,6 +62,9 @@ public class ShopCreateEvent implements Listener {
                 mainChest,
                 secondaryChest
         );
+
+        // Add shop data to sign and chests
+        shop.update();
 
     }
 

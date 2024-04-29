@@ -18,6 +18,8 @@ public class Shop {
     private Chest mainChest;
     private Chest secondaryChest;
 
+    public static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(Main.getInstance(), "shop_data");
+
     public Shop(OfflinePlayer owner, ItemStack price, Sign sign, Chest mainChest, Chest secondaryChest) {
         this.owner = owner;
         this.price = price;
@@ -27,11 +29,18 @@ public class Shop {
     }
 
     public void update() {
-        NamespacedKey key = new NamespacedKey(Main.getInstance(), "shop_data");
         String serialised = serialise();
-        if (sign != null) {
-            sign.getPersistentDataContainer().set(key, PersistentDataType.STRING, serialised);
+        if(sign != null) {
+            sign.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.STRING, serialised);
             sign.update();
+        }
+        if(mainChest != null) {
+            mainChest.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.STRING, serialised);
+            mainChest.update();
+        }
+        if(secondaryChest != null) {
+            secondaryChest.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.STRING, serialised);
+            secondaryChest.update();
         }
     }
 
