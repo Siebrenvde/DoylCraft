@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class Shop {
 
     private OfflinePlayer owner;
@@ -46,7 +48,7 @@ public class Shop {
     public String serialise() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("owner", owner.getUniqueId());
-        jsonObject.put("price", price.serialize());
+        jsonObject.put("price", price != null ? price.serialize() : null);
         jsonObject.put("sign", sign.getLocation().serialize());
         jsonObject.put("main_chest", mainChest.getLocation().serialize());
         jsonObject.put("secondary_chest", secondaryChest != null ? secondaryChest.getLocation().serialize() : null);
@@ -56,10 +58,12 @@ public class Shop {
     public static Shop deserialise(String serialisedString) {
         JSONObject jsonObject = new JSONObject(serialisedString);
         OfflinePlayer owner = Bukkit.getOfflinePlayer(jsonObject.getString("owner"));
-        ItemStack price = ItemStack.deserialize(jsonObject.getJSONObject("price").toMap());
+        Map<String, Object> priceMap = jsonObject.getJSONObject("price").toMap();
+        ItemStack price = !priceMap.isEmpty() ? ItemStack.deserialize(priceMap) : null;
         Sign sign = (Sign) Location.deserialize(jsonObject.getJSONObject("sign").toMap()).getBlock().getState();
         Chest mainChest = (Chest) Location.deserialize(jsonObject.getJSONObject("main_chest").toMap()).getBlock().getState();
-        Chest secondaryChest = null;
+        Map<String, Object> secondaryChestMap = jsonObject.getJSONObject("secondary_chest").toMap();
+        Chest secondaryChest = !secondaryChestMap.isEmpty() ? (Chest) Location.deserialize(secondaryChestMap).getBlock().getState() : null;
         return new Shop(owner, price, sign, mainChest, secondaryChest);
     }
 
