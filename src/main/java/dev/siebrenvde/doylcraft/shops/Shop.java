@@ -6,7 +6,6 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Shop {
@@ -51,39 +50,23 @@ public class Shop {
     public String serialise() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("owner", owner.getUniqueId());
-        jsonObject.put("item", itemStackToArray(item));
-        jsonObject.put("price", itemStackToArray(price));
-        jsonObject.put("sign", locationToArray(sign.getLocation()));
-        jsonObject.put("main_chest", locationToArray(mainChest.getLocation()));
-        jsonObject.put("secondary_chest", secondaryChest != null ? locationToArray(secondaryChest.getLocation()) : null);
+        jsonObject.put("item", item.serialize());
+        jsonObject.put("price", price.serialize());
+        jsonObject.put("sign", sign.getLocation().serialize());
+        jsonObject.put("main_chest", mainChest.getLocation().serialize());
+        jsonObject.put("secondary_chest", secondaryChest != null ? secondaryChest.getLocation().serialize() : null);
         return jsonObject.toString();
     }
 
     public static Shop deserialise(String serialisedString) {
         JSONObject jsonObject = new JSONObject(serialisedString);
         OfflinePlayer owner = Bukkit.getOfflinePlayer(jsonObject.getString("owner"));
-        ItemStack item = arrayToItemStack(jsonObject.getJSONArray("item"));
-        ItemStack price = arrayToItemStack(jsonObject.getJSONArray("price"));
-        Sign sign = (Sign) arrayToLocation(jsonObject.getJSONArray("sign")).getBlock().getState();
-        Chest mainChest = (Chest) arrayToLocation(jsonObject.getJSONArray("main_chest")).getBlock().getState();
+        ItemStack item = ItemStack.deserialize(jsonObject.getJSONObject("item").toMap());
+        ItemStack price = ItemStack.deserialize(jsonObject.getJSONObject("price").toMap());
+        Sign sign = (Sign) Location.deserialize(jsonObject.getJSONObject("sign").toMap()).getBlock().getState();
+        Chest mainChest = (Chest) Location.deserialize(jsonObject.getJSONObject("main_chest").toMap()).getBlock().getState();
         Chest secondaryChest = null;
         return new Shop(owner, item, price, sign, mainChest, secondaryChest);
-    }
-
-    private JSONArray itemStackToArray(ItemStack itemStack) {
-        return new JSONArray(new Object[]{itemStack.getType().name(), itemStack.getAmount()});
-    }
-
-    private static ItemStack arrayToItemStack(JSONArray array) {
-        return new ItemStack(Material.getMaterial(array.getString(0)), array.getInt(1));
-    }
-
-    private JSONArray locationToArray(Location location) {
-        return new JSONArray(new Object[]{location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()});
-    }
-
-    private static Location arrayToLocation(JSONArray array) {
-        return new Location(Bukkit.getWorld(array.getString(0)), array.getDouble(1), array.getDouble(2), array.getDouble(3));
     }
 
 }
