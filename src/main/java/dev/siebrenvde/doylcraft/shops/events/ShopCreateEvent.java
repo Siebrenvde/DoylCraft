@@ -60,7 +60,6 @@ public class ShopCreateEvent implements Listener {
         Shop shop = new Shop(
                 player,
                 null,
-                null,
                 sign,
                 mainChest,
                 secondaryChest

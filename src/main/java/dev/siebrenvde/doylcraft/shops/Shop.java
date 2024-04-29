@@ -11,15 +11,13 @@ import org.json.JSONObject;
 public class Shop {
 
     private OfflinePlayer owner;
-    private ItemStack item;
     private ItemStack price;
     private Sign sign;
     private Chest mainChest;
     private Chest secondaryChest;
 
-    public Shop(OfflinePlayer owner, ItemStack item, ItemStack price, Sign sign, Chest mainChest, Chest secondaryChest) {
+    public Shop(OfflinePlayer owner, ItemStack price, Sign sign, Chest mainChest, Chest secondaryChest) {
         this.owner = owner;
-        this.item = item;
         this.price = price;
         this.sign = sign;
         this.mainChest = mainChest;
@@ -36,21 +34,18 @@ public class Shop {
     }
 
     public OfflinePlayer getOwner() { return owner; }
-    public ItemStack getItem() { return item; }
     public ItemStack getPrice() { return price; }
     public Sign getSign() { return sign; }
     public Chest getMainChest() { return mainChest; }
     public Chest getSecondaryChest() { return secondaryChest; }
 
     public void setOwner(OfflinePlayer newOwner) { owner = newOwner; }
-    public void setItem(ItemStack newItem) { item = newItem; }
     public void setPrice(ItemStack newPrice) { price = newPrice; }
     public void setSecondaryChest(Chest newChest) { secondaryChest = newChest; }
 
     public String serialise() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("owner", owner.getUniqueId());
-        jsonObject.put("item", item.serialize());
         jsonObject.put("price", price.serialize());
         jsonObject.put("sign", sign.getLocation().serialize());
         jsonObject.put("main_chest", mainChest.getLocation().serialize());
@@ -61,12 +56,11 @@ public class Shop {
     public static Shop deserialise(String serialisedString) {
         JSONObject jsonObject = new JSONObject(serialisedString);
         OfflinePlayer owner = Bukkit.getOfflinePlayer(jsonObject.getString("owner"));
-        ItemStack item = ItemStack.deserialize(jsonObject.getJSONObject("item").toMap());
         ItemStack price = ItemStack.deserialize(jsonObject.getJSONObject("price").toMap());
         Sign sign = (Sign) Location.deserialize(jsonObject.getJSONObject("sign").toMap()).getBlock().getState();
         Chest mainChest = (Chest) Location.deserialize(jsonObject.getJSONObject("main_chest").toMap()).getBlock().getState();
         Chest secondaryChest = null;
-        return new Shop(owner, item, price, sign, mainChest, secondaryChest);
+        return new Shop(owner, price, sign, mainChest, secondaryChest);
     }
 
 }
