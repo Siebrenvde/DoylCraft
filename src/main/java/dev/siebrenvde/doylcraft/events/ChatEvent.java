@@ -37,7 +37,7 @@ public class ChatEvent implements Listener {
             if(!messageContent.toLowerCase().contains(member.getEffectiveName().toLowerCase())) { continue; }
 
             TextReplacementConfig config = TextReplacementConfig.builder()
-                .match(Pattern.compile("@" + member.getEffectiveName(), Pattern.CASE_INSENSITIVE))
+                .match(Pattern.compile(Pattern.quote("@" + member.getEffectiveName()), Pattern.CASE_INSENSITIVE))
                 .replacement(profileComponent(member))
                 .build();
             component = component.replaceText(config);
