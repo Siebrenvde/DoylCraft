@@ -27,45 +27,47 @@ public class ChatEvent implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncChatEvent event) {
         Component component = event.originalMessage();
-        if(((TextComponent)component).content().contains("@")) {
-            for(Member member : discordHandler.getMembers()) {
-                TextReplacementConfig config = TextReplacementConfig.builder()
-                    .match(Pattern.compile("@" + member.getEffectiveName(), Pattern.CASE_INSENSITIVE))
-                    .replacement(profileComponent(member, component))
-                    .build();
-                component = component.replaceText(config);
-            }
-            event.message(component);
+        String messageContent = ((TextComponent)component).content();
+
+        // Chat message must contain '@'
+        if(!messageContent.contains("@")) { return; }
+
+        for(Member member : discordHandler.getMembers()) {
+            // Message must contain effective name of member
+            if(!messageContent.toLowerCase().contains(member.getEffectiveName().toLowerCase())) { continue; }
+
+            TextReplacementConfig config = TextReplacementConfig.builder()
+                .match(Pattern.compile("@" + member.getEffectiveName(), Pattern.CASE_INSENSITIVE))
+                .replacement(profileComponent(member))
+                .build();
+            component = component.replaceText(config);
         }
+
+        event.message(component);
     }
 
-    private Component profileComponent(Member member, Component message) {
-        if(((TextComponent)message).content().toLowerCase().contains("@" + member.getEffectiveName().toLowerCase())) {
+    private Component profileComponent(Member member) {
+        Component display = Component.text("@" + member.getEffectiveName(), Colours.DISCORD);
 
-            Component display = Component.text("@" + member.getEffectiveName(), Colours.DISCORD);
+        Component profile = Component.text(member.getEffectiveName(), TextColor.color(member.getColorRaw()));
 
-            Component profile = Component.text(member.getEffectiveName(), TextColor.color(member.getColorRaw()));
-
-            if(!member.getEffectiveName().equals(member.getUser().getAsTag())) {
-                profile = profile.append(Component.newline().append(Component.text(member.getUser().getAsTag(), NamedTextColor.WHITE)));
-            }
-
-            int roleAmount = member.getRoles().size();
-            for(int i = 0; i < roleAmount; i++) {
-                if(i == 0) {
-                    profile = profile.append(Component.newline());
-                }
-                Role role = member.getRoles().get(i);
-                profile = profile.append(Component.text(role.getName(), TextColor.color(role.getColorRaw())));
-                if(i != (roleAmount - 1)) {
-                    profile = profile.append(Component.text(" | ", NamedTextColor.GRAY));
-                }
-            }
-
-            return display.hoverEvent(HoverEvent.showText(profile));
+        if(!member.getEffectiveName().equals(member.getUser().getAsTag())) {
+            profile = profile.append(Component.newline().append(Component.text(member.getUser().getAsTag(), NamedTextColor.WHITE)));
         }
 
-        return Component.empty();
+        int roleAmount = member.getRoles().size();
+        for(int i = 0; i < roleAmount; i++) {
+            if(i == 0) {
+                profile = profile.append(Component.newline());
+            }
+            Role role = member.getRoles().get(i);
+            profile = profile.append(Component.text(role.getName(), TextColor.color(role.getColorRaw())));
+            if(i != (roleAmount - 1)) {
+                profile = profile.append(Component.text(" | ", NamedTextColor.GRAY));
+            }
+        }
+
+        return display.hoverEvent(HoverEvent.showText(profile));
     }
 
 }
