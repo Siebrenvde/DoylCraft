@@ -60,7 +60,6 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AFKEvent(discordHandler), this);
         getServer().getPluginManager().registerEvents(new ChatEvent(discordHandler), this);
         getServer().getPluginManager().registerEvents(new ConnectionEvents(this), this);
-        getServer().getPluginManager().registerEvents(new DPlayerDeathEvent(sbHandler), this);
         getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
         getServer().getPluginManager().registerEvents(new TameableInteractEvent(this), this);
     }

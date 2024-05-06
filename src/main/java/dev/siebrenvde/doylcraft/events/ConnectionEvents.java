@@ -27,7 +27,6 @@ public class ConnectionEvents implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         timeHandler.removeLoginTime(event.getPlayer());
-        scoreboardHandler.removePlayer(event.getPlayer());
     }
 
 }
