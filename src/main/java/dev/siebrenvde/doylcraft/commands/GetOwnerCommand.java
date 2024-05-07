@@ -1,9 +1,8 @@
 package dev.siebrenvde.doylcraft.commands;
 
-import dev.siebrenvde.doylcraft.Main;
+import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Messages;
-import dev.siebrenvde.doylcraft.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,22 +11,22 @@ import org.bukkit.entity.Player;
 
 public class GetOwnerCommand implements CommandExecutor {
 
-    private Main main;
+    private final MemoryHandler memoryHandler;
 
-    public GetOwnerCommand(Main main) {
-        this.main = main;
+    public GetOwnerCommand(MemoryHandler memoryHandler) {
+        this.memoryHandler = memoryHandler;
     }
 
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
         if(sender instanceof Player player) {
 
-            if(!main.listContains(player)) {
-                main.addListPlayer(player);
-                Utils.removeListCountdown(main, player);
+            if(!memoryHandler.getOwnerListContains(player)) {
+                memoryHandler.addGetOwnerPlayer(player);
+                memoryHandler.startGetOwnerCountdown(player);
                 player.sendMessage(Component.text("Right click a pet to get its owner.", Colours.GENERIC));
             } else {
-                main.removeListPlayer(player);
+                memoryHandler.removeGetOwnerPlayer(player);
                 player.sendMessage(Component.text("Disabled owner viewer.", Colours.GENERIC));
             }
 

@@ -2,34 +2,18 @@ package dev.siebrenvde.doylcraft.handlers;
 
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-
 public class TimeHandler {
 
-    private HashMap<Player, Long> loginTimes;
+    private final MemoryHandler memoryHandler;
 
-    public TimeHandler() {
-        loginTimes = new HashMap<>();
+    public TimeHandler(MemoryHandler memoryHandler) {
+        this.memoryHandler = memoryHandler;
     }
-
-    public long getLoginTime(Player player) { return loginTimes.get(player); }
 
     public long getOnlineTime(Player player) {
-        long loginTime = loginTimes.get(player);
+        long loginTime = memoryHandler.getLoginTime(player);
         long currentTime = System.currentTimeMillis();
         return currentTime - loginTime;
-    }
-
-    public void addLoginTime(Player player) {
-        loginTimes.put(player, System.currentTimeMillis());
-    }
-
-    public void removeLoginTime(Player player) {
-        loginTimes.remove(player);
-    }
-
-    public void setLoginTime(Player player, Long time) {
-        loginTimes.put(player, time);
     }
 
     public static String formatTime(long secondsL) {
