@@ -6,14 +6,12 @@ import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.*;
 import dev.siebrenvde.doylcraft.handlers.ReloadHandler;
 import github.scarsz.discordsrv.DiscordSRV;
-import java.util.ArrayList;
-import java.util.List;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
     private static Main instance;
+    private MemoryHandler memoryHandler;
     private LuckPermsHandler lpHandler;
     private DiscordHandler discordHandler;
     private WorldGuardHandler wgHandler;
@@ -21,10 +19,9 @@ public final class Main extends JavaPlugin {
     private TimeHandler timeHandler;
     private ReloadHandler reloadHandler;
 
-    private List<Player> list = new ArrayList();
-
     public void onEnable() {
         instance = this;
+        memoryHandler = new MemoryHandler();
         lpHandler = new LuckPermsHandler(this);
         discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
@@ -52,7 +49,7 @@ public final class Main extends JavaPlugin {
         getCommand("group").setExecutor(new GroupCommand(lpHandler));
         getCommand("group").setTabCompleter(new GroupCompleter(lpHandler));
         getCommand("playtime").setExecutor(new PlayTimeCommand(timeHandler));
-        getCommand("getowner").setExecutor(new GetOwnerCommand(this));
+        getCommand("getowner").setExecutor(new GetOwnerCommand(memoryHandler));
     }
 
     private void registerEvents() {
@@ -61,9 +58,10 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatEvent(discordHandler), this);
         getServer().getPluginManager().registerEvents(new ConnectionEvents(this), this);
         getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
-        getServer().getPluginManager().registerEvents(new TameableInteractEvent(this), this);
+        getServer().getPluginManager().registerEvents(new TameableInteractEvent(memoryHandler), this);
     }
 
+    public MemoryHandler getMemoryHandler() { return memoryHandler; }
     public LuckPermsHandler getLuckPermsHandler() { return lpHandler; }
     public DiscordHandler getDiscordHandler() { return discordHandler; }
     public WorldGuardHandler getWorldGuardHandler() { return wgHandler; }
@@ -71,17 +69,5 @@ public final class Main extends JavaPlugin {
     public TimeHandler getTimeHandler() { return timeHandler; }
 
     public static Main getInstance() { return instance; }
-
-    public boolean listContains(Player player) {
-        return list.contains(player);
-    }
-
-    public void addListPlayer(Player player) {
-        list.add(player);
-    }
-
-    public void removeListPlayer(Player player) {
-        list.remove(player);
-    }
 
 }

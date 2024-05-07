@@ -1,6 +1,5 @@
 package dev.siebrenvde.doylcraft.utils;
 
-import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.TimeHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -9,7 +8,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.*;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,21 +42,6 @@ public class Utils {
             p.sendMessage(text);
 
         }
-    }
-
-    public static void removeListCountdown(Main main, Player player) {
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-
-                if(main.listContains(player)) {
-                    main.removeListPlayer(player);
-                }
-
-            }
-        }.runTaskLaterAsynchronously(main, 200L);
-
     }
 
     public static String getTameableName(Tameable e) {
