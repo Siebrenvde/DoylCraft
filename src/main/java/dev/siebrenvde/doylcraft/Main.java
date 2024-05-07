@@ -37,7 +37,7 @@ public final class Main extends JavaPlugin {
         if(System.getProperty("ENABLED") == null) {
             System.setProperty("ENABLED", "TRUE");
         } else {
-            getLogger().warning("Reloaded detected. Loading reload data.");
+            getLogger().warning("Reload detected. Loading reload data.");
             reloadHandler.loadData();
         }
     }
