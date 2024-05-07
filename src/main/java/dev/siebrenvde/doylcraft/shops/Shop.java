@@ -5,6 +5,7 @@ import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.block.TileState;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.json.JSONObject;
@@ -55,6 +56,8 @@ public class Shop {
     public void setPrice(ItemStack newPrice) { price = newPrice; }
     public void setSecondaryChest(Chest newChest) { secondaryChest = newChest; }
 
+    public boolean isOwner(Player player) { return owner.equals(player); }
+
     public String serialise() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("owner", owner.getUniqueId());
@@ -79,6 +82,11 @@ public class Shop {
 
     public static boolean isShop(TileState tileState) {
         return tileState.getPersistentDataContainer().has(NAMESPACED_KEY);
+    }
+
+    public static Shop get(TileState tileState) {
+        if(!isShop(tileState)) { return null; }
+        return deserialise(tileState.getPersistentDataContainer().get(NAMESPACED_KEY, PersistentDataType.STRING));
     }
 
 }
