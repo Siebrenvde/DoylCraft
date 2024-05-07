@@ -24,12 +24,12 @@ public class ShopCreateEvent implements Listener {
         // No hanging signs or sign posts
         if(!(block.getBlockData() instanceof WallSign wallSign)) { return; }
 
-        boolean isShopSign = false; // TODO: Check if lines is empty when no text, can't currently test
+        boolean isShopSign = false;
 
         // Sign should have [shop] on any line and no other text
         for(Component lineComponent : event.lines()) {
-            if(lineComponent == null) { continue; } // If line is empty, move to next line
             String lineText = ((TextComponent) lineComponent).content();
+            if(lineText.equalsIgnoreCase("")) { continue; } // If line is empty, move to next line
             if(!lineText.equalsIgnoreCase("[shop]")) { return; } // If line does not contain [shop], return
             isShopSign = true; // If line contains [shop], sign is shop sign
         }

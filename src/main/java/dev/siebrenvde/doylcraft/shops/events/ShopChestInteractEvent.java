@@ -15,6 +15,8 @@ public class ShopChestInteractEvent implements Listener {
     @EventHandler
     public void onShopChestInteract(PlayerInteractEvent event) {
 
+        if(!event.getAction().isRightClick()) { return; }
+
         Block block = event.getClickedBlock();
 
         // If block is null or not a chest, return

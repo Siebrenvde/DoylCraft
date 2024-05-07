@@ -42,6 +42,13 @@ public class ShopBreakEvent implements Listener {
             return;
         }
 
+        // TODO: Remove, temporary
+        if(player.isSneaking()) {
+            event.setCancelled(false);
+            shop.destroyTesting();
+            return;
+        }
+
         // If player is shop owner
         // TODO: Replace <command> with shop delete command
         player.sendMessage(Messages.error("Use <command> to delete the shop before breaking it."));

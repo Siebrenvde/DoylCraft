@@ -11,6 +11,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.json.JSONObject;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class Shop {
 
@@ -70,7 +71,7 @@ public class Shop {
 
     public static Shop deserialise(String serialisedString) {
         JSONObject jsonObject = new JSONObject(serialisedString);
-        OfflinePlayer owner = Bukkit.getOfflinePlayer(jsonObject.getString("owner"));
+        OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(jsonObject.getString("owner")));
         Map<String, Object> priceMap = jsonObject.getJSONObject("price").toMap();
         ItemStack price = !priceMap.isEmpty() ? ItemStack.deserialize(priceMap) : null;
         Sign sign = (Sign) Location.deserialize(jsonObject.getJSONObject("sign").toMap()).getBlock().getState();
@@ -87,6 +88,22 @@ public class Shop {
     public static Shop get(TileState tileState) {
         if(!isShop(tileState)) { return null; }
         return deserialise(tileState.getPersistentDataContainer().get(NAMESPACED_KEY, PersistentDataType.STRING));
+    }
+
+    // TODO: Remove, temporary
+    public void destroyTesting() {
+        if(sign != null) {
+            sign.getPersistentDataContainer().remove(NAMESPACED_KEY);
+            sign.update();
+        }
+        if(mainChest != null) {
+            mainChest.getPersistentDataContainer().remove(NAMESPACED_KEY);
+            mainChest.update();
+        }
+        if(secondaryChest != null) {
+            secondaryChest.getPersistentDataContainer().remove(NAMESPACED_KEY);
+            secondaryChest.update();
+        }
     }
 
 }
