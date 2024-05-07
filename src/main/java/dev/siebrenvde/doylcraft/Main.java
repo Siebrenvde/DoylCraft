@@ -26,7 +26,7 @@ public final class Main extends JavaPlugin {
         discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
-        timeHandler = new TimeHandler();
+        timeHandler = new TimeHandler(memoryHandler);
         reloadHandler = new ReloadHandler(this);
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         registerCommands();

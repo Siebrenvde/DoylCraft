@@ -5,12 +5,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MemoryHandler {
 
     // List of players who executed /getowner and have not yet interacted with an entity
     private final List<Player> getOwnerPlayers = new ArrayList<>();
+    private final HashMap<Player, Long> loginTimes = new HashMap<>();
 
     public MemoryHandler() {}
 
@@ -28,5 +30,10 @@ public class MemoryHandler {
             }
         }.runTaskLaterAsynchronously(Main.getInstance(), 200L);
     }
+
+    public long getLoginTime(Player player) { return loginTimes.get(player); }
+    public void addLoginTime(Player player, long time) { loginTimes.put(player, time); }
+    public void addLoginTime(Player player) { addLoginTime(player, System.currentTimeMillis()); }
+    public void removeLoginTime(Player player) { loginTimes.remove(player); }
 
 }

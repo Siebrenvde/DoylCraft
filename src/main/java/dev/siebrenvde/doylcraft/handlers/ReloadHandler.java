@@ -11,16 +11,16 @@ import java.io.IOException;
 
 public class ReloadHandler {
 
-    Main main;
-    TimeHandler timeHandler;
-    ScoreboardHandler scoreboardHandler;
+    private final Main main;
+    private final MemoryHandler memoryHandler;
+    private final ScoreboardHandler scoreboardHandler;
 
-    private File fFile;
+    private final File fFile;
     private FileConfiguration file;
 
     public ReloadHandler(Main main) {
         this.main = main;
-        timeHandler = main.getTimeHandler();
+        memoryHandler = main.getMemoryHandler();
         scoreboardHandler = main.getScoreboardHandler();
         fFile = new File(main.getDataFolder(), "data.yml");
     }
@@ -32,10 +32,10 @@ public class ReloadHandler {
         }
         file = YamlConfiguration.loadConfiguration(fFile);
 
-        if(Bukkit.getOnlinePlayers().size() > 0) {
+        if(!Bukkit.getOnlinePlayers().isEmpty()) {
             for(Player p : Bukkit.getOnlinePlayers()) {
                 scoreboardHandler.initPlayer(p);
-                timeHandler.setLoginTime(p, file.getLong("login-times." + p.getUniqueId().toString()));
+                memoryHandler.addLoginTime(p, file.getLong("login-times." + p.getUniqueId()));
             }
         }
 
@@ -48,7 +48,7 @@ public class ReloadHandler {
         file.createSection("login-times");
 
         for(Player p : Bukkit.getOnlinePlayers()) {
-            file.set("login-times." + p.getUniqueId().toString(), timeHandler.getLoginTime(p));
+            file.set("login-times." + p.getUniqueId().toString(), memoryHandler.getLoginTime(p));
         }
 
         try {
