@@ -4,6 +4,7 @@ import dev.siebrenvde.doylcraft.Main;
 import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
+import org.bukkit.block.TileState;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.json.JSONObject;
@@ -74,6 +75,10 @@ public class Shop {
         Map<String, Object> secondaryChestMap = jsonObject.getJSONObject("secondary_chest").toMap();
         Chest secondaryChest = !secondaryChestMap.isEmpty() ? (Chest) Location.deserialize(secondaryChestMap).getBlock().getState() : null;
         return new Shop(owner, price, sign, mainChest, secondaryChest);
+    }
+
+    public static boolean isShop(TileState tileState) {
+        return tileState.getPersistentDataContainer().has(NAMESPACED_KEY);
     }
 
 }

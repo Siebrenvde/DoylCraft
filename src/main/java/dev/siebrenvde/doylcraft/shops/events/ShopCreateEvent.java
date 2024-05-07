@@ -2,6 +2,7 @@ package dev.siebrenvde.doylcraft.shops.events;
 
 import dev.siebrenvde.doylcraft.shops.Shop;
 import dev.siebrenvde.doylcraft.utils.Messages;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.block.Block;
 import org.bukkit.block.DoubleChest;
@@ -23,12 +24,18 @@ public class ShopCreateEvent implements Listener {
         // No hanging signs or sign posts
         if(!(block.getBlockData() instanceof WallSign wallSign)) { return; }
 
-        // TODO: Allow on any line
-        if(event.line(0) == null) { return; }
+        boolean isShopSign = false; // TODO: Check if lines is empty when no text, can't currently test
 
-        String lineContent = ((TextComponent)event.line(0)).content();
+        // Sign should have [shop] on any line and no other text
+        for(Component lineComponent : event.lines()) {
+            if(lineComponent == null) { continue; } // If line is empty, move to next line
+            String lineText = ((TextComponent) lineComponent).content();
+            if(!lineText.equalsIgnoreCase("[shop]")) { return; } // If line does not contain [shop], return
+            isShopSign = true; // If line contains [shop], sign is shop sign
+        }
 
-        if(!lineContent.equalsIgnoreCase("[shop]")) { return; }
+        // Return if sign is empty
+        if(!isShopSign) { return; }
 
         Sign sign = (Sign) block.getState();
 
@@ -46,14 +53,17 @@ public class ShopCreateEvent implements Listener {
         org.bukkit.block.Chest secondaryChest = null;
 
         // If double chest, set secondary chest
-        if(mainChest.getInventory().getHolder() instanceof  DoubleChest doubleChest) {
+        if(mainChest.getInventory().getHolder() instanceof DoubleChest doubleChest) {
             secondaryChest =
                     chestData.getType() == Chest.Type.LEFT
                     ? (org.bukkit.block.Chest) doubleChest.getLeftSide()
                     : (org.bukkit.block.Chest) doubleChest.getRightSide();
         }
 
-        // TODO: Check if already shop
+        if(Shop.isShop(mainChest)) {
+            player.sendMessage(Messages.error("This chest is already a shop."));
+            return;
+        }
 
         Shop shop = new Shop(
                 player,
@@ -65,6 +75,8 @@ public class ShopCreateEvent implements Listener {
 
         // Add shop data to sign and chests
         shop.update();
+
+        // TODO: Open management UI
 
     }
 
