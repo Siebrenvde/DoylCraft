@@ -2,8 +2,8 @@ package dev.siebrenvde.doylcraft.events;
 
 import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
 import dev.siebrenvde.doylcraft.utils.Utils;
+import github.scarsz.discordsrv.dependencies.jda.api.utils.MarkdownSanitizer;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -16,6 +16,9 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+
+import static net.kyori.adventure.text.Component.empty;
+import static net.kyori.adventure.text.Component.text;
 
 public class PetDamageEvent implements Listener {
 
@@ -56,64 +59,72 @@ public class PetDamageEvent implements Listener {
                     double damage = event.getDamage();
                     double health = pet.getHealth();
                     TranslatableComponent petType = Component.translatable(pet.getType());
-                    String petTypeLegacy = Utils.getTameableName(pet);
                     Component petName = pet.customName();
-                    //String petNameContent = petName != null ? ((TextComponent) petName).content() : null;
-                    String petNameContent;
-                    if(petName != null) {
-                        petNameContent = ((TextComponent) petName).content();
-                        if(petNameContent.isEmpty()) {
-                            // Temporary fix
-                            petNameContent = ((TextComponent) petName.children().get(0)).content();
-                        }
-                    } else {
-                        petNameContent = null;
-                    }
 
                     if(damager.equals(owner)) {
-                        TextComponent tc = Component.text("You did " + df.format(damage) + " damage to your ", MESSAGE_COLOUR);
-                        tc = tc.append(petType.color(MESSAGE_COLOUR));
-                        if(petName != null) {
-                            tc = tc.append(Component.text(", ", MESSAGE_COLOUR));
-                            tc = tc.append(petName.color(MESSAGE_COLOUR));
-                        }
-                        tc = tc.append(Component.text(".", MESSAGE_COLOUR));
-                        damager.sendMessage(tc);
+                        damager.sendMessage(
+                            text("You did " + df.format(damage) + " damage to ")
+                                .append(petName == null ? text("your ") : empty())
+                                .append(Utils.entityComponent(petName != null ? petName : petType, pet))
+                                .append(text("."))
+                                .color(MESSAGE_COLOUR)
+                        );
                     } else {
                         if(owner.isOnline()) {
-                            TextComponent tc = Component.empty();
-                            tc = tc.append(Utils.entityComponent(Component.text(damager.getName(), MESSAGE_COLOUR), damager));
-                            tc = tc.append(Component.text(" did " + df.format(damage) + " damage to your ", MESSAGE_COLOUR));
-                            tc = tc.append(petType.color(MESSAGE_COLOUR));
-                            if(petName != null) {
-                                tc = tc.append(Component.text(", ", MESSAGE_COLOUR));
-                                tc = tc.append(petName.color(MESSAGE_COLOUR));
-                            }
-                            tc = tc.append(Component.text(".", MESSAGE_COLOUR));
-                            ((Player) owner).sendMessage(tc);
+                            ((Player) owner).sendMessage(
+                                empty()
+                                    .append(Utils.entityComponent(text(damager.getName()), damager))
+                                    .append(text(" did " + df.format(damage) + " damage to "))
+                                    .append(petName == null ? text("your ") : empty())
+                                    .append(Utils.entityComponent(petName != null ? petName : petType, pet))
+                                    .append(text("."))
+                                    .color(MESSAGE_COLOUR)
+                            );
                         }
-                        TextComponent tc = Component.text("You did " + df.format(damage) + " damage to ", MESSAGE_COLOUR);
-                        tc = tc.append(Utils.entityComponent(Component.text(owner.getName(), MESSAGE_COLOUR), owner));
-                        tc = tc.append(Component.text("'s ", MESSAGE_COLOUR));
-                        tc = tc.append(petType.color(MESSAGE_COLOUR));
-                        tc = tc.append(Component.text(".", MESSAGE_COLOUR));
-                        damager.sendMessage(tc);
+
+                        damager.sendMessage(
+                            text("You did " + df.format(damage) + " damage to ")
+                                .append(Utils.entityComponent(text(owner.getName()), owner))
+                                .append(text("'s "))
+                                .append(Utils.entityComponent(petType, pet))
+                                .append(text("."))
+                                .color(MESSAGE_COLOUR)
+                        );
                     }
 
-                    discordHandler.sendDiscordMessage("pet-log", "❤ " + damager.getName().replaceAll("_", "\\_") + " did " + df.format(damage) + " damage to " + (petNameContent != null ? petNameContent : petTypeLegacy) + " (" + (petNameContent != null ? petTypeLegacy + ", " : "") + owner.getName().replaceAll("_", "\\_") + ").");
+                    discordHandler.sendDiscordMessage("pet-log",
+                        text(":heart: ")
+                            .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
+                            .append(text(" did " + df.format(damage) + " damage to "))
+                            .append(petName != null ? petName : petType)
+                            .append(text(" ("))
+                            .append(petName != null ? petType.append(text(", ")) : empty())
+                            .append(text(MarkdownSanitizer.escape(owner.getName(), true)))
+                            .append(text(")."))
+                    );
 
                     if((health - damage) <= 0.0) {
-                        TextComponent tc = Component.empty();
-                        tc = tc.append(Utils.entityComponent(Component.text(damager.getName(), MESSAGE_COLOUR), damager));
-                        tc = tc.append(Component.text(" killed ", MESSAGE_COLOUR));
-                        tc = tc.append(Utils.entityComponent(Component.text(owner.getName(), MESSAGE_COLOUR), owner));
-                        tc = tc.append(Component.text("'s ", MESSAGE_COLOUR));
-                        tc = tc.append(petType.color(MESSAGE_COLOUR));
-                        tc = tc.append(Component.text(".", MESSAGE_COLOUR));
+                        Utils.broadcastMessage(
+                            Component.empty()
+                                .append(Utils.entityComponent(text(damager.getName()), damager))
+                                .append(text(" killed "))
+                                .append(Utils.entityComponent(text(owner.getName()), owner))
+                                .append(text("'s "))
+                                .append(Utils.entityComponent(petType, pet))
+                                .append(text("."))
+                                .color(MESSAGE_COLOUR)
+                        );
 
-                        Utils.broadcastMessage(tc);
-
-                        discordHandler.sendDiscordMessage("pet-log", "\uD83D\uDC80 " + damager.getName().replaceAll("_", "\\_") + " killed " + (petNameContent != null ? petNameContent : petTypeLegacy) + " (" + (petNameContent != null ? petTypeLegacy + ", " : "") + owner.getName().replaceAll("_", "\\_") + ").");
+                        discordHandler.sendDiscordMessage("pet-log",
+                            text(":skull: ")
+                                .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
+                                .append(text(" killed "))
+                                .append(petName != null ? petName : petType)
+                                .append(text(" ("))
+                                .append(petName != null ? petType.append(text(", ")) : empty())
+                                .append(text(MarkdownSanitizer.escape(owner.getName(), true)))
+                                .append(text(")."))
+                        );
                     }
 
                 }

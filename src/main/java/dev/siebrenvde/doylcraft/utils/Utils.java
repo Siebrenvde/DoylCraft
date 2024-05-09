@@ -1,5 +1,6 @@
 package dev.siebrenvde.doylcraft.utils;
 
+import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.TimeHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -15,16 +16,8 @@ import java.util.*;
 
 public class Utils {
 
-    public static void broadcastMessage(String message) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            p.sendMessage(message);
-        }
-    }
-
     public static void broadcastMessage(Component message) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            p.sendMessage(message);
-        }
+        Main.getInstance().getServer().broadcast(message);
     }
 
     public static void broadcastHover(String streamer, String title, String url) {
