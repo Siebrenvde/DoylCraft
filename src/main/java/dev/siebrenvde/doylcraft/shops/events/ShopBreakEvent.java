@@ -10,6 +10,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShopBreakEvent implements Listener {
 
@@ -53,6 +58,27 @@ public class ShopBreakEvent implements Listener {
         // TODO: Replace <command> with shop delete command
         player.sendMessage(Messages.error("Use <command> to delete the shop before breaking it."));
 
+    }
+
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event) {
+        event.blockList().removeAll(getShopBlocks(event.blockList()));
+    }
+
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent event) {
+        event.blockList().removeAll(getShopBlocks(event.blockList()));
+    }
+
+    private List<Block> getShopBlocks(List<Block> blockList) {
+        List<Block> shopBlocks = new ArrayList<>();
+        for(Block block : blockList) {
+            if(!(block.getBlockData() instanceof Chest) && !(block.getBlockData() instanceof WallSign)) { continue; }
+            TileState tileState = (TileState) block.getState();
+            if(!Shop.isShop(tileState)) { continue; }
+            shopBlocks.add(block);
+        }
+        return shopBlocks;
     }
 
 }
