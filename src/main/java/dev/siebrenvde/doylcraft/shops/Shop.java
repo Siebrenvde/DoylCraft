@@ -13,11 +13,8 @@ import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import java.io.ByteArrayOutputStream; s
+import java.util.*;
 
 public class Shop implements ConfigurationSerializable {
 
@@ -26,15 +23,17 @@ public class Shop implements ConfigurationSerializable {
     private Sign sign;
     private Chest mainChest;
     private Chest secondaryChest;
+    private List<ShopItem> items;
 
     public static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(Main.getInstance(), "shop_data");
 
-    public Shop(OfflinePlayer owner, ItemStack price, Sign sign, Chest mainChest, Chest secondaryChest) {
+    public Shop(OfflinePlayer owner, ItemStack price, Sign sign, Chest mainChest, Chest secondaryChest, List<ShopItem> items) {
         this.owner = owner;
         this.price = price;
         this.sign = sign;
         this.mainChest = mainChest;
         this.secondaryChest = secondaryChest;
+        this.items = items != null ? items : new ArrayList<>();
     }
 
     public void update() {
@@ -58,10 +57,23 @@ public class Shop implements ConfigurationSerializable {
     public Sign getSign() { return sign; }
     public Chest getMainChest() { return mainChest; }
     public Chest getSecondaryChest() { return secondaryChest; }
+    public List<ShopItem> getItems() { return items; }
 
     public void setOwner(OfflinePlayer newOwner) { owner = newOwner; }
     public void setPrice(ItemStack newPrice) { price = newPrice; }
     public void setSecondaryChest(Chest newChest) { secondaryChest = newChest; }
+    public void setItem(int index, ShopItem item) { items.set(index, item); }
+
+    public void addItem(ShopItem item) {
+        for(int i = 0; i < items.size(); i++) {
+            ShopItem current = items.get(i);
+            if(current.isSimilar(item)) {
+                setItem(i, current.appendItem(item));
+                return;
+            }
+        }
+        items.add(item);
+    }
 
     public boolean isOwner(Player player) { return owner.equals(player); }
 
@@ -75,6 +87,12 @@ public class Shop implements ConfigurationSerializable {
         data.put("main_chest", mainChest.getLocation());
         if(secondaryChest != null) {
             data.put("secondary_chest", secondaryChest.getLocation());
+        }
+        Main.getInstance().getLogger().info(String.valueOf(items.size()));
+        data.put("items_size", items.size());
+        for(int i = 0; i < items.size(); i++) {
+            ShopItem current = items.get(i);
+            data.put("item_" + i, current);
         }
         return data;
     }
@@ -91,7 +109,11 @@ public class Shop implements ConfigurationSerializable {
         if(data.containsKey("secondary_chest")) {
             secondaryChest = (Chest) ((Location) data.get("secondary_chest")).getBlock().getState();
         }
-        return new Shop(owner, price, sign, mainChest, secondaryChest);
+        List<ShopItem> items = new ArrayList<>();
+        for(int i = 0; i < (Integer) data.get("items_size"); i++) {
+            items.add((ShopItem) data.get("item_" + i));
+        }
+        return new Shop(owner, price, sign, mainChest, secondaryChest, items);
     }
 
     public byte[] toByteArray() {
@@ -107,7 +129,7 @@ public class Shop implements ConfigurationSerializable {
         }
     }
 
-    static Shop fromByteArray(byte[] bytes) {
+    public static Shop fromByteArray(byte[] bytes) {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);

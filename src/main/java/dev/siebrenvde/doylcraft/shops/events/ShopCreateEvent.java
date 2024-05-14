@@ -70,7 +70,8 @@ public class ShopCreateEvent implements Listener {
                 null,
                 sign,
                 mainChest,
-                secondaryChest
+                secondaryChest,
+                null
         );
 
         // Add shop data to sign and chests
