@@ -12,12 +12,12 @@ import java.util.Map;
  */
 public class ShopItem implements ConfigurationSerializable {
 
-    private ItemStack itemStack;
-    private ItemStack price;
+    private final ItemStack itemStack;
+    @Nullable private ItemStack price;
     private int fullStackCount;
     private int remaining;
 
-    private ShopItem(ItemStack itemStack, ItemStack price, int fullStackCount, int remaining) {
+    private ShopItem(ItemStack itemStack, @Nullable ItemStack price, int fullStackCount, int remaining) {
         this.itemStack = itemStack;
         this.price = price;
         this.fullStackCount = fullStackCount;
@@ -127,7 +127,9 @@ public class ShopItem implements ConfigurationSerializable {
         Map<String, Object> data = new HashMap<>();
 
         data.put("item_stack", itemStack);
-        data.put("price", price);
+        if(price != null) {
+            data.put("price", price);
+        }
         data.put("full_stack_count", fullStackCount);
         data.put("remaining", remaining);
 
@@ -141,7 +143,7 @@ public class ShopItem implements ConfigurationSerializable {
     public static ShopItem deserialize(Map<String, Object> data) {
         return new ShopItem(
             (ItemStack) data.get("item_stack"),
-            (ItemStack) data.get("price"),
+            data.containsKey("price") ? (ItemStack) data.get("price") : null,
             (int) data.get("full_stack_count"),
             (int) data.get("remaining")
         );
