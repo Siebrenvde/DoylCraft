@@ -5,15 +5,21 @@ import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.block.TileState;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.json.JSONObject;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Shop {
+
+public class Shop implements ConfigurationSerializable {
 
     private OfflinePlayer owner;
     private ItemStack price;
@@ -32,17 +38,17 @@ public class Shop {
     }
 
     public void update() {
-        String serialised = serialise();
+        byte[] serialisedBytes = this.toByteArray();
         if(sign != null) {
-            sign.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.STRING, serialised);
+            sign.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.BYTE_ARRAY, serialisedBytes);
             sign.update();
         }
         if(mainChest != null) {
-            mainChest.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.STRING, serialised);
+            mainChest.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.BYTE_ARRAY, serialisedBytes);
             mainChest.update();
         }
         if(secondaryChest != null) {
-            secondaryChest.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.STRING, serialised);
+            secondaryChest.getPersistentDataContainer().set(NAMESPACED_KEY, PersistentDataType.BYTE_ARRAY, serialisedBytes);
             secondaryChest.update();
         }
     }
@@ -59,35 +65,68 @@ public class Shop {
 
     public boolean isOwner(Player player) { return owner.equals(player); }
 
-    public String serialise() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("owner", owner.getUniqueId());
-        jsonObject.put("price", price != null ? price.serialize() : null);
-        jsonObject.put("sign", sign.getLocation().serialize());
-        jsonObject.put("main_chest", mainChest.getLocation().serialize());
-        jsonObject.put("secondary_chest", secondaryChest != null ? secondaryChest.getLocation().serialize() : null);
-        return jsonObject.toString();
+    public Map<String, Object> serialize() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("owner", owner.getUniqueId());
+        if(price != null) {
+            data.put("price", price);
+        }
+        data.put("sign", sign.getLocation());
+        data.put("main_chest", mainChest.getLocation());
+        if(secondaryChest != null) {
+            data.put("secondary_chest", secondaryChest.getLocation());
+        }
+        return data;
     }
 
-    public static Shop deserialise(String serialisedString) {
-        JSONObject jsonObject = new JSONObject(serialisedString);
-        OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(jsonObject.getString("owner")));
-        Map<String, Object> priceMap = jsonObject.getJSONObject("price").toMap();
-        ItemStack price = !priceMap.isEmpty() ? ItemStack.deserialize(priceMap) : null;
-        Sign sign = (Sign) Location.deserialize(jsonObject.getJSONObject("sign").toMap()).getBlock().getState();
-        Chest mainChest = (Chest) Location.deserialize(jsonObject.getJSONObject("main_chest").toMap()).getBlock().getState();
-        Map<String, Object> secondaryChestMap = jsonObject.getJSONObject("secondary_chest").toMap();
-        Chest secondaryChest = !secondaryChestMap.isEmpty() ? (Chest) Location.deserialize(secondaryChestMap).getBlock().getState() : null;
+    public static Shop deserialize(Map<String, Object> data) {
+        OfflinePlayer owner = Bukkit.getOfflinePlayer((UUID) data.get("owner"));
+        ItemStack price = null;
+        if(data.containsKey("price")) {
+            price = new ItemStack((ItemStack) data.get("price"));
+        }
+        Sign sign = (Sign) ((Location) data.get("sign")).getBlock().getState();
+        Chest mainChest = (Chest) ((Location) data.get("main_chest")).getBlock().getState();
+        Chest secondaryChest = null;
+        if(data.containsKey("secondary_chest")) {
+            secondaryChest = (Chest) ((Location) data.get("secondary_chest")).getBlock().getState();
+        }
         return new Shop(owner, price, sign, mainChest, secondaryChest);
+    }
+
+    public byte[] toByteArray() {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+            dataOutput.writeObject(this);
+            outputStream.close();
+            return outputStream.toByteArray();
+        } catch(Exception e) {
+            // TODO: Handle exception
+            return null;
+        }
+    }
+
+    static Shop fromByteArray(byte[] bytes) {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            Shop shop = (Shop) dataInput.readObject();
+            dataInput.close();
+            return shop;
+        } catch(Exception e) {
+            // TODO: Handle exception
+            return null;
+        }
     }
 
     public static boolean isShop(TileState tileState) {
         return tileState.getPersistentDataContainer().has(NAMESPACED_KEY);
     }
 
-    public static Shop get(TileState tileState) {
+    public static Shop fromTileState(TileState tileState) {
         if(!isShop(tileState)) { return null; }
-        return deserialise(tileState.getPersistentDataContainer().get(NAMESPACED_KEY, PersistentDataType.STRING));
+        return fromByteArray(tileState.getPersistentDataContainer().get(NAMESPACED_KEY, PersistentDataType.BYTE_ARRAY));
     }
 
     // TODO: Remove, temporary
