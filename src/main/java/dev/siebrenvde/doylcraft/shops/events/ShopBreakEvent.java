@@ -34,7 +34,7 @@ public class ShopBreakEvent implements Listener {
         event.setCancelled(true);
 
         Player player = event.getPlayer();
-        Shop shop = Shop.get(tileState);
+        Shop shop = Shop.fromTileState(tileState);
 
         // Fail-safe in case shop is somehow null
         if(shop == null) {

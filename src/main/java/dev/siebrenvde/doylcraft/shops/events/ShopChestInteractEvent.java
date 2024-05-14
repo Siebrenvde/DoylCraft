@@ -28,7 +28,7 @@ public class ShopChestInteractEvent implements Listener {
         if(!Shop.isShop(chest)) { return; }
 
         Player player = event.getPlayer();
-        Shop shop = Shop.get(chest);
+        Shop shop = Shop.fromTileState(chest);
 
         // Fail-safe in case shop is somehow null
         if(shop == null) {
@@ -39,6 +39,7 @@ public class ShopChestInteractEvent implements Listener {
 
         if(!shop.isOwner(player)) {
             event.setCancelled(true);
+            // TODO: Open shop UI?
             player.sendMessage(Messages.error("You don't have permission to open this shop chest."));
         }
 
