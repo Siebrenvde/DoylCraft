@@ -13,7 +13,7 @@ import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream; s
+import java.io.ByteArrayOutputStream;
 import java.util.*;
 
 public class Shop implements ConfigurationSerializable {
