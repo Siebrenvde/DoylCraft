@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DiscordHandler {
 
-    private DiscordSRV discord = DiscordSRV.getPlugin();
+    private final DiscordSRV discord = DiscordSRV.getPlugin();
 
     public void sendDiscordMessage(String textChannel, String message) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
@@ -24,7 +24,7 @@ public class DiscordHandler {
 
     public void sendDiscordEmbed(String textChannel, EmbedBuilder embed) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
-        tc.sendMessage(embed.build()).queue();
+        tc.sendMessageEmbeds(embed.build()).queue();
     }
 
     public List<Member> getMembers() {
