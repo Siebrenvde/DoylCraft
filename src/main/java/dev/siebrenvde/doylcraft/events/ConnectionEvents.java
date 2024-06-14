@@ -3,6 +3,7 @@ package dev.siebrenvde.doylcraft.events;
 import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
+import dev.siebrenvde.doylcraft.handlers.VoicechatHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -22,6 +23,7 @@ public class ConnectionEvents implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         scoreboardHandler.initPlayer(event.getPlayer());
         memoryHandler.addLoginTime(event.getPlayer());
+        VoicechatHandler.checkVoicechatInstalled(event.getPlayer());
     }
 
     @EventHandler

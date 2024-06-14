@@ -1,5 +1,6 @@
 package dev.siebrenvde.doylcraft;
 
+import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
@@ -29,6 +30,10 @@ public final class Main extends JavaPlugin {
         timeHandler = new TimeHandler(memoryHandler);
         reloadHandler = new ReloadHandler(this);
         DiscordSRV.api.subscribe(new DiscordSRVListener());
+        BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
+        if(voicechatService != null) {
+            voicechatService.registerPlugin(new VoicechatHandler());
+        }
         registerCommands();
         registerEvents();
         if(System.getProperty("ENABLED") == null) {
