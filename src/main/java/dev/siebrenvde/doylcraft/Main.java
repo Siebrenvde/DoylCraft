@@ -5,7 +5,6 @@ import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.*;
-import dev.siebrenvde.doylcraft.handlers.ReloadHandler;
 import github.scarsz.discordsrv.DiscordSRV;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,7 +17,6 @@ public final class Main extends JavaPlugin {
     private WorldGuardHandler wgHandler;
     private ScoreboardHandler sbHandler;
     private TimeHandler timeHandler;
-    private ReloadHandler reloadHandler;
 
     public void onEnable() {
         instance = this;
@@ -28,7 +26,6 @@ public final class Main extends JavaPlugin {
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
         timeHandler = new TimeHandler(memoryHandler);
-        reloadHandler = new ReloadHandler(this);
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
         if(voicechatService != null) {
@@ -36,16 +33,6 @@ public final class Main extends JavaPlugin {
         }
         registerCommands();
         registerEvents();
-        if(System.getProperty("ENABLED") == null) {
-            System.setProperty("ENABLED", "TRUE");
-        } else {
-            getLogger().warning("Reload detected. Loading reload data.");
-            reloadHandler.loadData();
-        }
-    }
-
-    public void onDisable() {
-        reloadHandler.saveData();
     }
 
     private void registerCommands() {
