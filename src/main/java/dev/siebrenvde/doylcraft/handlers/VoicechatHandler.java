@@ -11,6 +11,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -20,6 +21,8 @@ public class VoicechatHandler implements VoicechatPlugin {
 
     private static final String MODRINTH_URL = "https://modrinth.com/plugin/simple-voice-chat";
     private static final String CURSEFORGE_URL = "https://www.curseforge.com/minecraft/mc-mods/simple-voice-chat";
+
+    private static String VOICECHAT_VERSION;
 
     private static VoicechatServerApi serverApi;
 
@@ -33,6 +36,7 @@ public class VoicechatHandler implements VoicechatPlugin {
 
     private void onServerStart(VoicechatServerStartedEvent event) {
         serverApi = event.getVoicechat();
+        VOICECHAT_VERSION = Bukkit.getServer().getPluginManager().getPlugin("voicechat").getPluginMeta().getVersion();
     }
 
     public static void checkVoicechatInstalled(Player player) {
@@ -42,7 +46,7 @@ public class VoicechatHandler implements VoicechatPlugin {
                 VoicechatConnection connection = serverApi.getConnectionOf(player.getUniqueId());
                 if (connection != null && !connection.isInstalled()) {
                     player.sendMessage(
-                        text("Simple Voice Chat is supported on this server.", NamedTextColor.GOLD)
+                        text(String.format("Simple Voice Chat (%s) is supported on this server.", VOICECHAT_VERSION), NamedTextColor.GOLD)
                             .append(Component.newline())
                             .append(text("You can download it from "))
                             .append(
