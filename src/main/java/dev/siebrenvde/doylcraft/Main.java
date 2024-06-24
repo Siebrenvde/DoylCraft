@@ -46,10 +46,10 @@ public final class Main extends JavaPlugin {
         getCommand("group").setExecutor(new GroupCommand(lpHandler));
         getCommand("group").setTabCompleter(new GroupCompleter(lpHandler));
         getCommand("playtime").setExecutor(new PlayTimeCommand(timeHandler));
-        getCommand("getowner").setExecutor(new GetOwnerCommand(memoryHandler));
         LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
+            GetOwnerCommand.register(commands, memoryHandler);
         });
     }
 
