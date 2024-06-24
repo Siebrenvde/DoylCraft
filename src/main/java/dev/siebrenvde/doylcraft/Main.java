@@ -18,6 +18,10 @@ public final class Main extends JavaPlugin {
     private ScoreboardHandler sbHandler;
     private TimeHandler timeHandler;
 
+    public void onLoad() {
+        WorldGuardHandler.registerFlags();
+    }
+
     public void onEnable() {
         instance = this;
         memoryHandler = new MemoryHandler();
@@ -52,6 +56,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
         getServer().getPluginManager().registerEvents(new TameableInteractEvent(memoryHandler), this);
         getServer().getPluginManager().registerEvents(new DismountEntityEvent(), this);
+        getServer().getPluginManager().registerEvents(new WorldGuardDenyEvents(wgHandler), this);
     }
 
     public MemoryHandler getMemoryHandler() { return memoryHandler; }
