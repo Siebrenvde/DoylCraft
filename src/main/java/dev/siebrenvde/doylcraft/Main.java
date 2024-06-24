@@ -6,6 +6,10 @@ import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
 import dev.siebrenvde.doylcraft.tabcompleters.*;
 import github.scarsz.discordsrv.DiscordSRV;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
@@ -35,6 +39,7 @@ public final class Main extends JavaPlugin {
         registerEvents();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     private void registerCommands() {
         getCommand("pvp").setExecutor(new PvPCommand(this));
         getCommand("pvp").setTabCompleter(new PvPCompleter());
@@ -42,6 +47,10 @@ public final class Main extends JavaPlugin {
         getCommand("group").setTabCompleter(new GroupCompleter(lpHandler));
         getCommand("playtime").setExecutor(new PlayTimeCommand(timeHandler));
         getCommand("getowner").setExecutor(new GetOwnerCommand(memoryHandler));
+        LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
+        lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+        });
     }
 
     private void registerEvents() {
