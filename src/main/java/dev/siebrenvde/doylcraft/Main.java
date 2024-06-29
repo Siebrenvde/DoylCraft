@@ -43,12 +43,12 @@ public final class Main extends JavaPlugin {
     private void registerCommands() {
         getCommand("pvp").setExecutor(new PvPCommand(this));
         getCommand("pvp").setTabCompleter(new PvPCompleter());
-        getCommand("playtime").setExecutor(new PlayTimeCommand(timeHandler));
         LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             GetOwnerCommand.register(commands, memoryHandler);
             new GroupCommand(lpHandler).register(commands);
+            PlayTimeCommand.register(commands, timeHandler);
         });
     }
 

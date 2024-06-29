@@ -7,5 +7,3 @@ depend: [LuckPerms, WorldGuard, DiscordSRV, Essentials, voicechat]
 commands:
   pvp:
     description: Toggle PvP on or off
-  playtime:
-    description: Get your time played
