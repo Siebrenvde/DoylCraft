@@ -3,21 +3,19 @@ package dev.siebrenvde.doylcraft.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.LuckPermsHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Messages;
 import dev.siebrenvde.doylcraft.utils.Utils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import net.kyori.adventure.text.Component;
 import net.luckperms.api.model.group.Group;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -34,7 +32,7 @@ public class GroupCommand {
         commands.register(
             Commands.literal("group")
                 .requires(source -> source.getSender().hasPermission("doylcraft.group"))
-                .then(Commands.argument("player", ArgumentTypes.player())
+                .then(Commands.argument("player", OfflinePlayerArgumentType.offlinePlayer())
                     .executes(this::getPlayerGroup)
                     .then(Commands.argument("group", StringArgumentType.word())
                         .suggests(this::getGroups)
@@ -48,10 +46,9 @@ public class GroupCommand {
 
     }
 
-    private int getPlayerGroup(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private int getPlayerGroup(CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getSender();
-        //Player player = context.getArgument("player", Player.class);
-        Player player = context.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(context.getSource()).getFirst();
+        OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
 
         try {
             luckPermsHandler.getPlayerGroup(player).thenAcceptAsync(group -> {
@@ -85,10 +82,9 @@ public class GroupCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int setPlayerGroup(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private int setPlayerGroup(CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getSender();
-        //Player player = context.getArgument("player", Player.class);
-        Player player = context.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(context.getSource()).getFirst();
+        OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
         String group = context.getArgument("group", String.class);
 
         if(!luckPermsHandler.groupExists(group)) {
