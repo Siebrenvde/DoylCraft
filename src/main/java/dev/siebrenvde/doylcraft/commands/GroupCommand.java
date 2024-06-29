@@ -117,7 +117,7 @@ public class GroupCommand {
     }
 
     private CompletableFuture<Suggestions> getGroups(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        luckPermsHandler.getGroups().stream().map(Group::getName).filter(s -> s.startsWith(builder.getRemaining())).forEach(builder::suggest);
+        luckPermsHandler.getGroups().stream().map(Group::getName).filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase())).forEach(builder::suggest);
         return builder.buildFuture();
     }
 
