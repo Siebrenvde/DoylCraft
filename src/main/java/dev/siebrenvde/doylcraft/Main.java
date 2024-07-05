@@ -52,6 +52,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
         getServer().getPluginManager().registerEvents(new TameableInteractEvent(memoryHandler), this);
         getServer().getPluginManager().registerEvents(new DismountEntityEvent(), this);
+        getServer().getPluginManager().registerEvents(new MobGriefingEvents(), this);
     }
 
     public MemoryHandler getMemoryHandler() { return memoryHandler; }
