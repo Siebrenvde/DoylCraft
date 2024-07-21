@@ -1,7 +1,6 @@
 package dev.siebrenvde.doylcraft.utils;
 
 import dev.siebrenvde.doylcraft.Main;
-import dev.siebrenvde.doylcraft.handlers.TimeHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -11,8 +10,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Utils {
@@ -36,59 +33,6 @@ public class Utils {
             p.sendMessage(text);
 
         }
-    }
-
-    public static String getTameableName(Tameable e) {
-        String type = null;
-        if(e instanceof Cat) { type = "Cat"; }
-        if(e instanceof Wolf) { type = "Wolf"; }
-        if(e instanceof Parrot) { type = "Parrot"; }
-        if(e instanceof Horse) { type = "Horse"; }
-        if(e instanceof Donkey) { type = "Donkey"; }
-        if(e instanceof Mule) { type = "Mule"; }
-        if(e instanceof Llama) { type = "Llama"; }
-        if(e instanceof SkeletonHorse) { type = "Skeleton Horse"; }
-        if(e instanceof ZombieHorse) { type = "Zombie Horse"; }
-        if(e instanceof TraderLlama) { type = "Trader Llama"; }
-        return type;
-    }
-
-    public static String getStreamDuration(String timeString) {
-
-        // Set time format to Twitch API format (ISO 8601)
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
-        // Set input timezone to UTC to convert to local time correctly
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date startTime;
-        try {
-            startTime = df.parse(timeString);
-        } catch(ParseException e) {
-            e.printStackTrace();
-            return "Unknown";
-        }
-
-        // Get current time in local time
-        Date now = new Date();
-
-        long difference = now.getTime() - startTime.getTime();
-
-        // Divide by 1000 because formatTime uses seconds
-        return TimeHandler.formatTime(difference / 1000);
-
-    }
-
-    public static List<String> autoCompleter(String arg, List<String> list) {
-        if(arg.length() > 0) {
-            List<String> nList = new ArrayList<>();
-            for(String s : list) {
-                if(s.toLowerCase().startsWith(arg.toLowerCase())) {
-                    nList.add(s);
-                }
-            }
-            return nList;
-        }
-
-        return list;
     }
 
     public static Component entityComponent(Component component, EntityType type, UUID uuid, Component name) {
