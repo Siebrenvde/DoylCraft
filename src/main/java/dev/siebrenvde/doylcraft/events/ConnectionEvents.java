@@ -1,6 +1,6 @@
 package dev.siebrenvde.doylcraft.events;
 
-import dev.siebrenvde.doylcraft.Main;
+import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.handlers.VoicechatHandler;
@@ -14,9 +14,9 @@ public class ConnectionEvents implements Listener {
     private final ScoreboardHandler scoreboardHandler;
     private final MemoryHandler memoryHandler;
 
-    public ConnectionEvents(Main main) {
-        this.scoreboardHandler = main.getScoreboardHandler();
-        this.memoryHandler = main.getMemoryHandler();
+    public ConnectionEvents(DoylCraft doylCraft) {
+        this.scoreboardHandler = doylCraft.getScoreboardHandler();
+        this.memoryHandler = doylCraft.getMemoryHandler();
     }
 
     @EventHandler

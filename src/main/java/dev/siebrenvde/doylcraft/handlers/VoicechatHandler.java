@@ -5,7 +5,7 @@ import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.VoicechatServerApi;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.VoicechatServerStartedEvent;
-import dev.siebrenvde.doylcraft.Main;
+import dev.siebrenvde.doylcraft.DoylCraft;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -66,7 +66,7 @@ public class VoicechatHandler implements VoicechatPlugin {
                     );
                 }
             }
-        }.runTaskLater(Main.getInstance(), 40);
+        }.runTaskLater(DoylCraft.getInstance(), 40);
     }
 
 }

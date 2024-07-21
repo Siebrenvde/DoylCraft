@@ -11,9 +11,9 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Main extends JavaPlugin {
+public final class DoylCraft extends JavaPlugin {
 
-    private static Main instance;
+    private static DoylCraft instance;
     private MemoryHandler memoryHandler;
     private LuckPermsHandler lpHandler;
     private DiscordHandler discordHandler;
@@ -68,6 +68,6 @@ public final class Main extends JavaPlugin {
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
     public TimeHandler getTimeHandler() { return timeHandler; }
 
-    public static Main getInstance() { return instance; }
+    public static DoylCraft getInstance() { return instance; }
 
 }

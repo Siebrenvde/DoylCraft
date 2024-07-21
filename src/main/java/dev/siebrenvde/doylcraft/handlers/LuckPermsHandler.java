@@ -1,6 +1,6 @@
 package dev.siebrenvde.doylcraft.handlers;
 
-import dev.siebrenvde.doylcraft.Main;
+import dev.siebrenvde.doylcraft.DoylCraft;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -17,8 +17,8 @@ public class LuckPermsHandler {
 
     private final LuckPerms luckPerms;
 
-    public LuckPermsHandler(Main main) {
-        luckPerms = main.getServer().getServicesManager().load(LuckPerms.class);
+    public LuckPermsHandler(DoylCraft doylCraft) {
+        luckPerms = doylCraft.getServer().getServicesManager().load(LuckPerms.class);
     }
 
     public Set<Group> getGroups() {

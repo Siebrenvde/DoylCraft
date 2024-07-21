@@ -1,6 +1,6 @@
 package dev.siebrenvde.doylcraft.handlers;
 
-import dev.siebrenvde.doylcraft.Main;
+import dev.siebrenvde.doylcraft.DoylCraft;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -28,7 +28,7 @@ public class MemoryHandler {
                     removeGetOwnerPlayer(player);
                 }
             }
-        }.runTaskLaterAsynchronously(Main.getInstance(), 200L);
+        }.runTaskLaterAsynchronously(DoylCraft.getInstance(), 200L);
     }
 
     public long getLoginTime(Player player) { return loginTimes.get(player); }
