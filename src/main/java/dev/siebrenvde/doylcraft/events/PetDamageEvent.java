@@ -1,7 +1,7 @@
 package dev.siebrenvde.doylcraft.events;
 
 import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
-import dev.siebrenvde.doylcraft.utils.Utils;
+import dev.siebrenvde.doylcraft.utils.Components;
 import github.scarsz.discordsrv.dependencies.jda.api.utils.MarkdownSanitizer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -66,7 +66,7 @@ public class PetDamageEvent implements Listener {
                         damager.sendMessage(
                             text("You did " + df.format(damage) + " damage to ")
                                 .append(petName == null ? text("your ") : empty())
-                                .append(Utils.entityComponent(petName != null ? petName : petType, pet))
+                                .append(Components.entityComponent(petName != null ? petName : petType, pet))
                                 .append(text("."))
                                 .color(MESSAGE_COLOUR)
                         );
@@ -74,10 +74,10 @@ public class PetDamageEvent implements Listener {
                         if(owner.isOnline()) {
                             ((Player) owner).sendMessage(
                                 empty()
-                                    .append(Utils.entityComponent(text(damager.getName()), damager))
+                                    .append(Components.entityComponent(text(damager.getName()), damager))
                                     .append(text(" did " + df.format(damage) + " damage to "))
                                     .append(petName == null ? text("your ") : empty())
-                                    .append(Utils.entityComponent(petName != null ? petName : petType, pet))
+                                    .append(Components.entityComponent(petName != null ? petName : petType, pet))
                                     .append(text("."))
                                     .color(MESSAGE_COLOUR)
                             );
@@ -85,9 +85,9 @@ public class PetDamageEvent implements Listener {
 
                         damager.sendMessage(
                             text("You did " + df.format(damage) + " damage to ")
-                                .append(Utils.entityComponent(text(owner.getName()), owner))
+                                .append(Components.entityComponent(text(owner.getName()), owner))
                                 .append(text("'s "))
-                                .append(Utils.entityComponent(petType, pet))
+                                .append(Components.entityComponent(petType, pet))
                                 .append(text("."))
                                 .color(MESSAGE_COLOUR)
                         );
@@ -107,11 +107,11 @@ public class PetDamageEvent implements Listener {
                     if((health - damage) <= 0.0) {
                         Bukkit.broadcast(
                             Component.empty()
-                                .append(Utils.entityComponent(text(damager.getName()), damager))
+                                .append(Components.entityComponent(text(damager.getName()), damager))
                                 .append(text(" killed "))
-                                .append(Utils.entityComponent(text(owner.getName()), owner))
+                                .append(Components.entityComponent(text(owner.getName()), owner))
                                 .append(text("'s "))
-                                .append(Utils.entityComponent(petType, pet))
+                                .append(Components.entityComponent(petType, pet))
                                 .append(text("."))
                                 .color(MESSAGE_COLOUR)
                         );

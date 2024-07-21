@@ -10,7 +10,7 @@ import org.bukkit.entity.*;
 
 import java.util.*;
 
-public class Utils {
+public class Components {
 
     public static Component entityComponent(Component component, EntityType type, UUID uuid, Component name) {
         component = component.hoverEvent(HoverEvent.showEntity(

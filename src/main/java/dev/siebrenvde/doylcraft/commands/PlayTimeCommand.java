@@ -7,7 +7,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.TimeHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
-import dev.siebrenvde.doylcraft.utils.Utils;
+import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
@@ -52,13 +52,13 @@ public class PlayTimeCommand {
                         TextComponent.Builder message = text();
 
                         if(player.isOnline()) {
-                            message.append(Utils.entityComponent(text(player.getName(), Colours.GENERIC), player))
+                            message.append(Components.entityComponent(text(player.getName(), Colours.GENERIC), player))
                                 .append(text("'s Current Online Time: ", Colours.GENERIC))
                                 .append(text(TimeHandler.formatTime(timeHandler.getOnlineTime(player.getPlayer()) / 1000), Colours.DATA))
                                 .append(Component.newline());
                         }
 
-                        message.append(Utils.entityComponent(text(player.getName(), Colours.GENERIC), player))
+                        message.append(Components.entityComponent(text(player.getName(), Colours.GENERIC), player))
                             .append(text("'s Total Time Played: ", Colours.GENERIC))
                             .append(text(TimeHandler.formatTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20), Colours.DATA));
 

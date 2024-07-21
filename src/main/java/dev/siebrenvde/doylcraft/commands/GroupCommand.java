@@ -9,7 +9,7 @@ import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.LuckPermsHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Messages;
-import dev.siebrenvde.doylcraft.utils.Utils;
+import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
@@ -56,7 +56,7 @@ public class GroupCommand {
                 if(group != null) {
                     sender.sendMessage(
                         Component.empty()
-                            .append(Utils.entityComponent(Component.text(player.getName(), Colours.DATA), player))
+                            .append(Components.entityComponent(Component.text(player.getName(), Colours.DATA), player))
                             .append(Component.text(" is a member of ", Colours.GENERIC))
                             .append(Component.text(group, Colours.DATA))
                             .append(Component.text(".", Colours.GENERIC))
@@ -64,7 +64,7 @@ public class GroupCommand {
                 } else {
                     sender.sendMessage(
                         Component.empty()
-                            .append(Utils.entityComponent(Component.text(player.getName(), Colours.DATA), player))
+                            .append(Components.entityComponent(Component.text(player.getName(), Colours.DATA), player))
                             .append(Component.text(" is not a member of any group.", Colours.GENERIC))
                     );
                 }
@@ -99,7 +99,7 @@ public class GroupCommand {
             luckPermsHandler.setPlayerGroup(player, group);
             sender.sendMessage(
                 Component.text("Changed ", Colours.GENERIC)
-                    .append(Utils.entityComponent(Component.text(player.getName(), Colours.DATA), player))
+                    .append(Components.entityComponent(Component.text(player.getName(), Colours.DATA), player))
                     .append(Component.text("'s group to ", Colours.GENERIC))
                     .append(Component.text(group, Colours.DATA))
                     .append(Component.text(".", Colours.GENERIC))

@@ -2,7 +2,7 @@ package dev.siebrenvde.doylcraft.events;
 
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
-import dev.siebrenvde.doylcraft.utils.Utils;
+import dev.siebrenvde.doylcraft.utils.Components;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.OfflinePlayer;
@@ -40,9 +40,9 @@ public class TameableInteractEvent implements Listener {
                 OfflinePlayer owner = (OfflinePlayer) tameable.getOwner();
                 player.sendMessage(
                     Component.empty()
-                    .append(Utils.entityComponent(type.color(Colours.DATA), entity))
+                    .append(Components.entityComponent(type.color(Colours.DATA), entity))
                     .append(Component.text("'s owner is ", Colours.GENERIC))
-                    .append(Utils.entityComponent(Component.text(owner.getName() != null ? owner.getName() : "Unknown Player", Colours.DATA), player))
+                    .append(Components.entityComponent(Component.text(owner.getName() != null ? owner.getName() : "Unknown Player", Colours.DATA), player))
                     .append(Component.text(".", Colours.GENERIC))
                 );
                 return;
@@ -51,7 +51,7 @@ public class TameableInteractEvent implements Listener {
 
         player.sendMessage(
             Component.empty()
-            .append(Utils.entityComponent(type.color(Colours.DATA), entity))
+            .append(Components.entityComponent(type.color(Colours.DATA), entity))
             .append(Component.text(" doesn't have an owner.", Colours.GENERIC))
         );
 

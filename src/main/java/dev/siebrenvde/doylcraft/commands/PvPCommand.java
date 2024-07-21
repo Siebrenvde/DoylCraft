@@ -7,7 +7,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
-import dev.siebrenvde.doylcraft.utils.Utils;
+import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
@@ -125,7 +125,7 @@ public class PvPCommand {
             empty().color(Colours.GENERIC)
                 .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
                 .append(Component.text(" PvP in ")
-                .append(Utils.worldNameComponent(world).color(Colours.DATA))
+                .append(Components.worldNameComponent(world).color(Colours.DATA))
                 .append(Component.text(".")))
         );
 
@@ -156,7 +156,7 @@ public class PvPCommand {
             .append(
                 join(
                     JoinConfiguration.separator(Component.text(", ", Colours.GENERIC)),
-                    worlds.stream().map(world -> Utils.worldNameComponent(world).color(Colours.DATA)).collect(Collectors.toList())
+                    worlds.stream().map(world -> Components.worldNameComponent(world).color(Colours.DATA)).collect(Collectors.toList())
                 )
             )
             .append(text(".", Colours.GENERIC));
