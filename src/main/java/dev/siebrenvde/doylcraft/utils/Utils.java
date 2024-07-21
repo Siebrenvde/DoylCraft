@@ -1,11 +1,9 @@
 package dev.siebrenvde.doylcraft.utils;
 
-import dev.siebrenvde.doylcraft.Main;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.*;
@@ -13,27 +11,6 @@ import org.bukkit.entity.*;
 import java.util.*;
 
 public class Utils {
-
-    public static void broadcastMessage(Component message) {
-        Main.getInstance().getServer().broadcast(message);
-    }
-
-    public static void broadcastHover(String streamer, String title, String url) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-
-            TextComponent text = Component.text("[Twitch]").color(Colours.TWITCH)
-                    .append(Component.text(streamer).color(Colours.TWITCH))
-                    .append(Component.text(" is now live!").color(Colours.TWITCH));
-
-            TextComponent hoverText = Component.text(title);
-            text = text.hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText));
-
-            text = text.clickEvent(ClickEvent.openUrl(url));
-
-            p.sendMessage(text);
-
-        }
-    }
 
     public static Component entityComponent(Component component, EntityType type, UUID uuid, Component name) {
         component = component.hoverEvent(HoverEvent.showEntity(

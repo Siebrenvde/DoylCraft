@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -104,7 +105,7 @@ public class PetDamageEvent implements Listener {
                     );
 
                     if((health - damage) <= 0.0) {
-                        Utils.broadcastMessage(
+                        Bukkit.broadcast(
                             Component.empty()
                                 .append(Utils.entityComponent(text(damager.getName()), damager))
                                 .append(text(" killed "))

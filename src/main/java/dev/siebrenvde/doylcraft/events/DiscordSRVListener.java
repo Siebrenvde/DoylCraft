@@ -1,10 +1,14 @@
 package dev.siebrenvde.doylcraft.events;
 
-import dev.siebrenvde.doylcraft.utils.Utils;
+import dev.siebrenvde.doylcraft.utils.Colours;
 import github.scarsz.discordsrv.api.ListenerPriority;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.DiscordGuildMessageReceivedEvent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
+
+import static net.kyori.adventure.text.Component.text;
 
 public class DiscordSRVListener {
 
@@ -17,8 +21,13 @@ public class DiscordSRVListener {
 
             String streamer = strings[0].split(" ")[0].replace("\\", "");
 
-            Utils.broadcastHover(streamer, strings[1], strings[2]);
-            Bukkit.getLogger().info(streamer + ", " + strings[1] + ", " + strings[2]);
+            Bukkit.broadcast(
+                text().color(Colours.TWITCH)
+                    .append(text("[Twitch] "), text(streamer), text(" is now live!"))
+                    .hoverEvent(HoverEvent.showText(text(strings[1]))) // Show title
+                    .clickEvent(ClickEvent.openUrl(strings[2])) // Open stream on click
+                    .build()
+            );
 
         }
 
