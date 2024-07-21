@@ -1,227 +1,165 @@
 package dev.siebrenvde.doylcraft.commands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.context.CommandContext;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import dev.siebrenvde.doylcraft.Main;
 import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
-import dev.siebrenvde.doylcraft.utils.Messages;
+import dev.siebrenvde.doylcraft.utils.Utils;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class PvPCommand implements CommandExecutor {
+import static net.kyori.adventure.text.Component.*;
+import static org.bukkit.Bukkit.getWorlds;
 
-    private Main main;
-    private WorldGuardHandler worldGuardHandler;
+@SuppressWarnings("UnstableApiUsage")
+public class PvPCommand {
 
-    private final String USAGE = "/pvp [on/off] [<world>]";
+    private final WorldGuardHandler worldGuardHandler;
 
-    public PvPCommand(Main main) {
-        this.main = main;
-        worldGuardHandler = main.getWorldGuardHandler();
+    public PvPCommand(WorldGuardHandler worldGuardHandler) {
+        this.worldGuardHandler = worldGuardHandler;
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-
-        if(!sender.hasPermission("doylcraft.pvp.toggle")) {
-            sender.sendMessage(Messages.NO_PERMISSION);
-            return false;
-        }
-
-        if(args.length == 0) {
-            List<String> enabled = new ArrayList<>();
-            List<String> disabled = new ArrayList<>();
-
-            for(String world : getWorlds()) {
-                if(getState(world)) {
-                    enabled.add(world);
-                } else {
-                    disabled.add(world);
-                }
-            }
-
-            if(enabled.size() == getWorlds().size() && disabled.isEmpty()) {
-                sender.sendMessage(
-                    Component.text("PvP is ", Colours.GENERIC)
-                    .append(Component.text("enabled", Colours.POSITIVE))
-                    .append(Component.text(" in ", Colours.GENERIC))
-                    .append(Component.text("all worlds", Colours.GENERIC)
-                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(String.join("\n", getWorlds())))))
-                    .append(Component.text(".", Colours.GENERIC))
-                );
-                return true;
-            } else if(!enabled.isEmpty()) {
-                sender.sendMessage(
-                    Component.text("PvP is ", Colours.GENERIC)
-                    .append(Component.text("enabled", Colours.POSITIVE))
-                    .append(Component.text(" in " + String.join(", ", enabled) + ".", Colours.GENERIC))
-                );
-            }
-
-            if(disabled.size() == getWorlds().size() && enabled.isEmpty()) {
-                sender.sendMessage(
-                    Component.text("PvP is ", Colours.GENERIC)
-                    .append(Component.text("disabled", Colours.NEGATIVE))
-                    .append(Component.text(" in ", Colours.GENERIC))
-                    .append(Component.text("all worlds", Colours.GENERIC)
-                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(String.join("\n", getWorlds())))))
-                    .append(Component.text(".", Colours.GENERIC))
-                );
-                return true;
-            } else if(!disabled.isEmpty()) {
-                sender.sendMessage(
-                    Component.text("PvP is ", Colours.GENERIC)
-                    .append(Component.text("disabled", Colours.NEGATIVE))
-                    .append(Component.text(" in " + String.join(", ", disabled) + ".", Colours.GENERIC))
-                );
-            }
-
-            return true;
-        }
-
-        if(args.length == 1) {
-            if(args[0].equalsIgnoreCase("on")) {
-                setAllStates(true);
-                sender.sendMessage(
-                    Component.text("Enabled ", Colours.POSITIVE)
-                    .append(Component.text(" in ", Colours.GENERIC))
-                    .append(Component.text("all worlds", Colours.GENERIC)
-                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(String.join("\n", getWorlds())))))
-                    .append(Component.text(".", Colours.GENERIC))
-                );
-                return true;
-            } else if(args[0].equalsIgnoreCase("off")) {
-                setAllStates(false);
-                sender.sendMessage(
-                    Component.text("Disabled ", Colours.NEGATIVE)
-                    .append(Component.text(" in ", Colours.GENERIC))
-                    .append(Component.text("all worlds", Colours.GENERIC)
-                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text(String.join("\n", getWorlds())))))
-                    .append(Component.text(".", Colours.GENERIC))
-                );
-                return true;
-            } else if(args[0].equalsIgnoreCase("createglobalregions")) {
-                try{
-                    worldGuardHandler.createGlobalRegions();
-                    sender.sendMessage(
-                        Component.text("Created global regions.", Colours.GENERIC)
-                    );
-                    return true;
-                } catch (Exception e){
-                    sender.sendMessage(Messages.error("Failed to create global regions.", e));
-                    e.printStackTrace();
-                    return false;
-                }
-            } else {
-                sender.sendMessage(Messages.usage(USAGE));
-                return false;
-            }
-        }
-
-        if(args.length == 2) {
-
-            String world = args[1].toLowerCase();
-            if(!getWorlds().contains(world) && !world.equals("fakeworld")) {
-                sender.sendMessage(
-                    Component.text("World ", Colours.ERROR)
-                    .append(Component.text(world, Colours.DATA))
-                    .append(Component.text(" does not exist.", Colours.ERROR))
-                );
-                return false;
-            }
-
-            if(args[0].equalsIgnoreCase("on")) {
-                try {
-                    setState(world, true);
-                    sender.sendMessage(
-                        Component.text("Enabled", Colours.POSITIVE)
-                        .append(Component.text(" PvP in " + world + ".", Colours.GENERIC))
-                    );
-                    return true;
-                } catch(Exception exception) {
-                    sender.sendMessage(Messages.error(
-                        Component.text("Failed to enable PvP in ", Colours.ERROR)
-                        .append(Component.text(world, Colours.DATA))
-                        .append(Component.text(".", Colours.ERROR)), exception
-                    ));
-                    exception.printStackTrace();
-                    return false;
-                }
-            } else if(args[0].equalsIgnoreCase("off")) {
-                try {
-                    setState(world, false);
-                    sender.sendMessage(
-                        Component.text("Disabled", Colours.NEGATIVE)
-                        .append(Component.text(" PvP in " + world + ".", Colours.GENERIC))
-                    );
-                    return true;
-                } catch(Exception exception) {
-                    sender.sendMessage(Messages.error(
-                        Component.text("Failed to enable PvP in ", Colours.ERROR)
-                        .append(Component.text(world, Colours.DATA))
-                        .append(Component.text(".", Colours.ERROR)), exception
-                    ));
-                    exception.printStackTrace();
-                    return false;
-                }
-            } else {
-                sender.sendMessage(Messages.usage(USAGE));
-                return false;
-            }
-        }
-
-        else {
-            sender.sendMessage(Messages.usage(USAGE));
-            return false;
-        }
-
+    public void register(Commands commands) {
+        commands.register(
+                Commands.literal("pvp")
+                    .requires(source -> source.getSender().hasPermission("doylcraft.pvp.query"))
+                    .executes(this::queryAllWorldStates)
+                    .then(
+                        Commands.literal("on")
+                            .requires(source -> source.getSender().hasPermission("doylcraft.pvp.update"))
+                            .executes(ctx -> updateAllWorldStates(ctx, true))
+                            .then(Commands.argument("world", ArgumentTypes.world()).executes(ctx -> updateWorldState(ctx, true)))
+                    )
+                    .then(
+                        Commands.literal("off")
+                            .requires(source -> source.getSender().hasPermission("doylcraft.pvp.update"))
+                            .executes(ctx -> updateAllWorldStates(ctx, false))
+                            .then(Commands.argument("world", ArgumentTypes.world()).executes(ctx -> updateWorldState(ctx, false)))
+                    )
+                .build(),
+            "Toggle PvP on or off"
+        );
     }
 
-    private void logInfo(String message) { main.getLogger().info(message); }
+    private int queryAllWorldStates(CommandContext<CommandSourceStack> context) {
+        CommandSender sender = context.getSource().getSender();
 
-    private void setState(String world, boolean state) {
-        ProtectedRegion region = worldGuardHandler.getRegion(world, "__global__");
-        if(state) {
-            region.setFlag(Flags.PVP, StateFlag.State.ALLOW);
-            logInfo("Set PvP to ALLOW in " + world);
-        } else {
-            region.setFlag(Flags.PVP, StateFlag.State.DENY);
-            logInfo("Set PvP to DENY in " + world);
+        List<World> enabled = new ArrayList<>();
+        List<World> disabled = new ArrayList<>();
+
+        for(World world : getWorlds()) {
+            if(getState(world)) {
+                enabled.add(world);
+            } else {
+                disabled.add(world);
+            }
         }
+
+        if(enabled.isEmpty() || disabled.isEmpty()) {
+            sender.sendMessage(text("PvP is ", Colours.GENERIC)
+                .append(disabled.isEmpty() ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
+                .append(text(" in "))
+                .append(
+                    text("all worlds")
+                        .hoverEvent(HoverEvent.hoverEvent(
+                            HoverEvent.Action.SHOW_TEXT,
+                            text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
+                        ))
+                )
+                .append(text("."))
+            );
+            return Command.SINGLE_SUCCESS;
+        }
+
+        sender.sendMessage(
+            worldListStateComponent(enabled, true)
+                .append(newline())
+                .append(worldListStateComponent(disabled, false))
+        );
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int updateAllWorldStates(CommandContext<CommandSourceStack> context, boolean state) {
+        CommandSender sender = context.getSource().getSender();
+
+        setAllStates(state);
+        sender.sendMessage(
+            empty().color(Colours.GENERIC)
+                .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
+                .append(Component.text(" PvP in ")
+                .append(
+                    text("all worlds")
+                        .hoverEvent(HoverEvent.hoverEvent(
+                            HoverEvent.Action.SHOW_TEXT,
+                            text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
+                        ))
+                )
+                .append(Component.text(".")))
+        );
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int updateWorldState(CommandContext<CommandSourceStack> context, boolean state) {
+        CommandSender sender = context.getSource().getSender();
+        World world = context.getArgument("world", World.class);
+
+        setState(world, state);
+        sender.sendMessage(
+            empty().color(Colours.GENERIC)
+                .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
+                .append(Component.text(" PvP in ")
+                .append(Utils.worldNameComponent(world).color(Colours.DATA))
+                .append(Component.text(".")))
+        );
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private boolean getState(World world) {
+        ProtectedRegion region = worldGuardHandler.getOrCreateGlobalRegion(world);
+        StateFlag.State state = region.getFlag(Flags.PVP);
+        return state == StateFlag.State.ALLOW || state == null;
+    }
+
+    private void setState(World world, boolean state) {
+        ProtectedRegion region = worldGuardHandler.getOrCreateGlobalRegion(world);
+        region.setFlag(Flags.PVP, state ? StateFlag.State.ALLOW : StateFlag.State.DENY);
     }
 
     private void setAllStates(boolean state) {
-        for(String world : getWorlds()) {
+        for(World world : getWorlds()) {
             setState(world, state);
         }
     }
 
-    private boolean getState(String world) {
-        ProtectedRegion region = worldGuardHandler.getRegion(world, "__global__");
-        StateFlag.State state = region.getFlag(Flags.PVP);
-        if(state == StateFlag.State.ALLOW || state == null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private List<String> getWorlds() {
-        List<String> worlds = new ArrayList<>();
-        for(World world : Bukkit.getWorlds()) {
-            worlds.add(world.getName());
-        }
-        return worlds;
+    private TextComponent worldListStateComponent(List<World> worlds, boolean state) {
+        return text("PvP is ", Colours.GENERIC)
+            .append(state ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
+            .append(text(" in ", Colours.GENERIC))
+            .append(
+                join(
+                    JoinConfiguration.separator(Component.text(", ", Colours.GENERIC)),
+                    worlds.stream().map(world -> Utils.worldNameComponent(world).color(Colours.DATA)).collect(Collectors.toList())
+                )
+            )
+            .append(text(".", Colours.GENERIC));
     }
 
 }

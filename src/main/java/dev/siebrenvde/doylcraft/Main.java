@@ -4,7 +4,6 @@ import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
-import dev.siebrenvde.doylcraft.tabcompleters.*;
 import github.scarsz.discordsrv.DiscordSRV;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -41,14 +40,13 @@ public final class Main extends JavaPlugin {
 
     @SuppressWarnings("UnstableApiUsage")
     private void registerCommands() {
-        getCommand("pvp").setExecutor(new PvPCommand(this));
-        getCommand("pvp").setTabCompleter(new PvPCompleter());
         LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             GetOwnerCommand.register(commands, memoryHandler);
             new GroupCommand(lpHandler).register(commands);
             PlayTimeCommand.register(commands, timeHandler);
+            new PvPCommand(wgHandler).register(commands);
         });
     }
 
