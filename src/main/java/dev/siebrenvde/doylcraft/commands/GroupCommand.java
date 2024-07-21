@@ -1,120 +1,124 @@
 package dev.siebrenvde.doylcraft.commands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.LuckPermsHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Messages;
 import dev.siebrenvde.doylcraft.utils.Utils;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
+import net.luckperms.api.model.group.Group;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class GroupCommand implements CommandExecutor {
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-    private LuckPermsHandler luckPermsHandler;
+@SuppressWarnings("UnstableApiUsage")
+public class GroupCommand {
 
-    public GroupCommand(LuckPermsHandler luckPermsHandler) {
-        this.luckPermsHandler = luckPermsHandler;
+    private final LuckPermsHandler luckPermsHandler;
+
+    public GroupCommand(LuckPermsHandler luckPermsHandler) { this.luckPermsHandler = luckPermsHandler; }
+
+    public void register(Commands commands) {
+
+        commands.register(
+            Commands.literal("group")
+                .requires(source -> source.getSender().hasPermission("doylcraft.group"))
+                .then(Commands.argument("player", OfflinePlayerArgumentType.offlinePlayer())
+                    .executes(this::getPlayerGroup)
+                    .then(Commands.argument("group", StringArgumentType.word())
+                        .suggests(this::getGroups)
+                        .executes(this::setPlayerGroup)
+                    )
+                )
+                .build(),
+            "Change a player's group",
+            List.of("rank")
+        );
+
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+    private int getPlayerGroup(CommandContext<CommandSourceStack> context) {
+        CommandSender sender = context.getSource().getSender();
+        OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
 
-        if(!sender.hasPermission("doylcraft.group")) {
-            sender.sendMessage(Messages.NO_PERMISSION);
-            return false;
-        }
+        try {
+            luckPermsHandler.getPlayerGroup(player).thenAcceptAsync(group -> {
 
-        else if(args.length == 1) {
-
-            OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(args[0]);
-
-            if(player == null) {
-                sender.sendMessage(Messages.playerNotFound(args[0]));
-                return false;
-            }
-
-            try {
-                luckPermsHandler.getPlayerGroup(player).thenAcceptAsync(group -> {
-
-                    if(group != null) {
-                        sender.sendMessage(
-                            Component.empty()
+                if(group != null) {
+                    sender.sendMessage(
+                        Component.empty()
                             .append(Utils.entityComponent(Component.text(player.getName(), Colours.DATA), player))
                             .append(Component.text(" is a member of ", Colours.GENERIC))
                             .append(Component.text(group, Colours.DATA))
                             .append(Component.text(".", Colours.GENERIC))
-                        );
-                    } else {
-                        sender.sendMessage(
-                            Component.empty()
+                    );
+                } else {
+                    sender.sendMessage(
+                        Component.empty()
                             .append(Utils.entityComponent(Component.text(player.getName(), Colours.DATA), player))
                             .append(Component.text(" is not a member of any group.", Colours.GENERIC))
-                        );
-                    }
-
-                });
-
-                return true;
-            } catch(Exception exception) {
-                sender.sendMessage(Messages.error(
-                    Component.text("Failed to get ", Colours.ERROR)
-                    .append(Component.text(player.getName(), Colours.DATA))
-                    .append(Component.text("'s group.", Colours.ERROR)), exception
-                ));
-                exception.printStackTrace();
-                return false;
-            }
-
-        }
-
-        else if(args.length == 2) {
-
-            OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(args[0]);
-
-            if(player == null) {
-                sender.sendMessage(Messages.playerNotFound(args[0]));
-                return false;
-            }
-
-            try {
-                String group = args[1];
-                if(!luckPermsHandler.groupExists(group)) {
-                    sender.sendMessage(
-                            Component.text("Group ", Colours.ERROR)
-                                    .append(Component.text(group, Colours.DATA))
-                                    .append(Component.text(" does not exist.", Colours.ERROR))
                     );
-                    return false;
                 }
 
-                luckPermsHandler.setPlayerGroup(player, group);
-                sender.sendMessage(
-                    Component.text("Changed ", Colours.GENERIC)
+            });
+        } catch(Exception exception) {
+            sender.sendMessage(Messages.error(
+                Component.text("Failed to get ", Colours.ERROR)
+                    .append(Component.text(player.getName(), Colours.DATA))
+                    .append(Component.text("'s group.", Colours.ERROR)), exception
+            ));
+            exception.printStackTrace();
+        }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int setPlayerGroup(CommandContext<CommandSourceStack> context) {
+        CommandSender sender = context.getSource().getSender();
+        OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
+        String group = context.getArgument("group", String.class);
+
+        if(!luckPermsHandler.groupExists(group)) {
+            sender.sendMessage(
+                Component.text("Group ", Colours.ERROR)
+                    .append(Component.text(group, Colours.DATA))
+                    .append(Component.text(" does not exist.", Colours.ERROR))
+            );
+        }
+
+        try {
+            luckPermsHandler.setPlayerGroup(player, group);
+            sender.sendMessage(
+                Component.text("Changed ", Colours.GENERIC)
                     .append(Utils.entityComponent(Component.text(player.getName(), Colours.DATA), player))
                     .append(Component.text("'s group to ", Colours.GENERIC))
                     .append(Component.text(group, Colours.DATA))
                     .append(Component.text(".", Colours.GENERIC))
-                );
-                return true;
-            } catch(Exception exception) {
-                sender.sendMessage(Messages.error(
-                    Component.text("Failed to change ", Colours.ERROR)
+            );
+        } catch(Exception exception) {
+            sender.sendMessage(Messages.error(
+                Component.text("Failed to change ", Colours.ERROR)
                     .append(Component.text(player.getName(), Colours.DATA))
                     .append(Component.text("'s group.", Colours.ERROR)), exception
-                ));
-                exception.printStackTrace();
-                return false;
-            }
-
+            ));
+            exception.printStackTrace();
         }
 
-        else {
-            sender.sendMessage(Messages.usage("/group <player> [<group>]"));
-            return false;
-        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private CompletableFuture<Suggestions> getGroups(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+        luckPermsHandler.getGroups().stream().map(Group::getName).filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase())).forEach(builder::suggest);
+        return builder.buildFuture();
     }
 
 }

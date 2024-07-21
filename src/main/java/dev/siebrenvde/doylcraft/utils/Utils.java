@@ -8,6 +8,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.*;
 
 import java.text.ParseException;
@@ -114,6 +115,10 @@ public class Utils {
 
     public static Component entityComponent(Component component, Player player) {
         return entityComponent(component, EntityType.PLAYER, player.getUniqueId(), Component.text(player.getName()));
+    }
+
+    public static Component worldNameComponent(World world) {
+        return Component.text(world.getKey().getKey()).hoverEvent(HoverEvent.showText(Component.text(world.getKey().toString())));
     }
 
 }

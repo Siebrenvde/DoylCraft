@@ -6,7 +6,6 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class WorldGuardHandler {
@@ -21,16 +20,17 @@ public class WorldGuardHandler {
         return container.get(BukkitAdapter.adapt(world));
     }
 
-    public ProtectedRegion getRegion(String world, String region) {
-        World bukkitWorld = Bukkit.getWorld(world);
-        return getRegionManager(bukkitWorld).getRegion(region);
+    public ProtectedRegion getRegion(World world, String region) {
+        return getRegionManager(world).getRegion(region);
     }
 
-    public void createGlobalRegions() {
-        for(World world : Bukkit.getWorlds()) {
-            GlobalProtectedRegion region = new GlobalProtectedRegion("__global__");
+    public ProtectedRegion getOrCreateGlobalRegion(World world) {
+        ProtectedRegion region = getRegionManager(world).getRegion("__global__");
+        if (region == null) {
+            region = new GlobalProtectedRegion("__global__");
             getRegionManager(world).addRegion(region);
         }
+        return region;
     }
 
 }

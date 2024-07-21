@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class LuckPermsHandler {
 
-    private LuckPerms luckPerms;
+    private final LuckPerms luckPerms;
 
     public LuckPermsHandler(Main main) {
         luckPerms = main.getServer().getServicesManager().load(LuckPerms.class);
@@ -27,12 +27,12 @@ public class LuckPermsHandler {
 
     public CompletableFuture<String> getPlayerGroup(OfflinePlayer player) {
         return luckPerms.getUserManager().loadUser(player.getUniqueId())
-                .thenApplyAsync(user -> {
-                    Set<String> groups = user.getNodes(NodeType.INHERITANCE).stream()
-                            .map(InheritanceNode::getGroupName)
-                            .collect(Collectors.toSet());
-                    return groups.iterator().next();
-                });
+            .thenApplyAsync(user -> {
+                Set<String> groups = user.getNodes(NodeType.INHERITANCE).stream()
+                    .map(InheritanceNode::getGroupName)
+                    .collect(Collectors.toSet());
+                return groups.iterator().next();
+            });
     }
 
     public void setPlayerGroup(OfflinePlayer player, String groupName) {

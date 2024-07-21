@@ -1,41 +1,37 @@
 package dev.siebrenvde.doylcraft.commands;
 
+import com.mojang.brigadier.Command;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
-import dev.siebrenvde.doylcraft.utils.Messages;
+import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class GetOwnerCommand implements CommandExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class GetOwnerCommand {
 
-    private final MemoryHandler memoryHandler;
+    public static void register(Commands commands, MemoryHandler memoryHandler) {
 
-    public GetOwnerCommand(MemoryHandler memoryHandler) {
-        this.memoryHandler = memoryHandler;
-    }
+        commands.register(
+            Commands.literal("getowner")
+                .requires(source -> source.getSender() instanceof Player)
+                .executes(ctx -> {
+                    Player player = (Player) ctx.getSource().getSender();
 
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+                    if(!memoryHandler.getOwnerListContains(player)) {
+                        memoryHandler.addGetOwnerPlayer(player);
+                        memoryHandler.startGetOwnerCountdown(player);
+                        player.sendMessage(Component.text("Right click a pet to get its owner.", Colours.GENERIC));
+                    } else {
+                        memoryHandler.removeGetOwnerPlayer(player);
+                        player.sendMessage(Component.text("Disabled owner viewer.", Colours.GENERIC));
+                    }
 
-        if(sender instanceof Player player) {
-
-            if(!memoryHandler.getOwnerListContains(player)) {
-                memoryHandler.addGetOwnerPlayer(player);
-                memoryHandler.startGetOwnerCountdown(player);
-                player.sendMessage(Component.text("Right click a pet to get its owner.", Colours.GENERIC));
-            } else {
-                memoryHandler.removeGetOwnerPlayer(player);
-                player.sendMessage(Component.text("Disabled owner viewer.", Colours.GENERIC));
-            }
-
-            return true;
-
-        } else {
-            sender.sendMessage(Messages.PLAYER_ONLY);
-            return false;
-        }
+                    return Command.SINGLE_SUCCESS;
+                })
+                .build(),
+            "Get the owner of an entity"
+        );
 
     }
 
