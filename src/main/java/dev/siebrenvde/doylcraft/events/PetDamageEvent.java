@@ -66,7 +66,7 @@ public class PetDamageEvent implements Listener {
                         damager.sendMessage(
                             text("You did " + df.format(damage) + " damage to ")
                                 .append(petName == null ? text("your ") : empty())
-                                .append(Components.entityComponent(petName != null ? petName : petType, pet))
+                                .append(Components.entityComponent(pet))
                                 .append(text("."))
                                 .color(MESSAGE_COLOUR)
                         );
@@ -74,10 +74,10 @@ public class PetDamageEvent implements Listener {
                         if(owner.isOnline()) {
                             ((Player) owner).sendMessage(
                                 empty()
-                                    .append(Components.entityComponent(text(damager.getName()), damager))
+                                    .append(Components.entityComponent(damager))
                                     .append(text(" did " + df.format(damage) + " damage to "))
                                     .append(petName == null ? text("your ") : empty())
-                                    .append(Components.entityComponent(petName != null ? petName : petType, pet))
+                                    .append(Components.entityComponent(pet))
                                     .append(text("."))
                                     .color(MESSAGE_COLOUR)
                             );
@@ -85,7 +85,7 @@ public class PetDamageEvent implements Listener {
 
                         damager.sendMessage(
                             text("You did " + df.format(damage) + " damage to ")
-                                .append(Components.entityComponent(text(owner.getName()), owner))
+                                .append(Components.entityComponent(owner))
                                 .append(text("'s "))
                                 .append(Components.entityComponent(petType, pet))
                                 .append(text("."))
@@ -107,9 +107,9 @@ public class PetDamageEvent implements Listener {
                     if((health - damage) <= 0.0) {
                         Bukkit.broadcast(
                             Component.empty()
-                                .append(Components.entityComponent(text(damager.getName()), damager))
+                                .append(Components.entityComponent(damager))
                                 .append(text(" killed "))
-                                .append(Components.entityComponent(text(owner.getName()), owner))
+                                .append(Components.entityComponent(owner))
                                 .append(text("'s "))
                                 .append(Components.entityComponent(petType, pet))
                                 .append(text("."))

@@ -24,7 +24,7 @@ public class BullseyeEvent implements Listener {
                 if(distance >= 30) {
                     Bukkit.broadcast(
                         Component.empty()
-                        .append(Components.entityComponent(Component.text(player.getName(), NamedTextColor.LIGHT_PURPLE), player))
+                        .append(Components.entityComponent(player).color(NamedTextColor.LIGHT_PURPLE))
                         .append(Component.text(" hit a bullseye from " + ((int) distance) + " blocks away!", NamedTextColor.LIGHT_PURPLE))
                     );
                 }
