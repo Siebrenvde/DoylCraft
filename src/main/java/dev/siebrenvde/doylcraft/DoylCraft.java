@@ -59,6 +59,7 @@ public final class DoylCraft extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TameableInteractEvent(memoryHandler), this);
         getServer().getPluginManager().registerEvents(new DismountEntityEvent(), this);
         getServer().getPluginManager().registerEvents(new MobGriefingEvents(), this);
+        getServer().getPluginManager().registerEvents(new VillagerDeathEvent(), this);
     }
 
     public MemoryHandler getMemoryHandler() { return memoryHandler; }
