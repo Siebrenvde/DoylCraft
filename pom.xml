@@ -6,7 +6,7 @@
 
     <groupId>dev.siebrenvde</groupId>
     <artifactId>DoylCraft</artifactId>
-    <version>1.4.4</version>
+    <version>1.5.0</version>
     <packaging>jar</packaging>
 
     <name>DoylCraft</name>
