@@ -24,7 +24,7 @@ public class Components {
     public static Component entityComponent(Entity entity) {
         return entityComponent(
             entity instanceof Player player
-                ? player.displayName()
+                ? Component.text(player.getName())
                 : entity.customName() != null
                     ? entity.customName()
                     : Component.translatable(entity.getType()),
