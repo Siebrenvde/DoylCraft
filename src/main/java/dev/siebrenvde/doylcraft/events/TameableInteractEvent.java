@@ -5,9 +5,7 @@ import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Components;
 import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -33,8 +31,7 @@ public class TameableInteractEvent implements Listener {
         Entity entity = event.getRightClicked();
 
         if(entity instanceof Tameable tameable) {
-
-            if(tameable.isTamed()) {
+            if(tameable.isTamed() && tameable.getOwner() != null) {
                 OfflinePlayer owner = (OfflinePlayer) tameable.getOwner();
                 player.sendMessage(
                     Component.empty()

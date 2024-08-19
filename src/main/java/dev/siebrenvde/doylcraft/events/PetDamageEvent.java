@@ -40,7 +40,7 @@ public class PetDamageEvent implements Listener {
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if(event.getFinalDamage() == 0) return;
         if(!(event.getEntity() instanceof Tameable pet)) return;
-        if(!pet.isTamed()) return;
+        if(!pet.isTamed() || pet.getOwner() == null) return;
         if(pet instanceof Wolf && pet.getEquipment().getItem(EquipmentSlot.BODY).getType() == Material.WOLF_ARMOR) return;
 
         Entity damagerE = event.getDamager();
