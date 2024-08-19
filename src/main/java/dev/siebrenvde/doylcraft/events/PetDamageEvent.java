@@ -55,6 +55,7 @@ public class PetDamageEvent implements Listener {
         if(!(damagerE instanceof Player damager)) return;
 
         OfflinePlayer owner = (OfflinePlayer) pet.getOwner();
+        pet.getServer().getPluginManager().getPlugin("DoylCraft").getLogger().info(String.valueOf(owner.getUniqueId()));
         double damage = event.getDamage();
         double health = pet.getHealth();
         TranslatableComponent petType = Component.translatable(pet.getType());
@@ -107,8 +108,10 @@ public class PetDamageEvent implements Listener {
                 Component.empty()
                     .append(Components.entityComponent(damager))
                     .append(text(" killed "))
-                    .append(Components.entityComponent(owner))
-                    .append(text("'s "))
+                    .append(damager != owner
+                        ? Components.entityComponent(owner).append(text("'s "))
+                        : text("their ")
+                    )
                     .append(Components.entityComponent(petType, pet))
                     .append(text("."))
                     .color(MESSAGE_COLOUR)
