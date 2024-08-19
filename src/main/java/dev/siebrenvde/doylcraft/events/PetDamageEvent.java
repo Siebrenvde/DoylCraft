@@ -99,7 +99,7 @@ public class PetDamageEvent implements Listener {
                 .append(petName != null ? petName : petType)
                 .append(text(" ("))
                 .append(petName != null ? petType.append(text(", ")) : empty())
-                .append(text(MarkdownSanitizer.escape(owner.getName(), true)))
+                .append(text(MarkdownSanitizer.escape(owner.getName() != null ? owner.getName() : "Unknown Player", true)))
                 .append(text(")."))
         );
 
@@ -124,7 +124,7 @@ public class PetDamageEvent implements Listener {
                     .append(petName != null ? petName : petType)
                     .append(text(" ("))
                     .append(petName != null ? petType.append(text(", ")) : empty())
-                    .append(text(MarkdownSanitizer.escape(owner.getName(), true)))
+                    .append(text(MarkdownSanitizer.escape(owner.getName() != null ? owner.getName() : "Unknown Player", true)))
                     .append(text(")."))
             );
         }
