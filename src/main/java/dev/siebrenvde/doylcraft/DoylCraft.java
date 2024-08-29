@@ -11,9 +11,13 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Logger;
+
 public final class DoylCraft extends JavaPlugin {
 
     private static DoylCraft instance;
+    public static Logger LOGGER;
+
     private MemoryHandler memoryHandler;
     private LuckPermsHandler lpHandler;
     private DiscordHandler discordHandler;
@@ -22,6 +26,7 @@ public final class DoylCraft extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
+        LOGGER = getLogger();
         initHandlers();
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
