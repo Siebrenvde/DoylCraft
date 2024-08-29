@@ -19,7 +19,6 @@ public final class DoylCraft extends JavaPlugin {
     private DiscordHandler discordHandler;
     private WorldGuardHandler wgHandler;
     private ScoreboardHandler sbHandler;
-    private TimeHandler timeHandler;
 
     public void onEnable() {
         instance = this;
@@ -28,7 +27,6 @@ public final class DoylCraft extends JavaPlugin {
         discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
-        timeHandler = new TimeHandler(memoryHandler);
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
         if(voicechatService != null) {
@@ -45,7 +43,7 @@ public final class DoylCraft extends JavaPlugin {
             final Commands commands = event.registrar();
             GetOwnerCommand.register(commands, memoryHandler);
             new GroupCommand(lpHandler).register(commands);
-            PlayTimeCommand.register(commands, timeHandler);
+            new PlayTimeCommand(memoryHandler).register(commands);
             new PvPCommand(wgHandler).register(commands);
         });
     }
@@ -67,7 +65,6 @@ public final class DoylCraft extends JavaPlugin {
     public DiscordHandler getDiscordHandler() { return discordHandler; }
     public WorldGuardHandler getWorldGuardHandler() { return wgHandler; }
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
-    public TimeHandler getTimeHandler() { return timeHandler; }
 
     public static DoylCraft getInstance() { return instance; }
 

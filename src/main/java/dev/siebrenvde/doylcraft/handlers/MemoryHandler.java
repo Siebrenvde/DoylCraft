@@ -32,8 +32,8 @@ public class MemoryHandler {
     }
 
     public long getLoginTime(Player player) { return loginTimes.get(player); }
-    public void addLoginTime(Player player, long time) { loginTimes.put(player, time); }
-    public void addLoginTime(Player player) { addLoginTime(player, System.currentTimeMillis()); }
+    public long getOnlineTime(Player player) { return System.currentTimeMillis() - getLoginTime(player); }
+    public void addLoginTime(Player player) { loginTimes.put(player, System.currentTimeMillis()); }
     public void removeLoginTime(Player player) { loginTimes.remove(player); }
 
 }
