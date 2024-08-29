@@ -46,7 +46,7 @@ public class LuckPermsHandler {
 
     public boolean groupExists(String group) {
         for(Group g : getGroups()) {
-            if(g.getName().toLowerCase().equalsIgnoreCase(group)) {
+            if(g.getName().equalsIgnoreCase(group)) {
                 return true;
             }
         }
