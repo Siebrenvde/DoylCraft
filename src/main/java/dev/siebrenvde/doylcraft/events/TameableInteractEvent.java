@@ -35,9 +35,9 @@ public class TameableInteractEvent implements Listener {
                 OfflinePlayer owner = (OfflinePlayer) tameable.getOwner();
                 player.sendMessage(
                     Component.empty()
-                    .append(Components.entityComponent(entity).color(Colours.DATA))
+                    .append(Components.entity(entity).color(Colours.DATA))
                     .append(Component.text("'s owner is ", Colours.GENERIC))
-                    .append(Components.entityComponent(owner).color(Colours.DATA))
+                    .append(Components.entity(owner).color(Colours.DATA))
                     .append(Component.text(".", Colours.GENERIC))
                 );
                 return;
@@ -46,7 +46,7 @@ public class TameableInteractEvent implements Listener {
 
         player.sendMessage(
             Component.empty()
-            .append(Components.entityComponent(entity).color(Colours.DATA))
+            .append(Components.entity(entity).color(Colours.DATA))
             .append(Component.text(" doesn't have an owner.", Colours.GENERIC))
         );
 

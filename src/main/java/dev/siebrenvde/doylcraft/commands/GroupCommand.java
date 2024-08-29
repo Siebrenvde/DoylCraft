@@ -56,7 +56,7 @@ public class GroupCommand {
                 if(group != null) {
                     sender.sendMessage(
                         Component.empty()
-                            .append(Components.entityComponent(player).color(Colours.DATA))
+                            .append(Components.entity(player).color(Colours.DATA))
                             .append(Component.text(" is a member of ", Colours.GENERIC))
                             .append(Component.text(group, Colours.DATA))
                             .append(Component.text(".", Colours.GENERIC))
@@ -64,7 +64,7 @@ public class GroupCommand {
                 } else {
                     sender.sendMessage(
                         Component.empty()
-                            .append(Components.entityComponent(player).color(Colours.DATA))
+                            .append(Components.entity(player).color(Colours.DATA))
                             .append(Component.text(" is not a member of any group.", Colours.GENERIC))
                     );
                 }
@@ -99,7 +99,7 @@ public class GroupCommand {
             luckPermsHandler.setPlayerGroup(player, group);
             sender.sendMessage(
                 Component.text("Changed ", Colours.GENERIC)
-                    .append(Components.entityComponent(player).color(Colours.DATA))
+                    .append(Components.entity(player).color(Colours.DATA))
                     .append(Component.text("'s group to ", Colours.GENERIC))
                     .append(Component.text(group, Colours.DATA))
                     .append(Component.text(".", Colours.GENERIC))

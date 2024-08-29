@@ -59,13 +59,13 @@ public class PlayTimeCommand {
                         TextComponent.Builder message = text();
 
                         if(player.isOnline()) {
-                            message.append(Components.entityComponent(player).color(Colours.GENERIC))
+                            message.append(Components.entity(player).color(Colours.GENERIC))
                                 .append(text("'s Current Online Time: ", Colours.GENERIC))
                                     .append(onlineTime(player.getPlayer()).color(Colours.DATA))
                                 .append(Component.newline());
                         }
 
-                        message.append(Components.entityComponent(player).color(Colours.GENERIC))
+                        message.append(Components.entity(player).color(Colours.GENERIC))
                             .append(text("'s Total Time Played: ", Colours.GENERIC))
                                 .append(totalTime(player).color(Colours.DATA));
 

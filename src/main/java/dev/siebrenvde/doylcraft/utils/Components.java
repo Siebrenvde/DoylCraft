@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Components {
 
-    public static Component entityComponent(Component component, Entity entity) {
+    public static Component entity(Component component, Entity entity) {
         return Component.text()
             .append(component)
             .hoverEvent(entity.asHoverEvent())
@@ -26,8 +26,8 @@ public class Components {
             .build();
     }
 
-    public static Component entityComponent(Entity entity) {
-        return entityComponent(
+    public static Component entity(Entity entity) {
+        return entity(
             entity instanceof Player player
                 ? Component.text(player.getName())
                 : entity.customName() != null
@@ -37,11 +37,11 @@ public class Components {
         );
     }
 
-    public static Component entityComponent(Player player) {
-        return entityComponent((Entity) player);
+    public static Component entity(Player player) {
+        return entity((Entity) player);
     }
 
-    public static Component entityComponent(OfflinePlayer offlinePlayer) {
+    public static Component entity(OfflinePlayer offlinePlayer) {
         if(offlinePlayer == null || offlinePlayer.getName() == null) return Component.text("Unknown Player");
         return Component.text()
             .content(offlinePlayer.getName())
@@ -54,7 +54,7 @@ public class Components {
             .build();
     }
 
-    public static Component worldNameComponent(World world) {
+    public static Component worldName(World world) {
         return Component.text(world.getKey().getKey()).hoverEvent(HoverEvent.showText(Component.text(world.getKey().toString())));
     }
 

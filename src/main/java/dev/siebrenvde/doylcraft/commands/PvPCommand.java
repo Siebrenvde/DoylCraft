@@ -125,7 +125,7 @@ public class PvPCommand {
             empty().color(Colours.GENERIC)
                 .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
                 .append(Component.text(" PvP in ")
-                .append(Components.worldNameComponent(world).color(Colours.DATA))
+                .append(Components.worldName(world).color(Colours.DATA))
                 .append(Component.text(".")))
         );
 
@@ -156,7 +156,7 @@ public class PvPCommand {
             .append(
                 join(
                     JoinConfiguration.separator(Component.text(", ", Colours.GENERIC)),
-                    worlds.stream().map(world -> Components.worldNameComponent(world).color(Colours.DATA)).collect(Collectors.toList())
+                    worlds.stream().map(world -> Components.worldName(world).color(Colours.DATA)).collect(Collectors.toList())
                 )
             )
             .append(text(".", Colours.GENERIC));

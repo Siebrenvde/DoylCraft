@@ -32,7 +32,7 @@ public class VillagerDeathEvent implements Listener {
         String translationKey = "death.attack." + source.getDamageType().getTranslationKey();
         List<TranslationArgument> arguments = new ArrayList<>();
 
-        arguments.add(TranslationArgument.component(Components.entityComponent(
+        arguments.add(TranslationArgument.component(Components.entity(
             villager.customName() != null
                 ? villager.customName().append(Component.text(" the ")).append(Component.translatable(villager.getProfession()))
                 : Component.translatable(villager.getProfession()),
@@ -42,14 +42,14 @@ public class VillagerDeathEvent implements Listener {
         if(source.getCausingEntity() == null && source.getDirectEntity() == null) {
             Player killer = event.getEntity().getKiller();
             if(killer != null) {
-                arguments.add(TranslationArgument.component(Components.entityComponent(killer)));
+                arguments.add(TranslationArgument.component(Components.entity(killer)));
                 translationKey += ".player";
             }
         } else {
             Entity causingEntity = source.getCausingEntity();
 
             if(causingEntity != null) {
-                arguments.add(TranslationArgument.component(Components.entityComponent(causingEntity)));
+                arguments.add(TranslationArgument.component(Components.entity(causingEntity)));
 
                 if(causingEntity instanceof LivingEntity livingEntity && livingEntity.getEquipment() != null) {
                     ItemStack heldItem = livingEntity.getEquipment().getItemInMainHand();
@@ -64,7 +64,7 @@ public class VillagerDeathEvent implements Listener {
                     }
                 }
             } else {
-                arguments.add(TranslationArgument.component(Components.entityComponent(source.getDirectEntity())));
+                arguments.add(TranslationArgument.component(Components.entity(source.getDirectEntity())));
             }
         }
 
