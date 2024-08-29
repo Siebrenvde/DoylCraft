@@ -85,7 +85,11 @@ public class PetDamageEvent implements Listener {
                 text("You did " + df.format(damage) + " damage to ")
                     .append(Components.entity(owner))
                     .append(text("'s "))
-                    .append(Components.entity(petType, pet))
+                    .append(petName != null
+                        ? petType.append(text(", "))
+                        : empty()
+                    )
+                    .append(Components.entity(pet))
                     .append(text("."))
                     .color(MESSAGE_COLOUR)
             );
@@ -111,7 +115,11 @@ public class PetDamageEvent implements Listener {
                         ? Components.entity(owner).append(text("'s "))
                         : text("their ")
                     )
-                    .append(Components.entity(petType, pet))
+                    .append(petName != null
+                        ? petType.append(text(", "))
+                        : empty()
+                    )
+                    .append(Components.entity(pet))
                     .append(text("."))
                     .color(MESSAGE_COLOUR)
             );
