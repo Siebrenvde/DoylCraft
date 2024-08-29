@@ -22,11 +22,7 @@ public final class DoylCraft extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        memoryHandler = new MemoryHandler();
-        lpHandler = new LuckPermsHandler(this);
-        discordHandler = new DiscordHandler();
-        wgHandler = new WorldGuardHandler();
-        sbHandler = new ScoreboardHandler();
+        initHandlers();
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
         if(voicechatService != null) {
@@ -34,6 +30,14 @@ public final class DoylCraft extends JavaPlugin {
         }
         registerCommands();
         registerEvents();
+    }
+
+    private void initHandlers() {
+        memoryHandler = new MemoryHandler();
+        lpHandler = new LuckPermsHandler(this);
+        discordHandler = new DiscordHandler();
+        wgHandler = new WorldGuardHandler();
+        sbHandler = new ScoreboardHandler();
     }
 
     @SuppressWarnings("UnstableApiUsage")
