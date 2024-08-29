@@ -43,6 +43,7 @@ public class Components {
 
     public static Component entity(OfflinePlayer offlinePlayer) {
         if(offlinePlayer == null || offlinePlayer.getName() == null) return Component.text("Unknown Player");
+        if(offlinePlayer.isOnline()) return entity(offlinePlayer.getPlayer());
         return Component.text()
             .content(offlinePlayer.getName())
             .hoverEvent(HoverEvent.showEntity(
