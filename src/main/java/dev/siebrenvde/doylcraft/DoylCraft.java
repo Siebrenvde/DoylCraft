@@ -8,6 +8,7 @@ import github.scarsz.discordsrv.DiscordSRV;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -58,15 +59,23 @@ public final class DoylCraft extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PetDamageEvent(discordHandler), this);
-        getServer().getPluginManager().registerEvents(new AFKEvent(discordHandler), this);
-        getServer().getPluginManager().registerEvents(new ChatEvent(discordHandler), this);
-        getServer().getPluginManager().registerEvents(new ConnectionEvents(this), this);
-        getServer().getPluginManager().registerEvents(new BullseyeEvent(), this);
-        getServer().getPluginManager().registerEvents(new TameableInteractEvent(memoryHandler), this);
-        getServer().getPluginManager().registerEvents(new DismountEntityEvent(), this);
-        getServer().getPluginManager().registerEvents(new MobGriefingEvents(), this);
-        getServer().getPluginManager().registerEvents(new VillagerDeathEvent(), this);
+        registerListeners(
+            new PetDamageEvent(discordHandler),
+            new AFKEvent(discordHandler),
+            new ChatEvent(discordHandler),
+            new ConnectionEvents(this),
+            new BullseyeEvent(),
+            new TameableInteractEvent(memoryHandler),
+            new DismountEntityEvent(),
+            new MobGriefingEvents(),
+            new VillagerDeathEvent()
+        );
+    }
+
+    private void registerListeners(Listener... listeners) {
+        for(Listener listener : listeners) {
+            getServer().getPluginManager().registerEvents(listener, this);
+        }
     }
 
     public MemoryHandler getMemoryHandler() { return memoryHandler; }
