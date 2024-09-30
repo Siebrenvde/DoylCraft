@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+}
+
+group = 'dev.siebrenvde'
+version = '1.5.1'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+    maven {
+        name = "sk89q-repo"
+        url = "https://maven.enginehub.org/repo/"
+    }
+    maven {
+        name = "Scarsz-Nexus"
+        url = "https://nexus.scarsz.me/content/groups/public/"
+    }
+    maven {
+        name = "essentials"
+        url = "https://repo.essentialsx.net/releases/"
+    }
+    maven {
+        name = "maxhenkel"
+        url = "https://maven.maxhenkel.de/repository/public"
+    }
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT"
+    compileOnly "net.luckperms:api:5.4"
+    compileOnly "com.sk89q.worldguard:worldguard-bukkit:7.0.9"
+    compileOnly "com.discordsrv:discordsrv:1.28.0"
+    compileOnly "net.essentialsx:EssentialsX:2.20.1"
+    compileOnly "de.maxhenkel.voicechat:voicechat-api:2.5.0"
+}
+
+processResources {
+    filesMatching('plugin.yml') {
+        expand "version": version
+    }
+}
+
+def targetJavaVersion = 21
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
