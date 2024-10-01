@@ -22,9 +22,9 @@ public class AFKEvent implements Listener {
     public void onAFKStateChange(AfkStatusChangeEvent event) {
         Player affected = event.getAffected().getBase();
         if(event.getValue()) {
-            discordHandler.sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is now AFK.", null, DiscordSRV.getAvatarUrl(affected)).setColor(Color.decode("#ff0000")));
+            discordHandler.sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is now AFK", null, DiscordSRV.getAvatarUrl(affected)).setColor(Color.decode("#ff0000")));
         } else {
-            discordHandler.sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is no longer AFK.", null, DiscordSRV.getAvatarUrl(affected)).setColor(Color.decode("#00ff00")));
+            discordHandler.sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is no longer AFK", null, DiscordSRV.getAvatarUrl(affected)).setColor(Color.decode("#00ff00")));
         }
     }
 
