@@ -8,16 +8,15 @@ import github.scarsz.discordsrv.DiscordSRV;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Logger;
-
 public final class DoylCraft extends JavaPlugin {
 
     private static DoylCraft instance;
-    public static Logger LOGGER;
+    public static ComponentLogger LOGGER;
 
     private MemoryHandler memoryHandler;
     private LuckPermsHandler lpHandler;
@@ -27,7 +26,7 @@ public final class DoylCraft extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        LOGGER = getLogger();
+        LOGGER = getComponentLogger();
         initHandlers();
         DiscordSRV.api.subscribe(new DiscordSRVListener());
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
