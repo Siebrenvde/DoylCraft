@@ -23,6 +23,7 @@ public final class DoylCraft extends JavaPlugin {
     private DiscordHandler discordHandler;
     private WorldGuardHandler wgHandler;
     private ScoreboardHandler sbHandler;
+    private BlueMapHandler blueMapHandler;
 
     public void onEnable() {
         instance = this;
@@ -43,6 +44,7 @@ public final class DoylCraft extends JavaPlugin {
         discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
+        blueMapHandler = new BlueMapHandler();
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -67,7 +69,8 @@ public final class DoylCraft extends JavaPlugin {
             new TameableInteractEvent(memoryHandler),
             new DismountEntityEvent(),
             new MobGriefingEvents(),
-            new VillagerDeathEvent()
+            new VillagerDeathEvent(),
+            new WarpModifyListener(blueMapHandler)
         );
     }
 

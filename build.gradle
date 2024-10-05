@@ -31,6 +31,10 @@ repositories {
         name = "maxhenkel"
         url = "https://maven.maxhenkel.de/repository/public"
     }
+    maven {
+        name = "bluemap"
+        url = "https://repo.bluecolored.de/releases"
+    }
 }
 
 dependencies {
@@ -40,6 +44,7 @@ dependencies {
     compileOnly "com.discordsrv:discordsrv:1.28.0"
     compileOnly "net.essentialsx:EssentialsX:2.20.1"
     compileOnly "de.maxhenkel.voicechat:voicechat-api:2.5.0"
+    compileOnly "de.bluecolored:bluemap-api:2.7.3"
 }
 
 processResources {
