@@ -8,7 +8,6 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.LuckPermsHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
-import dev.siebrenvde.doylcraft.utils.Messages;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -71,7 +70,7 @@ public class GroupCommand {
 
             });
         } catch(Exception exception) {
-            sender.sendMessage(Messages.error(
+            sender.sendMessage(Components.error(
                 Component.text("Failed to get ", Colours.ERROR)
                     .append(Component.text(player.getName(), Colours.DATA))
                     .append(Component.text("'s group.", Colours.ERROR)), exception
@@ -105,7 +104,7 @@ public class GroupCommand {
                     .append(Component.text(".", Colours.GENERIC))
             );
         } catch(Exception exception) {
-            sender.sendMessage(Messages.error(
+            sender.sendMessage(Components.error(
                 Component.text("Failed to change ", Colours.ERROR)
                     .append(Component.text(player.getName(), Colours.DATA))
                     .append(Component.text("'s group.", Colours.ERROR)), exception

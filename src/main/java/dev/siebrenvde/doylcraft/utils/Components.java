@@ -1,6 +1,7 @@
 package dev.siebrenvde.doylcraft.utils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.OfflinePlayer;
@@ -102,5 +103,18 @@ public class Components {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a").withZone(ZoneId.from(ZoneOffset.UTC));
         return Component.text(formatter.format(Instant.ofEpochMilli(timestamp)));
     }
+
+    public static Component error(Component message, Exception exception) {
+        TextComponent.Builder builder = Component.text();
+        builder.content(exception.getClass().getSimpleName()).color(Colours.ERROR);
+        if(exception.getMessage() != null) {
+            builder.appendNewline();
+            builder.append(Component.text(exception.getMessage(), Colours.DATA));
+        }
+        return message.hoverEvent(HoverEvent.showText(builder.build()));
+    }
+
+    public static Component error(String message, Exception e) { return error(Component.text(message, Colours.ERROR), e); }
+    public static Component error(String message) { return Component.text(message, Colours.ERROR); }
 
 }
