@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.utils.Components;
@@ -23,14 +23,14 @@ import java.text.DecimalFormat;
 import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 
-public class PetDamageEvent implements Listener {
+public class PetDamageListener implements Listener {
 
     private final DiscordSRVAddon discordSRVAddon;
     private final DecimalFormat df;
 
     private static final TextColor MESSAGE_COLOUR = NamedTextColor.RED;
 
-    public PetDamageEvent(DiscordSRVAddon discordSRVAddon) {
+    public PetDamageListener(DiscordSRVAddon discordSRVAddon) {
         this.discordSRVAddon = discordSRVAddon;
         df = new DecimalFormat("#.#");
         df.setRoundingMode(RoundingMode.CEILING);

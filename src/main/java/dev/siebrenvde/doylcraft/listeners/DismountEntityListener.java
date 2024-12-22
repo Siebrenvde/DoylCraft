@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 /**
  * Dismount an entity from a vehicle by shift-right-clicking the vehicle
  */
-public class DismountEntityEvent implements Listener {
+public class DismountEntityListener implements Listener {
 
     @EventHandler
     private void onPlayerEntityInteract(PlayerInteractEntityEvent e) {

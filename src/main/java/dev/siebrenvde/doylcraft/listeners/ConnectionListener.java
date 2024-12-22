@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
@@ -13,13 +13,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.stream.Collectors;
 
-public class ConnectionEvents implements Listener {
+public class ConnectionListener implements Listener {
 
     private final ScoreboardHandler scoreboardHandler;
     private final MemoryHandler memoryHandler;
     private final DiscordSRVAddon discordSRVAddon;
 
-    public ConnectionEvents(DoylCraft doylCraft) {
+    public ConnectionListener(DoylCraft doylCraft) {
         this.scoreboardHandler = doylCraft.getScoreboardHandler();
         this.memoryHandler = doylCraft.getMemoryHandler();
         this.discordSRVAddon = doylCraft.getDiscordSRVAddon();

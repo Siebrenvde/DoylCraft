@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
@@ -10,11 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-public class TameableInteractEvent implements Listener {
+public class TameableInteractListener implements Listener {
 
     private final MemoryHandler memoryHandler;
 
-    public TameableInteractEvent(MemoryHandler memoryHandler) {
+    public TameableInteractListener(MemoryHandler memoryHandler) {
         this.memoryHandler = memoryHandler;
     }
 

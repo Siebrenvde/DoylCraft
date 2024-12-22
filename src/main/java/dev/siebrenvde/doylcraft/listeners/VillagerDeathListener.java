@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.utils.Components;
 import net.kyori.adventure.text.Component;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
-public class VillagerDeathEvent implements Listener {
+public class VillagerDeathListener implements Listener {
 
     @EventHandler
     private void onVillagerDeath(EntityDeathEvent event) {

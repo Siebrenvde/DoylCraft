@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityInteractEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class MobGriefingEvents implements Listener {
+public class MobGriefingListener implements Listener {
 
     @EventHandler
     private void onEntityExplode(EntityExplodeEvent event) {

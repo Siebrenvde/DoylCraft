@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
@@ -16,11 +16,11 @@ import org.bukkit.event.Listener;
 
 import java.util.regex.Pattern;
 
-public class ChatEvent implements Listener {
+public class ChatListener implements Listener {
 
     private final DiscordSRVAddon discordSRVAddon;
 
-    public ChatEvent(DiscordSRVAddon discordSRVAddon) {
+    public ChatListener(DiscordSRVAddon discordSRVAddon) {
         this.discordSRVAddon = discordSRVAddon;
     }
 

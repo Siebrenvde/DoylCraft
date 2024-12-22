@@ -3,7 +3,7 @@ package dev.siebrenvde.doylcraft;
 import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import dev.siebrenvde.doylcraft.addons.*;
 import dev.siebrenvde.doylcraft.commands.*;
-import dev.siebrenvde.doylcraft.events.*;
+import dev.siebrenvde.doylcraft.listeners.*;
 import dev.siebrenvde.doylcraft.handlers.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -40,7 +40,7 @@ public final class DoylCraft extends JavaPlugin {
             voicechatService.registerPlugin(new VoicechatAddon());
         }
         registerCommands();
-        registerEvents();
+        registerListeners();
     }
 
     private void initAddons() {
@@ -67,17 +67,17 @@ public final class DoylCraft extends JavaPlugin {
         });
     }
 
-    private void registerEvents() {
+    private void registerListeners() {
         registerListeners(
-            new PetDamageEvent(discordSRVAddon),
-            new AFKEvent(discordSRVAddon),
-            new ChatEvent(discordSRVAddon),
-            new ConnectionEvents(this),
-            new BullseyeEvent(),
-            new TameableInteractEvent(memoryHandler),
-            new DismountEntityEvent(),
-            new MobGriefingEvents(),
-            new VillagerDeathEvent(),
+            new PetDamageListener(discordSRVAddon),
+            new AFKListener(discordSRVAddon),
+            new ChatListener(discordSRVAddon),
+            new ConnectionListener(this),
+            new BullseyeListener(),
+            new TameableInteractListener(memoryHandler),
+            new DismountEntityListener(),
+            new MobGriefingListener(),
+            new VillagerDeathListener(),
             new WarpModifyListener(blueMapAddon)
         );
     }

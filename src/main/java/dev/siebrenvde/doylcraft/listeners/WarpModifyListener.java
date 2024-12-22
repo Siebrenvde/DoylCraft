@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.BlueMapAddon;
 import net.essentialsx.api.v2.events.WarpModifyEvent;

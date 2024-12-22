@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import github.scarsz.discordsrv.DiscordSRV;
@@ -10,11 +10,11 @@ import org.bukkit.event.Listener;
 
 import java.awt.*;
 
-public class AFKEvent implements Listener {
+public class AFKListener implements Listener {
 
     DiscordSRVAddon discordSRVAddon;
 
-    public AFKEvent(DiscordSRVAddon discordSRVAddon) {
+    public AFKListener(DiscordSRVAddon discordSRVAddon) {
         this.discordSRVAddon = discordSRVAddon;
     }
 

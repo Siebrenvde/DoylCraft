@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.events;
+package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.event.block.TargetHitEvent;
@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.projectiles.ProjectileSource;
 
-public class BullseyeEvent implements Listener {
+public class BullseyeListener implements Listener {
 
     @EventHandler
     public void onTargetHit(TargetHitEvent event) {
