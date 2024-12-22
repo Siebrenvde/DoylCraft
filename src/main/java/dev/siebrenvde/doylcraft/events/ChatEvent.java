@@ -1,6 +1,6 @@
 package dev.siebrenvde.doylcraft.events;
 
-import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
+import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
@@ -18,10 +18,10 @@ import java.util.regex.Pattern;
 
 public class ChatEvent implements Listener {
 
-    private DiscordHandler discordHandler;
+    private final DiscordSRVAddon discordSRVAddon;
 
-    public ChatEvent(DiscordHandler discordHandler) {
-        this.discordHandler = discordHandler;
+    public ChatEvent(DiscordSRVAddon discordSRVAddon) {
+        this.discordSRVAddon = discordSRVAddon;
     }
 
     @EventHandler
@@ -32,7 +32,7 @@ public class ChatEvent implements Listener {
         // Chat message must contain '@'
         if(!messageContent.contains("@")) { return; }
 
-        for(Member member : discordHandler.getMembers()) {
+        for(Member member : discordSRVAddon.getMembers()) {
             // Message must contain effective name of member
             if(!messageContent.toLowerCase().contains(member.getEffectiveName().toLowerCase())) { continue; }
 

@@ -1,10 +1,10 @@
 package dev.siebrenvde.doylcraft;
 
 import de.maxhenkel.voicechat.api.BukkitVoicechatService;
+import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
-import github.scarsz.discordsrv.DiscordSRV;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -18,9 +18,12 @@ public final class DoylCraft extends JavaPlugin {
     private static DoylCraft instance;
     public static ComponentLogger LOGGER;
 
+    /* Addons */
+    private DiscordSRVAddon discordSRVAddon;
+
+    /* Handlers */
     private MemoryHandler memoryHandler;
     private LuckPermsHandler lpHandler;
-    private DiscordHandler discordHandler;
     private WorldGuardHandler wgHandler;
     private ScoreboardHandler sbHandler;
     private BlueMapHandler blueMapHandler;
@@ -28,8 +31,8 @@ public final class DoylCraft extends JavaPlugin {
     public void onEnable() {
         instance = this;
         LOGGER = getComponentLogger();
+        initAddons();
         initHandlers();
-        DiscordSRV.api.subscribe(new DiscordSRVListener());
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
         if(voicechatService != null) {
             voicechatService.registerPlugin(new VoicechatHandler());
@@ -38,10 +41,13 @@ public final class DoylCraft extends JavaPlugin {
         registerEvents();
     }
 
+    private void initAddons() {
+        discordSRVAddon = new DiscordSRVAddon();
+    }
+
     private void initHandlers() {
         memoryHandler = new MemoryHandler();
         lpHandler = new LuckPermsHandler(this);
-        discordHandler = new DiscordHandler();
         wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
         blueMapHandler = new BlueMapHandler();
@@ -61,9 +67,9 @@ public final class DoylCraft extends JavaPlugin {
 
     private void registerEvents() {
         registerListeners(
-            new PetDamageEvent(discordHandler),
-            new AFKEvent(discordHandler),
-            new ChatEvent(discordHandler),
+            new PetDamageEvent(discordSRVAddon),
+            new AFKEvent(discordSRVAddon),
+            new ChatEvent(discordSRVAddon),
             new ConnectionEvents(this),
             new BullseyeEvent(),
             new TameableInteractEvent(memoryHandler),
@@ -82,7 +88,7 @@ public final class DoylCraft extends JavaPlugin {
 
     public MemoryHandler getMemoryHandler() { return memoryHandler; }
     public LuckPermsHandler getLuckPermsHandler() { return lpHandler; }
-    public DiscordHandler getDiscordHandler() { return discordHandler; }
+    public DiscordSRVAddon getDiscordSRVAddon() { return discordSRVAddon; }
     public WorldGuardHandler getWorldGuardHandler() { return wgHandler; }
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
 

@@ -1,6 +1,6 @@
 package dev.siebrenvde.doylcraft.events;
 
-import dev.siebrenvde.doylcraft.handlers.DiscordHandler;
+import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.utils.Components;
 import github.scarsz.discordsrv.dependencies.jda.api.utils.MarkdownSanitizer;
 import net.kyori.adventure.text.Component;
@@ -25,13 +25,13 @@ import static net.kyori.adventure.text.Component.text;
 
 public class PetDamageEvent implements Listener {
 
-    private final DiscordHandler discordHandler;
+    private final DiscordSRVAddon discordSRVAddon;
     private final DecimalFormat df;
 
     private static final TextColor MESSAGE_COLOUR = NamedTextColor.RED;
 
-    public PetDamageEvent(DiscordHandler discordHandler) {
-        this.discordHandler = discordHandler;
+    public PetDamageEvent(DiscordSRVAddon discordSRVAddon) {
+        this.discordSRVAddon = discordSRVAddon;
         df = new DecimalFormat("#.#");
         df.setRoundingMode(RoundingMode.CEILING);
     }
@@ -95,7 +95,7 @@ public class PetDamageEvent implements Listener {
             );
         }
 
-        discordHandler.sendDiscordMessage("pet-log",
+        discordSRVAddon.sendDiscordMessage("pet-log",
             text(":heart: ")
                 .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
                 .append(text(" did " + df.format(damage) + " damage to "))
@@ -124,7 +124,7 @@ public class PetDamageEvent implements Listener {
                     .color(MESSAGE_COLOUR)
             );
 
-            discordHandler.sendDiscordMessage("pet-log",
+            discordSRVAddon.sendDiscordMessage("pet-log",
                 text(":skull: ")
                     .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
                     .append(text(" killed "))
