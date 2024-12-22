@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.handlers;
+package dev.siebrenvde.doylcraft.addons;
 
 import com.earth2me.essentials.api.IWarps;
 import com.flowpowered.math.vector.Vector3d;
@@ -15,14 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Handler for managing BlueMap markers
+ * BlueMap addon for adding Essentials warp markers
  */
-public class BlueMapHandler {
+public class BlueMapAddon {
 
     private BlueMapAPI bluemap;
     private Map<BlueMapWorld, MarkerSet> markerSets;
 
-    public BlueMapHandler() {
+    public BlueMapAddon() {
         BlueMapAPI.onEnable(api -> {
             bluemap = api;
             markerSets = new HashMap<>();

@@ -5,7 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import dev.siebrenvde.doylcraft.handlers.WorldGuardHandler;
+import dev.siebrenvde.doylcraft.addons.WorldGuardAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -28,10 +28,10 @@ import static org.bukkit.Bukkit.getWorlds;
 @SuppressWarnings("UnstableApiUsage")
 public class PvPCommand {
 
-    private final WorldGuardHandler worldGuardHandler;
+    private final WorldGuardAddon worldGuardAddon;
 
-    public PvPCommand(WorldGuardHandler worldGuardHandler) {
-        this.worldGuardHandler = worldGuardHandler;
+    public PvPCommand(WorldGuardAddon worldGuardAddon) {
+        this.worldGuardAddon = worldGuardAddon;
     }
 
     public void register(Commands commands) {
@@ -133,13 +133,13 @@ public class PvPCommand {
     }
 
     private boolean getState(World world) {
-        ProtectedRegion region = worldGuardHandler.getOrCreateGlobalRegion(world);
+        ProtectedRegion region = worldGuardAddon.getOrCreateGlobalRegion(world);
         StateFlag.State state = region.getFlag(Flags.PVP);
         return state == StateFlag.State.ALLOW || state == null;
     }
 
     private void setState(World world, boolean state) {
-        ProtectedRegion region = worldGuardHandler.getOrCreateGlobalRegion(world);
+        ProtectedRegion region = worldGuardAddon.getOrCreateGlobalRegion(world);
         region.setFlag(Flags.PVP, state ? StateFlag.State.ALLOW : StateFlag.State.DENY);
     }
 

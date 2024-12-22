@@ -4,7 +4,7 @@ import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
-import dev.siebrenvde.doylcraft.handlers.VoicechatHandler;
+import dev.siebrenvde.doylcraft.addons.VoicechatAddon;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,7 +30,7 @@ public class ConnectionEvents implements Listener {
         Player player = event.getPlayer();
         scoreboardHandler.initPlayer(player);
         memoryHandler.addLoginTime(player);
-        VoicechatHandler.checkVoicechatInstalled(player);
+        VoicechatAddon.checkVoicechatInstalled(player);
         player.addCustomChatCompletions(
             discordSRVAddon.getMembers().stream()
                 .map(m -> "@" + m.getEffectiveName())

@@ -6,7 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
-import dev.siebrenvde.doylcraft.handlers.LuckPermsHandler;
+import dev.siebrenvde.doylcraft.addons.LuckPermsAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -22,9 +22,9 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("UnstableApiUsage")
 public class GroupCommand {
 
-    private final LuckPermsHandler luckPermsHandler;
+    private final LuckPermsAddon luckPermsAddon;
 
-    public GroupCommand(LuckPermsHandler luckPermsHandler) { this.luckPermsHandler = luckPermsHandler; }
+    public GroupCommand(LuckPermsAddon luckPermsAddon) { this.luckPermsAddon = luckPermsAddon; }
 
     public void register(Commands commands) {
 
@@ -50,7 +50,7 @@ public class GroupCommand {
         OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
 
         try {
-            luckPermsHandler.getPlayerGroup(player).thenAcceptAsync(group -> {
+            luckPermsAddon.getPlayerGroup(player).thenAcceptAsync(group -> {
 
                 if(group != null) {
                     sender.sendMessage(
@@ -86,7 +86,7 @@ public class GroupCommand {
         OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
         String group = context.getArgument("group", String.class);
 
-        if(!luckPermsHandler.groupExists(group)) {
+        if(!luckPermsAddon.groupExists(group)) {
             sender.sendMessage(
                 Component.text("Group ", Colours.ERROR)
                     .append(Component.text(group, Colours.DATA))
@@ -95,7 +95,7 @@ public class GroupCommand {
         }
 
         try {
-            luckPermsHandler.setPlayerGroup(player, group);
+            luckPermsAddon.setPlayerGroup(player, group);
             sender.sendMessage(
                 Component.text("Changed ", Colours.GENERIC)
                     .append(Components.entity(player).color(Colours.DATA))
@@ -116,7 +116,7 @@ public class GroupCommand {
     }
 
     private CompletableFuture<Suggestions> getGroups(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        luckPermsHandler.getGroups().stream().map(Group::getName).filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase())).forEach(builder::suggest);
+        luckPermsAddon.getGroups().stream().map(Group::getName).filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase())).forEach(builder::suggest);
         return builder.buildFuture();
     }
 

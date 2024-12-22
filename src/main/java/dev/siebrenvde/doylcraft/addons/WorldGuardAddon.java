@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.handlers;
+package dev.siebrenvde.doylcraft.addons;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -8,11 +8,11 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.World;
 
-public class WorldGuardHandler {
+public class WorldGuardAddon {
 
     private RegionContainer container;
 
-    public WorldGuardHandler() {
+    public WorldGuardAddon() {
         container = WorldGuard.getInstance().getPlatform().getRegionContainer();
     }
 

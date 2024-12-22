@@ -1,7 +1,7 @@
 package dev.siebrenvde.doylcraft;
 
 import de.maxhenkel.voicechat.api.BukkitVoicechatService;
-import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
+import dev.siebrenvde.doylcraft.addons.*;
 import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.events.*;
 import dev.siebrenvde.doylcraft.handlers.*;
@@ -19,14 +19,14 @@ public final class DoylCraft extends JavaPlugin {
     public static ComponentLogger LOGGER;
 
     /* Addons */
+    private BlueMapAddon blueMapAddon;
     private DiscordSRVAddon discordSRVAddon;
+    private LuckPermsAddon luckPermsAddon;
+    private WorldGuardAddon worldGuardAddon;
 
     /* Handlers */
     private MemoryHandler memoryHandler;
-    private LuckPermsHandler lpHandler;
-    private WorldGuardHandler wgHandler;
     private ScoreboardHandler sbHandler;
-    private BlueMapHandler blueMapHandler;
 
     public void onEnable() {
         instance = this;
@@ -35,22 +35,22 @@ public final class DoylCraft extends JavaPlugin {
         initHandlers();
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
         if(voicechatService != null) {
-            voicechatService.registerPlugin(new VoicechatHandler());
+            voicechatService.registerPlugin(new VoicechatAddon());
         }
         registerCommands();
         registerEvents();
     }
 
     private void initAddons() {
+        blueMapAddon = new BlueMapAddon();
         discordSRVAddon = new DiscordSRVAddon();
+        luckPermsAddon = new LuckPermsAddon(this);
+        worldGuardAddon = new WorldGuardAddon();
     }
 
     private void initHandlers() {
         memoryHandler = new MemoryHandler();
-        lpHandler = new LuckPermsHandler(this);
-        wgHandler = new WorldGuardHandler();
         sbHandler = new ScoreboardHandler();
-        blueMapHandler = new BlueMapHandler();
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -59,9 +59,9 @@ public final class DoylCraft extends JavaPlugin {
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             GetOwnerCommand.register(commands, memoryHandler);
-            new GroupCommand(lpHandler).register(commands);
+            new GroupCommand(luckPermsAddon).register(commands);
             new PlayTimeCommand(memoryHandler).register(commands);
-            new PvPCommand(wgHandler).register(commands);
+            new PvPCommand(worldGuardAddon).register(commands);
         });
     }
 
@@ -76,7 +76,7 @@ public final class DoylCraft extends JavaPlugin {
             new DismountEntityEvent(),
             new MobGriefingEvents(),
             new VillagerDeathEvent(),
-            new WarpModifyListener(blueMapHandler)
+            new WarpModifyListener(blueMapAddon)
         );
     }
 
@@ -87,9 +87,9 @@ public final class DoylCraft extends JavaPlugin {
     }
 
     public MemoryHandler getMemoryHandler() { return memoryHandler; }
-    public LuckPermsHandler getLuckPermsHandler() { return lpHandler; }
+    public LuckPermsAddon getLuckPermsAddon() { return luckPermsAddon; }
     public DiscordSRVAddon getDiscordSRVAddon() { return discordSRVAddon; }
-    public WorldGuardHandler getWorldGuardHandler() { return wgHandler; }
+    public WorldGuardAddon getWorldGuardAddon() { return worldGuardAddon; }
     public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
 
     public static DoylCraft getInstance() { return instance; }

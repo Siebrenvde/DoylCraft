@@ -1,6 +1,6 @@
 package dev.siebrenvde.doylcraft.events;
 
-import dev.siebrenvde.doylcraft.handlers.BlueMapHandler;
+import dev.siebrenvde.doylcraft.addons.BlueMapAddon;
 import net.essentialsx.api.v2.events.WarpModifyEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,18 +10,18 @@ import org.bukkit.event.Listener;
  */
 public class WarpModifyListener implements Listener {
 
-    private final BlueMapHandler blueMapHandler;
+    private final BlueMapAddon blueMapAddon;
 
-    public WarpModifyListener(BlueMapHandler blueMapHandler) {
-        this.blueMapHandler = blueMapHandler;
+    public WarpModifyListener(BlueMapAddon blueMapAddon) {
+        this.blueMapAddon = blueMapAddon;
     }
 
     @EventHandler
     private void onWarpModify(WarpModifyEvent event) {
         switch (event.getCause()) {
-            case CREATE -> blueMapHandler.addMarker(event.getWarpName(), event.getNewLocation());
-            case DELETE -> blueMapHandler.removeMarker(event.getWarpName(), event.getOldLocation());
-            case UPDATE -> blueMapHandler.updateMarker(event.getWarpName(), event.getOldLocation(), event.getNewLocation());
+            case CREATE -> blueMapAddon.addMarker(event.getWarpName(), event.getNewLocation());
+            case DELETE -> blueMapAddon.removeMarker(event.getWarpName(), event.getOldLocation());
+            case UPDATE -> blueMapAddon.updateMarker(event.getWarpName(), event.getOldLocation(), event.getNewLocation());
         }
     }
 

@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.handlers;
+package dev.siebrenvde.doylcraft.addons;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
 import net.luckperms.api.LuckPerms;
@@ -13,11 +13,11 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class LuckPermsHandler {
+public class LuckPermsAddon {
 
     private final LuckPerms luckPerms;
 
-    public LuckPermsHandler(DoylCraft doylCraft) {
+    public LuckPermsAddon(DoylCraft doylCraft) {
         luckPerms = doylCraft.getServer().getServicesManager().load(LuckPerms.class);
     }
 

@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.handlers;
+package dev.siebrenvde.doylcraft.addons;
 
 import de.maxhenkel.voicechat.api.VoicechatConnection;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import static net.kyori.adventure.text.Component.text;
 
-public class VoicechatHandler implements VoicechatPlugin {
+public class VoicechatAddon implements VoicechatPlugin {
 
     private static final String MODRINTH_URL = "https://modrinth.com/plugin/simple-voice-chat";
     private static final String CURSEFORGE_URL = "https://www.curseforge.com/minecraft/mc-mods/simple-voice-chat";
