@@ -8,14 +8,16 @@ import dev.siebrenvde.doylcraft.handlers.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import lombok.Getter;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@Getter
 public final class DoylCraft extends JavaPlugin {
 
-    private static DoylCraft instance;
+    @Getter private static DoylCraft instance;
     public static ComponentLogger LOGGER;
 
     /* Addons */
@@ -26,7 +28,7 @@ public final class DoylCraft extends JavaPlugin {
 
     /* Handlers */
     private MemoryHandler memoryHandler;
-    private ScoreboardHandler sbHandler;
+    private ScoreboardHandler scoreboardHandler;
 
     public void onEnable() {
         instance = this;
@@ -50,7 +52,7 @@ public final class DoylCraft extends JavaPlugin {
 
     private void initHandlers() {
         memoryHandler = new MemoryHandler();
-        sbHandler = new ScoreboardHandler();
+        scoreboardHandler = new ScoreboardHandler();
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -85,13 +87,5 @@ public final class DoylCraft extends JavaPlugin {
             getServer().getPluginManager().registerEvents(listener, this);
         }
     }
-
-    public MemoryHandler getMemoryHandler() { return memoryHandler; }
-    public LuckPermsAddon getLuckPermsAddon() { return luckPermsAddon; }
-    public DiscordSRVAddon getDiscordSRVAddon() { return discordSRVAddon; }
-    public WorldGuardAddon getWorldGuardAddon() { return worldGuardAddon; }
-    public ScoreboardHandler getScoreboardHandler() { return sbHandler; }
-
-    public static DoylCraft getInstance() { return instance; }
 
 }
