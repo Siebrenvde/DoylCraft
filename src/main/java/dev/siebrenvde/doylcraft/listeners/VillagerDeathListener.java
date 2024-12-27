@@ -1,11 +1,14 @@
 package dev.siebrenvde.doylcraft.listeners;
 
+import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.utils.Components;
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.damage.DamageSource;
@@ -73,18 +76,27 @@ public class VillagerDeathListener implements Listener {
             }
         }
 
-        TranslatableComponent.Builder builder = Component.translatable();
-        builder.key(translationKey).arguments(arguments);
-        builder.colorIfAbsent(NamedTextColor.GREEN);
         Location loc = event.getEntity().getLocation();
-        builder.hoverEvent(HoverEvent.showText(Component.text(String.format(
+        String formattedLocation = String.format(
             "X: %.2f, Y: %.2f, Z: %.2f",
             loc.x(),
             loc.y(),
             loc.z()
-        ))));
+        );
 
-        Bukkit.broadcast(builder.build());
+        TranslatableComponent.Builder builder = Component.translatable();
+        builder.key(translationKey).arguments(arguments);
+        builder.colorIfAbsent(NamedTextColor.GREEN);
+        builder.hoverEvent(HoverEvent.showText(Component.text(formattedLocation)));
+        TranslatableComponent component = builder.build();
+
+        Bukkit.broadcast(component);
+
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor(PlainTextComponentSerializer.plainText().serialize(component));
+        embed.setDescription("A villager died at " + formattedLocation);
+        DoylCraft.getInstance().getDiscordSRVAddon().sendDiscordEmbed("global", embed);
+
     }
 
 }
