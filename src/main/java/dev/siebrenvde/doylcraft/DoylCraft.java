@@ -92,7 +92,8 @@ public final class DoylCraft extends JavaPlugin {
             new MobGriefingListener(),
             new VillagerDeathListener(),
             new WarpModifyListener(blueMapAddon),
-            new SilenceEntityListener()
+            new SilenceEntityListener(),
+            new PlayerSleepListener()
         );
     }
 
