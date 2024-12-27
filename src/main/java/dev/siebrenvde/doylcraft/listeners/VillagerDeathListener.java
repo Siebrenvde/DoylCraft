@@ -21,6 +21,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Listener for {@link EntityDeathEvent}
+ * <p>
+ * Broadcasts a message when a villager dies
+ */
 @SuppressWarnings("UnstableApiUsage")
 public class VillagerDeathListener implements Listener {
 

@@ -6,7 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 /**
- * Listener for Essentials' WarpModifyEvent
+ * Listener for Essentials' {@link WarpModifyEvent}
+ * <p>
+ * Updates the BlueMap marker set when a warp is added, removed or updated
  */
 public class WarpModifyListener implements Listener {
 

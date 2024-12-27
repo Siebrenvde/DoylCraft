@@ -15,6 +15,12 @@ import java.time.format.DateTimeFormatter;
 
 public class Components {
 
+    /**
+     * Builds an entity component onto an existing {@link Component}
+     * @param component the component to convert
+     * @param entity the entity
+     * @return a new entity component
+     */
     public static Component entity(Component component, Entity entity) {
         return Component.text()
             .append(component)
@@ -27,6 +33,11 @@ public class Components {
             .build();
     }
 
+    /**
+     * Builds an entity component
+     * @param entity the entity
+     * @return a new entity component
+     */
     public static Component entity(Entity entity) {
         return entity(
             entity instanceof Player player
@@ -38,10 +49,20 @@ public class Components {
         );
     }
 
+    /**
+     * Builds an entity component from a {@link Player}
+     * @param player the player
+     * @return a new entity component
+     */
     public static Component entity(Player player) {
         return entity((Entity) player);
     }
 
+    /**
+     * Builds an entity component from an {@link OfflinePlayer}
+     * @param offlinePlayer the player
+     * @return a new entity component
+     */
     public static Component entity(OfflinePlayer offlinePlayer) {
         if(offlinePlayer == null || offlinePlayer.getName() == null) return Component.text("Unknown Player");
         if(offlinePlayer.isOnline()) return entity(offlinePlayer.getPlayer());
@@ -56,10 +77,20 @@ public class Components {
             .build();
     }
 
+    /**
+     * Builds a world name component
+     * @param world the world
+     * @return a new world name component
+     */
     public static Component worldName(World world) {
         return Component.text(world.getKey().getKey()).hoverEvent(HoverEvent.showText(Component.text(world.getKey().toString())));
     }
 
+    /**
+     * Builds an elapsed time component
+     * @param secondsL the elapsed time in seconds
+     * @return a new elapsed time component
+     */
     public static Component elapsedTime(long secondsL) {
 
         // https://stackoverflow.com/questions/19667473/
@@ -99,12 +130,23 @@ public class Components {
         return Component.text(s);
     }
 
+    /**
+     * Builds a timestamp component
+     * @param timestamp the timestamp in milliseconds since the Unix epoch
+     * @return a new timestamp component
+     */
     public static Component timestamp(long timestamp) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a").withZone(ZoneId.from(ZoneOffset.UTC));
         return Component.text(formatter.format(Instant.ofEpochMilli(timestamp)));
     }
 
-    public static Component error(Component message, Exception exception) {
+    /**
+     * Builds an exception component
+     * @param message the message to show the command sender
+     * @param exception the exception
+     * @return a new exception component
+     */
+    public static Component exception(Component message, Exception exception) {
         TextComponent.Builder builder = Component.text();
         builder.content(exception.getClass().getSimpleName()).color(Colours.ERROR);
         if(exception.getMessage() != null) {
@@ -113,8 +155,5 @@ public class Components {
         }
         return message.hoverEvent(HoverEvent.showText(builder.build()));
     }
-
-    public static Component error(String message, Exception e) { return error(Component.text(message, Colours.ERROR), e); }
-    public static Component error(String message) { return Component.text(message, Colours.ERROR); }
 
 }

@@ -10,6 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.projectiles.ProjectileSource;
 
+/**
+ * Listener for {@link TargetHitEvent}
+ * <p>
+ * Broadcasts a message when a player hits a bullseye on a target block from at least 30 blocks away
+ */
 public class BullseyeListener implements Listener {
 
     @EventHandler

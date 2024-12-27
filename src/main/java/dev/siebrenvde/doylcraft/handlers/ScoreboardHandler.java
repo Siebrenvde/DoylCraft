@@ -17,6 +17,10 @@ public class ScoreboardHandler {
         objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
+    /**
+     * Set the player's death count on the scoreboard and display the scoreboard to them
+     * @param player the player
+     */
     public void initPlayer(Player player) {
         Score score = objective.getScore(player.getName());
         score.setScore(player.getStatistic(Statistic.DEATHS));

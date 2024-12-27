@@ -23,6 +23,15 @@ import java.text.DecimalFormat;
 import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 
+/**
+ * Listener for {@link EntityDamageByEntityEvent}
+ * <p>
+ * Sends a message to a pet's owner when it is damaged
+ * <br>
+ * Broadcasts a message to all online players if a pet is killed
+ * <br>
+ * Logs all damage and deaths to a Discord channel
+ */
 public class PetDamageListener implements Listener {
 
     private final DiscordSRVAddon discordSRVAddon;

@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 import static net.kyori.adventure.text.Component.*;
 import static org.bukkit.Bukkit.getWorlds;
 
+/**
+ * Command to toggle PvP on or off globally or for a specific world
+ */
 @SuppressWarnings("UnstableApiUsage")
 public class PvPCommand {
 

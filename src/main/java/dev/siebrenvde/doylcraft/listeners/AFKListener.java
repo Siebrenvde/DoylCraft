@@ -10,9 +10,14 @@ import org.bukkit.event.Listener;
 
 import java.awt.*;
 
+/**
+ * Listener for Essentials' {@link AfkStatusChangeEvent}
+ * <p>
+ * Sends an embed to the Discord game chat channel when a player goes AFK or returns from being AFK
+ */
 public class AFKListener implements Listener {
 
-    DiscordSRVAddon discordSRVAddon;
+    private final DiscordSRVAddon discordSRVAddon;
 
     public AFKListener(DiscordSRVAddon discordSRVAddon) {
         this.discordSRVAddon = discordSRVAddon;

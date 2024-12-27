@@ -33,7 +33,7 @@ public class BlueMapAddon {
 
     /**
      * Creates a new MarkerSet for a given world
-     * @param world The world the MarkerSet should be for
+     * @param world the world the MarkerSet should be for
      */
     private void createMarkerSet(BlueMapWorld world) {
         MarkerSet markerSet = new MarkerSet("Warps");
@@ -43,8 +43,8 @@ public class BlueMapAddon {
 
     /**
      * Adds a new warp marker at the given location
-     * @param label The name of the warp
-     * @param location The location of the warp
+     * @param label the name of the warp
+     * @param location the location of the warp
      */
     public void addMarker(String label, Location location) {
         bluemap.getWorld(location.getWorld()).ifPresent(world -> {
@@ -58,8 +58,8 @@ public class BlueMapAddon {
 
     /**
      * Removes an existing warp marker
-     * @param label The name of the warp
-     * @param location The location of the warp
+     * @param label the name of the warp
+     * @param location the location of the warp
      */
     public void removeMarker(String label, Location location) {
         bluemap.getWorld(location.getWorld()).ifPresent(world -> {
@@ -70,9 +70,9 @@ public class BlueMapAddon {
 
     /**
      * Updates an existing warp marker
-     * @param label The name of the warp
-     * @param oldLocation The old location of the warp
-     * @param newLocation The new location of the warp
+     * @param label the name of the warp
+     * @param oldLocation the old location of the warp
+     * @param newLocation the new location of the warp
      */
     public void updateMarker(String label, Location oldLocation, Location newLocation) {
         removeMarker(label, oldLocation);

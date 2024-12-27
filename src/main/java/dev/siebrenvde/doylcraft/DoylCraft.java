@@ -30,6 +30,7 @@ public final class DoylCraft extends JavaPlugin {
     private MemoryHandler memoryHandler;
     private ScoreboardHandler scoreboardHandler;
 
+    @Override
     public void onEnable() {
         instance = this;
         LOGGER = getComponentLogger();
@@ -43,6 +44,9 @@ public final class DoylCraft extends JavaPlugin {
         registerListeners();
     }
 
+    /**
+     * Initialise addon classes
+     */
     private void initAddons() {
         blueMapAddon = new BlueMapAddon();
         discordSRVAddon = new DiscordSRVAddon();
@@ -50,11 +54,17 @@ public final class DoylCraft extends JavaPlugin {
         worldGuardAddon = new WorldGuardAddon();
     }
 
+    /**
+     * Initialise handler classes
+     */
     private void initHandlers() {
         memoryHandler = new MemoryHandler();
         scoreboardHandler = new ScoreboardHandler();
     }
 
+    /**
+     * Register all commands using Brigadier
+     */
     @SuppressWarnings("UnstableApiUsage")
     private void registerCommands() {
         LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
@@ -67,6 +77,9 @@ public final class DoylCraft extends JavaPlugin {
         });
     }
 
+    /**
+     * Register all event listeners
+     */
     private void registerListeners() {
         registerListeners(
             new PetDamageListener(discordSRVAddon),
@@ -82,6 +95,10 @@ public final class DoylCraft extends JavaPlugin {
         );
     }
 
+    /**
+     * Register all listeners in an array
+     * @param listeners the listeners to register
+     */
     private void registerListeners(Listener... listeners) {
         for(Listener listener : listeners) {
             getServer().getPluginManager().registerEvents(listener, this);

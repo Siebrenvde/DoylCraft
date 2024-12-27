@@ -11,6 +11,15 @@ import org.bukkit.event.entity.EntityInteractEvent;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Listener for {@link EntityExplodeEvent}, {@link EntityChangeBlockEvent} and {@link EntityInteractEvent}
+ * <p>
+ * Prevents Creeper and Ghast explosions from destroying blocks
+ * <br>
+ * Prevents Endermen, Ravagers and Silverfish from destroying blocks
+ * <br>
+ * Prevents entities from trampling farmland
+ */
 public class MobGriefingListener implements Listener {
 
     @EventHandler

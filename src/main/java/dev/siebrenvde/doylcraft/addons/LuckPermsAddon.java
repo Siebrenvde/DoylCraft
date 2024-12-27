@@ -21,10 +21,17 @@ public class LuckPermsAddon {
         luckPerms = doylCraft.getServer().getServicesManager().load(LuckPerms.class);
     }
 
+    /**
+     * {@return a set of all groups}
+     */
     public Set<Group> getGroups() {
         return luckPerms.getGroupManager().getLoadedGroups();
     }
 
+    /**
+     * {@return the group of the provided player}
+     * @param player the player
+     */
     public CompletableFuture<String> getPlayerGroup(OfflinePlayer player) {
         return luckPerms.getUserManager().loadUser(player.getUniqueId())
             .thenApplyAsync(user -> {
@@ -35,6 +42,11 @@ public class LuckPermsAddon {
             });
     }
 
+    /**
+     * Set a player's group
+     * @param player the player
+     * @param groupName the name of the group
+     */
     public void setPlayerGroup(OfflinePlayer player, String groupName) {
         Group group = luckPerms.getGroupManager().getGroup(groupName);
         luckPerms.getUserManager().modifyUser(player.getUniqueId(), (User user) -> {
@@ -44,6 +56,10 @@ public class LuckPermsAddon {
         });
     }
 
+    /**
+     * {@return whether the provided group exists}
+     * @param group the group name to check
+     */
     public boolean groupExists(String group) {
         for(Group g : getGroups()) {
             if(g.getName().equalsIgnoreCase(group)) {

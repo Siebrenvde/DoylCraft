@@ -10,6 +10,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
+/**
+ * Listener for {@link PlayerInteractEntityEvent}
+ * <p>
+ * If a player executed {@link dev.siebrenvde.doylcraft.commands.GetOwnerCommand},
+ * sends them a message with the name of the entity's owner
+ */
 public class TameableInteractListener implements Listener {
 
     private final MemoryHandler memoryHandler;

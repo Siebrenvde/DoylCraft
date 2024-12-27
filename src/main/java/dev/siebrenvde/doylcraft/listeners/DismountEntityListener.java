@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 /**
+ * Listener for {@link PlayerInteractEntityEvent}
+ * <p>
  * Dismount an entity from a vehicle by shift-right-clicking the vehicle
  */
 public class DismountEntityListener implements Listener {

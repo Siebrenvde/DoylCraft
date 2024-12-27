@@ -25,20 +25,38 @@ public class DiscordSRVAddon {
         DiscordSRV.api.subscribe(new Listeners(discord));
     }
 
+    /**
+     * Send a message to a text channel
+     * @param textChannel the channel to send the message to
+     * @param message the message
+     */
     public void sendDiscordMessage(String textChannel, String message) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
         tc.sendMessage(message).queue();
     }
 
+    /**
+     * Send a {@link TextComponent} to a text channel
+     * @param textChannel the channel to send the message to
+     * @param message the message
+     */
     public void sendDiscordMessage(String textChannel, TextComponent message) {
         sendDiscordMessage(textChannel, PlainTextComponentSerializer.plainText().serialize(message));
     }
 
+    /**
+     * Send an embed to a text channel
+     * @param textChannel the channel to send the message to
+     * @param embed the embed
+     */
     public void sendDiscordEmbed(String textChannel, EmbedBuilder embed) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
         tc.sendMessageEmbeds(embed.build()).queue();
     }
 
+    /**
+     * {@return a list of members in the main guild}
+     */
     public List<Member> getMembers() {
         return discord.getMainGuild().getMembers();
     }

@@ -19,6 +19,9 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Command to get or set a player's group
+ */
 @SuppressWarnings("UnstableApiUsage")
 public class GroupCommand {
 
@@ -70,7 +73,7 @@ public class GroupCommand {
 
             });
         } catch(Exception exception) {
-            sender.sendMessage(Components.error(
+            sender.sendMessage(Components.exception(
                 Component.text("Failed to get ", Colours.ERROR)
                     .append(Component.text(player.getName(), Colours.DATA))
                     .append(Component.text("'s group.", Colours.ERROR)), exception
@@ -104,7 +107,7 @@ public class GroupCommand {
                     .append(Component.text(".", Colours.GENERIC))
             );
         } catch(Exception exception) {
-            sender.sendMessage(Components.error(
+            sender.sendMessage(Components.exception(
                 Component.text("Failed to change ", Colours.ERROR)
                     .append(Component.text(player.getName(), Colours.DATA))
                     .append(Component.text("'s group.", Colours.ERROR)), exception

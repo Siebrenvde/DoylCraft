@@ -39,6 +39,10 @@ public class VoicechatAddon implements VoicechatPlugin {
         VOICECHAT_VERSION = Bukkit.getServer().getPluginManager().getPlugin("voicechat").getPluginMeta().getVersion();
     }
 
+    /**
+     * Checks whether a player has voicechat installed and sends them a message if not
+     * @param player the player to check
+     */
     public static void checkVoicechatInstalled(Player player) {
         new BukkitRunnable() {
             @Override

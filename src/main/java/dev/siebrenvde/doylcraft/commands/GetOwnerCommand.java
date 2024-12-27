@@ -7,6 +7,9 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
+/**
+ * Command to get the owner of a clicked entity
+ */
 @SuppressWarnings("UnstableApiUsage")
 public class GetOwnerCommand {
 

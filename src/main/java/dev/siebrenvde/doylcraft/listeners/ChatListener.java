@@ -16,6 +16,11 @@ import org.bukkit.event.Listener;
 
 import java.util.regex.Pattern;
 
+/**
+ * Listener for {@link AsyncChatEvent}
+ * <p>
+ * Colours mentions of Discord members in blurple and adds a hover component with member info
+ */
 public class ChatListener implements Listener {
 
     private final DiscordSRVAddon discordSRVAddon;

@@ -13,6 +13,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.stream.Collectors;
 
+/**
+ * Listener for {@link PlayerJoinEvent} and {@link PlayerQuitEvent}
+ * <p>
+ * Initialises scoreboard data and login time, checks for Simple Voice Chat and sends Discord member completions
+ */
 public class ConnectionListener implements Listener {
 
     private final ScoreboardHandler scoreboardHandler;

@@ -16,6 +16,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * A {@link CustomArgumentType} that returns an {@link OfflinePlayer} and suggests all online players
+ */
 @SuppressWarnings("UnstableApiUsage")
 public class OfflinePlayerArgumentType implements CustomArgumentType<OfflinePlayer, String> {
 

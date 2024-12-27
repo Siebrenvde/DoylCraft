@@ -23,6 +23,9 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.kyori.adventure.text.Component.*;
 
+/**
+ * Command to get the current player's or another player's current and total time played
+ */
 @SuppressWarnings("UnstableApiUsage")
 public class PlayTimeCommand {
 
