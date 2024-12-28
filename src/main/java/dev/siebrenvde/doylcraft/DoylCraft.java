@@ -74,6 +74,7 @@ public final class DoylCraft extends JavaPlugin {
             new GroupCommand(luckPermsAddon).register(commands);
             new PlayTimeCommand(memoryHandler).register(commands);
             new PvPCommand(worldGuardAddon).register(commands);
+            DoylCraftCommand.register(commands);
         });
     }
 
