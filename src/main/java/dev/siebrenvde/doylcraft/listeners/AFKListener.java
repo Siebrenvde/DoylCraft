@@ -6,6 +6,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import net.ess3.api.events.AfkStatusChangeEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.awt.*;
@@ -23,7 +24,7 @@ public class AFKListener implements Listener {
         this.discordSRVAddon = discordSRVAddon;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAFKStateChange(AfkStatusChangeEvent event) {
         Player affected = event.getAffected().getBase();
         if(event.getValue()) {

@@ -12,6 +12,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ public class ChatListener implements Listener {
         this.discordSRVAddon = discordSRVAddon;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(AsyncChatEvent event) {
         Component component = event.originalMessage();
         String messageContent = ((TextComponent)component).content();

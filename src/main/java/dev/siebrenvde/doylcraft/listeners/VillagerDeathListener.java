@@ -17,6 +17,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +33,7 @@ import java.util.List;
 @SuppressWarnings("UnstableApiUsage")
 public class VillagerDeathListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onVillagerDeath(EntityDeathEvent event) {
         if(!(event.getEntity() instanceof Villager villager)) return;
 

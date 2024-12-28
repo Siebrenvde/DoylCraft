@@ -3,6 +3,7 @@ package dev.siebrenvde.doylcraft.listeners;
 import dev.siebrenvde.doylcraft.addons.BlueMapAddon;
 import net.essentialsx.api.v2.events.WarpModifyEvent;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 /**
@@ -18,7 +19,7 @@ public class WarpModifyListener implements Listener {
         this.blueMapAddon = blueMapAddon;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onWarpModify(WarpModifyEvent event) {
         switch (event.getCause()) {
             case CREATE -> blueMapAddon.addMarker(event.getWarpName(), event.getNewLocation());

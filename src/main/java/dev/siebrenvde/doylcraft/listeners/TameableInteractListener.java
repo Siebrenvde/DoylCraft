@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
@@ -24,7 +25,7 @@ public class TameableInteractListener implements Listener {
         this.memoryHandler = memoryHandler;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTameableInteract(PlayerInteractEntityEvent event) {
 
         Player player = event.getPlayer();
