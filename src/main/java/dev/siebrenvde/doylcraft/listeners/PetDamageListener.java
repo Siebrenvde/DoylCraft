@@ -65,7 +65,7 @@ public class PetDamageListener implements Listener {
         if(!(damagerE instanceof Player damager)) return;
 
         OfflinePlayer owner = (OfflinePlayer) pet.getOwner();
-        double damage = event.getDamage();
+        double damage = event.getFinalDamage();
         double health = pet.getHealth();
         TranslatableComponent petType = Component.translatable(pet.getType());
         Component petName = pet.customName();
