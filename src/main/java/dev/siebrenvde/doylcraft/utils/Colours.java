@@ -5,8 +5,8 @@ import net.kyori.adventure.text.format.TextColor;
 
 public class Colours {
 
-    public static final TextColor GENERIC = NamedTextColor.YELLOW;
-    public static final TextColor DATA = NamedTextColor.GRAY;
+    public static final TextColor GENERIC = NamedTextColor.WHITE;
+    public static final TextColor DATA = NamedTextColor.YELLOW;
 
     public static final TextColor POSITIVE = NamedTextColor.GREEN;
     public static final TextColor NEGATIVE = NamedTextColor.RED;
