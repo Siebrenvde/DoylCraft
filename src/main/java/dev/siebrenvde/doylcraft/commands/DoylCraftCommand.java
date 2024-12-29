@@ -4,7 +4,6 @@ import dev.siebrenvde.doylcraft.DoylCraft;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -40,13 +39,12 @@ public class DoylCraftCommand {
                         .executes(ctx -> {
                             Player player = (Player) ctx.getSource().getSender();
 
-                            // Spawns a Wandering Trader with the NATURAL spawn reason and deletes it after 1 tick
+                            // Spawns a Wandering Trader with the NATURAL spawn reason and immediately deletes it
                             player.getWorld().spawnEntity(
                                 player.getLocation(),
                                 EntityType.WANDERING_TRADER,
-                                CreatureSpawnEvent.SpawnReason.NATURAL,
-                                entity -> Bukkit.getScheduler().runTaskLater(DoylCraft.getInstance(), entity::remove, 1)
-                            );
+                                CreatureSpawnEvent.SpawnReason.NATURAL
+                            ).remove();
 
                             return SINGLE_SUCCESS;
                         })
