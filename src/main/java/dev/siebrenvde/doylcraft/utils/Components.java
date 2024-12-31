@@ -8,6 +8,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -87,57 +88,44 @@ public class Components {
     }
 
     /**
-     * Builds an elapsed time component
-     * @param secondsL the elapsed time in seconds
-     * @return a new elapsed time component
+     * Builds a duration component
+     * @param duration the duration
+     * @return a new duration component
      */
-    public static Component elapsedTime(long secondsL) {
-
-        // https://stackoverflow.com/questions/19667473/
-
-        long minutesL = secondsL / 60;
-        long hoursL = minutesL / 60;
-        long days = hoursL / 24;
-
-        long seconds = secondsL % 60;
-        long minutes = minutesL % 60;
-        long hours = hoursL % 24;
+    public static Component duration(Duration duration) {
+        long days = duration.toDays();
+        long hours = duration.toHoursPart();
+        long minutes = duration.toMinutesPart();
+        long seconds = duration.toSecondsPart();
 
         boolean hasDays = days > 0;
         boolean hasHours = hours > 0 || hasDays && (minutes > 0 || seconds > 0);
         boolean hasMinutes = minutes > 0 || hasHours && seconds > 0;
-        boolean hasSeconds = seconds > 0 || secondsL == 0;
+        boolean hasSeconds = seconds > 0 || duration.getSeconds() == 0;
 
-        String s = "";
+        StringBuilder builder = new StringBuilder();
 
-        if(hasDays) s += String.format("%s day%s", days, days != 1 ? "s" : "");
+        if(hasDays) appendTimeUnit(builder, days, "day");
+        if(hasHours) appendTimeUnit(builder, hours, "hour");
+        if(hasMinutes) appendTimeUnit(builder, minutes, "minute");
+        if(hasSeconds) appendTimeUnit(builder, seconds, "second");
 
-        if(hasHours) {
-            if(hasDays) s += ", ";
-            s += String.format("%s hour%s", hours, hours != 1 ? "s" : "");
-        }
+        return Component.text(builder.toString());
+    }
 
-        if(hasMinutes) {
-            if(hasHours) s += ", ";
-            s += String.format("%s minute%s", minutes, minutes != 1 ? "s" : "");
-        }
-
-        if(hasSeconds) {
-            if(hasMinutes) s += ", ";
-            s += String.format("%s second%s", seconds, seconds != 1 ? "s" : "");
-        }
-
-        return Component.text(s);
+    private static void appendTimeUnit(StringBuilder builder, long time, String unit) {
+        if(!builder.isEmpty()) builder.append(", ");
+        builder.append(String.format("%s %s%s", time, unit, time != 1 ? "s" : ""));
     }
 
     /**
      * Builds a timestamp component
-     * @param timestamp the timestamp in milliseconds since the Unix epoch
+     * @param instant the instant
      * @return a new timestamp component
      */
-    public static Component timestamp(long timestamp) {
+    public static Component timestamp(Instant instant) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a").withZone(ZoneId.from(ZoneOffset.UTC));
-        return Component.text(formatter.format(Instant.ofEpochMilli(timestamp)));
+        return Component.text(formatter.format(instant));
     }
 
     /**

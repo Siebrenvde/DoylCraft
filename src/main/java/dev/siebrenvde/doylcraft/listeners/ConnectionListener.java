@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.time.Instant;
 import java.util.stream.Collectors;
 
 /**
@@ -22,12 +23,10 @@ import java.util.stream.Collectors;
 public class ConnectionListener implements Listener {
 
     private final ScoreboardHandler scoreboardHandler;
-    private final MemoryHandler memoryHandler;
     private final DiscordSRVAddon discordSRVAddon;
 
     public ConnectionListener(DoylCraft doylCraft) {
         this.scoreboardHandler = doylCraft.getScoreboardHandler();
-        this.memoryHandler = doylCraft.getMemoryHandler();
         this.discordSRVAddon = doylCraft.getDiscordSRVAddon();
     }
 
@@ -35,7 +34,7 @@ public class ConnectionListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         scoreboardHandler.initPlayer(player);
-        memoryHandler.addLoginTime(player);
+        MemoryHandler.LOGIN_TIMES.put(player, Instant.now());
         VoicechatAddon.checkVoicechatInstalled(player);
         player.addCustomChatCompletions(
             discordSRVAddon.getMembers().stream()
@@ -46,7 +45,7 @@ public class ConnectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        memoryHandler.removeLoginTime(event.getPlayer());
+        MemoryHandler.LOGIN_TIMES.remove(event.getPlayer());
     }
 
 }

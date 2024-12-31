@@ -27,7 +27,6 @@ public final class DoylCraft extends JavaPlugin {
     private WorldGuardAddon worldGuardAddon;
 
     /* Handlers */
-    private MemoryHandler memoryHandler;
     private ScoreboardHandler scoreboardHandler;
 
     @Override
@@ -58,7 +57,6 @@ public final class DoylCraft extends JavaPlugin {
      * Initialise handler classes
      */
     private void initHandlers() {
-        memoryHandler = new MemoryHandler();
         scoreboardHandler = new ScoreboardHandler();
     }
 
@@ -70,9 +68,9 @@ public final class DoylCraft extends JavaPlugin {
         LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            GetOwnerCommand.register(commands, memoryHandler);
+            GetOwnerCommand.register(commands);
             new GroupCommand(luckPermsAddon).register(commands);
-            new PlayTimeCommand(memoryHandler).register(commands);
+            PlayTimeCommand.register(commands);
             new PvPCommand(worldGuardAddon).register(commands);
             DoylCraftCommand.register(commands);
         });
@@ -88,7 +86,7 @@ public final class DoylCraft extends JavaPlugin {
             new ChatListener(discordSRVAddon),
             new ConnectionListener(this),
             new BullseyeListener(),
-            new TameableInteractListener(memoryHandler),
+            new TameableInteractListener(),
             new DismountEntityListener(),
             new MobGriefingListener(),
             new VillagerDeathListener(),

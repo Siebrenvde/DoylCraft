@@ -19,21 +19,15 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
  */
 public class TameableInteractListener implements Listener {
 
-    private final MemoryHandler memoryHandler;
-
-    public TameableInteractListener(MemoryHandler memoryHandler) {
-        this.memoryHandler = memoryHandler;
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTameableInteract(PlayerInteractEntityEvent event) {
 
         Player player = event.getPlayer();
 
-        if(!memoryHandler.getOwnerListContains(player)) { return; }
+        if(!MemoryHandler.GET_OWNER_PLAYERS.contains(player)) return;
 
         event.setCancelled(true);
-        memoryHandler.removeGetOwnerPlayer(player);
+        MemoryHandler.GET_OWNER_PLAYERS.remove(player);
 
         Entity entity = event.getRightClicked();
 

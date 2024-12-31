@@ -1,39 +1,37 @@
 package dev.siebrenvde.doylcraft.handlers;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MemoryHandler {
 
-    // List of players who executed /getowner and have not yet interacted with an entity
-    private final List<Player> getOwnerPlayers = new ArrayList<>();
-    private final HashMap<Player, Long> loginTimes = new HashMap<>();
+    /**
+     * The list of players who executed {@link dev.siebrenvde.doylcraft.commands.GetOwnerCommand}
+     * and have not yet interacted with an entity
+     */
+    public static final List<Player> GET_OWNER_PLAYERS = new ArrayList<>();
 
-    public MemoryHandler() {}
+    /**
+     * The list of login times for players
+     */
+    public static final HashMap<Player, Instant> LOGIN_TIMES = new HashMap<>();
 
-    public boolean getOwnerListContains(Player player) { return getOwnerPlayers.contains(player); }
-    public void addGetOwnerPlayer(Player player) { getOwnerPlayers.add(player); }
-    public void removeGetOwnerPlayer(Player player) { getOwnerPlayers.remove(player); }
-    // Removes player from getOwnerPlayers after 5 seconds
-    public void startGetOwnerCountdown(Player player) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if(getOwnerListContains(player)) {
-                    removeGetOwnerPlayer(player);
-                }
-            }
-        }.runTaskLaterAsynchronously(DoylCraft.getInstance(), 200L);
+    /**
+     * Removes the player from {@link MemoryHandler#GET_OWNER_PLAYERS} after 10 seconds
+     * @param player the player
+     */
+    public static void startGetOwnerCountdown(Player player) {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(
+            DoylCraft.getInstance(),
+            () -> GET_OWNER_PLAYERS.remove(player),
+            200L
+        );
     }
-
-    public long getLoginTime(Player player) { return loginTimes.get(player); }
-    public long getOnlineTime(Player player) { return System.currentTimeMillis() - getLoginTime(player); }
-    public void addLoginTime(Player player) { loginTimes.put(player, System.currentTimeMillis()); }
-    public void removeLoginTime(Player player) { loginTimes.remove(player); }
 
 }
