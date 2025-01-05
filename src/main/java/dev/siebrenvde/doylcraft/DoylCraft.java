@@ -35,10 +35,6 @@ public final class DoylCraft extends JavaPlugin {
         LOGGER = getComponentLogger();
         initAddons();
         initHandlers();
-        BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
-        if(voicechatService != null) {
-            voicechatService.registerPlugin(new VoicechatAddon());
-        }
         registerCommands();
         registerListeners();
     }
@@ -51,6 +47,10 @@ public final class DoylCraft extends JavaPlugin {
         discordSRVAddon = new DiscordSRVAddon();
         luckPermsAddon = new LuckPermsAddon(this);
         worldGuardAddon = new WorldGuardAddon();
+        BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
+        if(voicechatService != null) {
+            voicechatService.registerPlugin(new VoicechatAddon());
+        }
     }
 
     /**
