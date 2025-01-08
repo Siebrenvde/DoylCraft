@@ -39,11 +39,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT"
+    compileOnly "io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT"
     compileOnly "net.luckperms:api:5.4"
     compileOnly "com.sk89q.worldguard:worldguard-bukkit:7.0.9"
     compileOnly "com.discordsrv:discordsrv:1.28.0"
-    compileOnly "net.essentialsx:EssentialsX:2.20.1"
+    compileOnly("net.essentialsx:EssentialsX:2.20.1") {
+        exclude module: "spigot-api"
+    }
     compileOnly "de.maxhenkel.voicechat:voicechat-api:2.5.0"
     compileOnly "de.bluecolored:bluemap-api:2.7.3"
 }
