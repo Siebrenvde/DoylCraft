@@ -50,7 +50,7 @@ public class VoicechatAddon implements VoicechatPlugin {
                 VoicechatConnection connection = serverApi.getConnectionOf(player.getUniqueId());
                 if (connection != null && !connection.isInstalled()) {
                     player.sendMessage(
-                        text(String.format("Simple Voice Chat (%s) is supported on this server.", VOICECHAT_VERSION), NamedTextColor.GOLD)
+                        text(String.format("Simple Voice Chat (%s) is supported on this server", VOICECHAT_VERSION), NamedTextColor.GOLD)
                             .append(Component.newline())
                             .append(text("You can download it from "))
                             .append(
@@ -66,7 +66,6 @@ public class VoicechatAddon implements VoicechatPlugin {
                                     .clickEvent(ClickEvent.openUrl(CURSEFORGE_URL))
                                     .hoverEvent(HoverEvent.showText(text(CURSEFORGE_URL)))
                             )
-                            .append(text("."))
                     );
                 }
             }

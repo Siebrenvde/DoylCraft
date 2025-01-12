@@ -61,13 +61,12 @@ public class GroupCommand {
                             .append(Components.entity(player).color(Colours.DATA))
                             .append(Component.text(" is a member of ", Colours.GENERIC))
                             .append(Component.text(group, Colours.DATA))
-                            .append(Component.text(".", Colours.GENERIC))
                     );
                 } else {
                     sender.sendMessage(
                         Component.empty()
                             .append(Components.entity(player).color(Colours.DATA))
-                            .append(Component.text(" is not a member of any group.", Colours.GENERIC))
+                            .append(Component.text(" is not a member of any group", Colours.GENERIC))
                     );
                 }
 
@@ -76,7 +75,7 @@ public class GroupCommand {
             sender.sendMessage(Components.exception(
                 Component.text("Failed to get ", Colours.ERROR)
                     .append(Component.text(player.getName(), Colours.DATA))
-                    .append(Component.text("'s group.", Colours.ERROR)), exception
+                    .append(Component.text("'s group", Colours.ERROR)), exception
             ));
             exception.printStackTrace();
         }
@@ -93,7 +92,7 @@ public class GroupCommand {
             sender.sendMessage(
                 Component.text("Group ", Colours.ERROR)
                     .append(Component.text(group, Colours.DATA))
-                    .append(Component.text(" does not exist.", Colours.ERROR))
+                    .append(Component.text(" does not exist", Colours.ERROR))
             );
         }
 
@@ -104,13 +103,12 @@ public class GroupCommand {
                     .append(Components.entity(player).color(Colours.DATA))
                     .append(Component.text("'s group to ", Colours.GENERIC))
                     .append(Component.text(group, Colours.DATA))
-                    .append(Component.text(".", Colours.GENERIC))
             );
         } catch(Exception exception) {
             sender.sendMessage(Components.exception(
                 Component.text("Failed to change ", Colours.ERROR)
                     .append(Component.text(player.getName(), Colours.DATA))
-                    .append(Component.text("'s group.", Colours.ERROR)), exception
+                    .append(Component.text("'s group", Colours.ERROR)), exception
             ));
             exception.printStackTrace();
         }

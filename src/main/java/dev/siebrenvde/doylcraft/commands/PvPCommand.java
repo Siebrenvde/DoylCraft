@@ -84,7 +84,6 @@ public class PvPCommand {
                             text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
                         ))
                 )
-                .append(text("."))
             );
             return Command.SINGLE_SUCCESS;
         }
@@ -112,8 +111,7 @@ public class PvPCommand {
                             HoverEvent.Action.SHOW_TEXT,
                             text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
                         ))
-                )
-                .append(Component.text(".")))
+                ))
         );
 
         return Command.SINGLE_SUCCESS;
@@ -127,9 +125,8 @@ public class PvPCommand {
         sender.sendMessage(
             empty().color(Colours.GENERIC)
                 .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
-                .append(Component.text(" PvP in ")
+                .append(Component.text(" PvP in "))
                 .append(Components.worldName(world).color(Colours.DATA))
-                .append(Component.text(".")))
         );
 
         return Command.SINGLE_SUCCESS;
@@ -161,8 +158,7 @@ public class PvPCommand {
                     JoinConfiguration.separator(Component.text(", ", Colours.GENERIC)),
                     worlds.stream().map(world -> Components.worldName(world).color(Colours.DATA)).collect(Collectors.toList())
                 )
-            )
-            .append(text(".", Colours.GENERIC));
+            );
     }
 
 }

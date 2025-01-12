@@ -39,7 +39,6 @@ public class TameableInteractListener implements Listener {
                     .append(Components.entity(entity).color(Colours.DATA))
                     .append(Component.text("'s owner is ", Colours.GENERIC))
                     .append(Components.entity(owner).color(Colours.DATA))
-                    .append(Component.text(".", Colours.GENERIC))
                 );
                 return;
             }
@@ -48,7 +47,7 @@ public class TameableInteractListener implements Listener {
         player.sendMessage(
             Component.empty()
             .append(Components.entity(entity).color(Colours.DATA))
-            .append(Component.text(" doesn't have an owner.", Colours.GENERIC))
+            .append(Component.text(" doesn't have an owner", Colours.GENERIC))
         );
 
     }

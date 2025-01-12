@@ -25,10 +25,10 @@ public class GetOwnerCommand {
                     if(!GET_OWNER_PLAYERS.contains(player)) {
                         GET_OWNER_PLAYERS.add(player);
                         MemoryHandler.startGetOwnerCountdown(player);
-                        player.sendMessage(Component.text("Right click a pet to get its owner.", Colours.GENERIC));
+                        player.sendMessage(Component.text("Right click a pet to get its owner", Colours.GENERIC));
                     } else {
                         GET_OWNER_PLAYERS.remove(player);
-                        player.sendMessage(Component.text("Disabled owner viewer.", Colours.GENERIC));
+                        player.sendMessage(Component.text("Disabled owner viewer", Colours.GENERIC));
                     }
 
                     return Command.SINGLE_SUCCESS;

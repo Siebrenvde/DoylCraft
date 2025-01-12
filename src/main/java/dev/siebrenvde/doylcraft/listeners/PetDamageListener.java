@@ -75,7 +75,6 @@ public class PetDamageListener implements Listener {
                 text("You did " + df.format(damage) + " damage to ")
                     .append(petName == null ? text("your ") : empty())
                     .append(Components.entity(pet))
-                    .append(text("."))
                     .color(MESSAGE_COLOUR)
             );
         } else {
@@ -86,7 +85,6 @@ public class PetDamageListener implements Listener {
                         .append(text(" did " + df.format(damage) + " damage to "))
                         .append(petName == null ? text("your ") : empty())
                         .append(Components.entity(pet))
-                        .append(text("."))
                         .color(MESSAGE_COLOUR)
                 );
             }
@@ -100,7 +98,6 @@ public class PetDamageListener implements Listener {
                         : empty()
                     )
                     .append(Components.entity(pet))
-                    .append(text("."))
                     .color(MESSAGE_COLOUR)
             );
         }
@@ -113,7 +110,6 @@ public class PetDamageListener implements Listener {
                 .append(text(" ("))
                 .append(petName != null ? petType.append(text(", ")) : empty())
                 .append(text(MarkdownSanitizer.escape(owner.getName() != null ? owner.getName() : "Unknown Player", true)))
-                .append(text(")."))
         );
 
         if((health - damage) <= 0.0) {
@@ -130,7 +126,6 @@ public class PetDamageListener implements Listener {
                         : empty()
                     )
                     .append(Components.entity(pet))
-                    .append(text("."))
                     .color(MESSAGE_COLOUR)
             );
 
@@ -142,7 +137,7 @@ public class PetDamageListener implements Listener {
                     .append(text(" ("))
                     .append(petName != null ? petType.append(text(", ")) : empty())
                     .append(text(MarkdownSanitizer.escape(owner.getName() != null ? owner.getName() : "Unknown Player", true)))
-                    .append(text(")."))
+                    .append(text(")"))
             );
         }
 
