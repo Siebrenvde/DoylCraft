@@ -86,7 +86,7 @@ public final class DoylCraft extends JavaPlugin {
             new ChatListener(discordSRVAddon),
             new ConnectionListener(this),
             new BullseyeListener(),
-            new TameableInteractListener(),
+            new PlayerInteractEntityListener(),
             new DismountEntityListener(),
             new MobGriefingListener(),
             new VillagerDeathListener(),
