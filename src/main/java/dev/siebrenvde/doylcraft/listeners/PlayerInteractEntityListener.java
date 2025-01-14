@@ -1,6 +1,7 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.commands.GetOwnerCommand;
+import dev.siebrenvde.doylcraft.commands.SilenceCommand;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -23,6 +24,16 @@ public class PlayerInteractEntityListener implements Listener {
             event.setCancelled(true);
             MemoryHandler.GET_OWNER_PLAYERS.remove(player);
             GetOwnerCommand.handle(player, entity);
+        }
+
+        if(MemoryHandler.SILENCE_PLAYERS.containsKey(player)) {
+            event.setCancelled(true);
+            switch(MemoryHandler.SILENCE_PLAYERS.get(player)) {
+                case QUERY -> SilenceCommand.query(player, entity);
+                case SET_TRUE -> SilenceCommand.set(player, entity, true);
+                case SET_FALSE -> SilenceCommand.set(player, entity, false);
+            }
+            MemoryHandler.SILENCE_PLAYERS.remove(player);
         }
     }
 

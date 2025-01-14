@@ -73,6 +73,7 @@ public final class DoylCraft extends JavaPlugin {
             PlayTimeCommand.register(commands);
             new PvPCommand(worldGuardAddon).register(commands);
             DoylCraftCommand.register(commands);
+            SilenceCommand.register(commands);
         });
     }
 
