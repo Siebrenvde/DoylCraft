@@ -1,15 +1,24 @@
 package dev.siebrenvde.doylcraft.commands;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
+import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
+import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import io.papermc.paper.util.Tick;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
+import java.util.List;
+
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
+import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
 import static net.kyori.adventure.text.Component.text;
 
@@ -45,6 +54,40 @@ public class DoylCraftCommand extends CommandBase {
                                 CreatureSpawnEvent.SpawnReason.NATURAL
                             ).remove();
                         }))
+                    )
+                )
+                .then(literal("utils")
+                    .then(literal("highlight_entities")
+                        .requires(source -> isPlayer(source) && hasPermission(source, "utils.highlight-entities"))
+                        .then(argument("entities", ArgumentTypes.entities())
+                            .then(argument("duration", ArgumentTypes.time())
+                                .executes(ctx -> withPlayer(ctx, player -> {
+                                    List<Entity> entities = resolveEntities(ctx);
+                                    entities.forEach(entity -> entity.setGlowing(true));
+
+                                    int duration = ctx.getArgument("duration", Integer.class);
+                                    ctx.getSource().getSender().sendMessage(
+                                        text()
+                                            .append(text("Highlighted "))
+                                            .append(text(entities.size(), Colours.DATA))
+                                            .append(text(" entities for "))
+                                            .append(duration >= 20
+                                                ? Components.duration(Tick.of(duration)).color(Colours.DATA)
+                                                : text(duration + " tick" + (duration != 1 ? "s" : ""), Colours.DATA)
+                                            )
+                                            .colorIfAbsent(Colours.GENERIC)
+                                    );
+
+                                    if(!entities.isEmpty()) {
+                                        Bukkit.getScheduler().runTaskLater(
+                                            DoylCraft.getInstance(),
+                                            () -> entities.forEach(entity -> entity.setGlowing(false)),
+                                            ctx.getArgument("duration", Integer.class)
+                                        );
+                                    }
+                                }))
+                            )
+                        )
                     )
                 )
                 .build(),
