@@ -6,7 +6,6 @@ import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
 import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
@@ -38,10 +37,9 @@ public class GetOwnerCommand extends CommandBase {
                 .then(Commands.argument("entities", ArgumentTypes.entities())
                     .requires(source -> source.getSender().hasPermission("doylcraft.command.getowner.selector"))
                     .executes(ctx -> withPlayer(ctx, player -> {
-                        ctx.getArgument("entities", EntitySelectorArgumentResolver.class)
-                            .resolve(ctx.getSource()).forEach(entity -> {
-                                handle(player, entity);
-                            });
+                        resolveEntities(ctx).forEach(entity -> {
+                            handle(player, entity);
+                        });
                     }))
                 )
                 .build(),

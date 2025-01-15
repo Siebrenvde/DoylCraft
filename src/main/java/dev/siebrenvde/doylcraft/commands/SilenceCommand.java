@@ -8,7 +8,6 @@ import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
@@ -39,8 +38,9 @@ public class SilenceCommand extends CommandBase {
                     .then(argument("entities", ArgumentTypes.entities())
                         .requires(source -> hasPermission(source, "query.selector"))
                         .executes(ctx -> withPlayer(ctx, player -> {
-                            ctx.getArgument("entities", EntitySelectorArgumentResolver.class)
-                                .resolve(ctx.getSource()).forEach(entity -> query(player, entity));
+                            resolveEntities(ctx).forEach(entity -> {
+                                query(player, entity);
+                            });
                         }))
                     )
                 )
@@ -66,10 +66,9 @@ public class SilenceCommand extends CommandBase {
                         .then(argument("entities", ArgumentTypes.entities())
                             .requires(source -> hasPermission(source, "set.selector"))
                             .executes(ctx -> withPlayer(ctx, player -> {
-                                ctx.getArgument("entities", EntitySelectorArgumentResolver.class)
-                                    .resolve(ctx.getSource()).forEach(entity -> {
-                                        set(player, entity, BoolArgumentType.getBool(ctx, "state"));
-                                    });
+                                resolveEntities(ctx).forEach(entity -> {
+                                    set(player, entity, BoolArgumentType.getBool(ctx, "state"));
+                                });
                             }))
                         )
                     )
