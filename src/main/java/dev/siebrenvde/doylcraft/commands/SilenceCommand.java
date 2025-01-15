@@ -1,6 +1,5 @@
 package dev.siebrenvde.doylcraft.commands;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
@@ -43,47 +42,44 @@ public class SilenceCommand extends CommandBase {
                     }))
                     .then(argument("entities", ArgumentTypes.entities())
                         .requires(source -> hasPermission(source, "query.selector"))
-                        .executes(ctx -> withPlayer(ctx, player -> {
-                            resolveEntities(ctx).stream()
-                                .filter(entity -> entity instanceof Animals)
-                                .forEach(entity -> query(player, entity));
-                        }))
-                        .then(literal("highlight")
-                            .then(argument("duration", ArgumentTypes.time())
-                                .executes(ctx -> {
-                                    // Gets all silent selected animals
-                                    List<Entity> entities = resolveEntities(ctx).stream()
-                                        .filter(entity -> entity instanceof Animals)
-                                        .filter(Entity::isSilent)
-                                        .toList();
+                        .then(argument("duration", ArgumentTypes.time())
+                            .executes(ctx -> withPlayer(ctx, player -> {
+                                // Gets all silent selected animals
+                                List<Entity> entities = resolveEntities(ctx).stream()
+                                    .filter(entity -> entity instanceof Animals)
+                                    .filter(Entity::isSilent)
+                                    .toList();
 
-                                    // Make entities glow
-                                    entities.forEach(entity -> entity.setGlowing(true));
+                                // Make entities glow
+                                entities.forEach(entity -> entity.setGlowing(true));
 
-                                    int duration = ctx.getArgument("duration", Integer.class);
-                                    ctx.getSource().getSender().sendMessage(
-                                        text()
-                                            .append(text("Highlighted "))
-                                            .append(text(entities.size(), Colours.DATA))
-                                            .append(text(" silenced animals for "))
-                                            .append(duration >= 20
-                                                ? Components.duration(Tick.of(duration)).color(Colours.DATA)
-                                                : text(duration + " tick" + (duration != 1 ? "s" : ""), Colours.DATA)
-                                            )
-                                            .colorIfAbsent(Colours.GENERIC)
+                                int duration = ctx.getArgument("duration", Integer.class);
+                                if(duration > 6000) {
+                                    player.sendMessage(text("Duration cannot be longer than 5 minutes (6000 ticks)", Colours.ERROR));
+                                    return;
+                                }
+
+                                player.sendMessage(
+                                    text()
+                                        .append(text("Highlighted "))
+                                        .append(text(entities.size(), Colours.DATA))
+                                        .append(text(" silenced animals for "))
+                                        .append(duration >= 20
+                                            ? Components.duration(Tick.of(duration)).color(Colours.DATA)
+                                            : text(duration + " tick" + (duration != 1 ? "s" : ""), Colours.DATA)
+                                        )
+                                        .colorIfAbsent(Colours.GENERIC)
+                                );
+
+                                // Remove glow after duration
+                                if(!entities.isEmpty()) {
+                                    Bukkit.getScheduler().runTaskLater(
+                                        DoylCraft.getInstance(),
+                                        () -> entities.forEach(entity -> entity.setGlowing(false)),
+                                        duration
                                     );
-
-                                    // Remove glow after duration
-                                    if(!entities.isEmpty()) {
-                                        Bukkit.getScheduler().runTaskLater(
-                                            DoylCraft.getInstance(),
-                                            () -> entities.forEach(entity -> entity.setGlowing(false)),
-                                            duration
-                                        );
-                                    }
-                                    return Command.SINGLE_SUCCESS;
-                                })
-                            )
+                                }
+                            }))
                         )
                     )
                 )
@@ -109,11 +105,33 @@ public class SilenceCommand extends CommandBase {
                         .then(argument("entities", ArgumentTypes.entities())
                             .requires(source -> hasPermission(source, "set.selector"))
                             .executes(ctx -> withPlayer(ctx, player -> {
-                                resolveEntities(ctx).stream()
+                                boolean toSilence = BoolArgumentType.getBool(ctx, "state");
+                                List<Entity> entities = resolveEntities(ctx).stream()
                                     .filter(entity -> entity instanceof Animals)
-                                    .forEach(entity -> {
-                                        set(player, entity, BoolArgumentType.getBool(ctx, "state"));
-                                    });
+                                    .filter(entity -> toSilence != entity.isSilent())
+                                    .toList();
+
+                                entities.forEach(entity -> {
+                                    entity.setSilent(toSilence);
+                                    entity.setGlowing(true);
+                                });
+
+                                player.sendMessage(
+                                    text()
+                                        .append(text(toSilence ? "Silenced " : "Unsilenced "))
+                                        .append(text(entities.size(), Colours.DATA))
+                                        .append(text(" animals"))
+                                        .colorIfAbsent(Colours.GENERIC)
+                                );
+
+                                // Remove glow after duration
+                                if(!entities.isEmpty()) {
+                                    Bukkit.getScheduler().runTaskLater(
+                                        DoylCraft.getInstance(),
+                                        () -> entities.forEach(entity -> entity.setGlowing(false)),
+                                        200 // 10 seconds
+                                    );
+                                }
                             }))
                         )
                     )
