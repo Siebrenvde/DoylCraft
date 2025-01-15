@@ -1,8 +1,8 @@
 package dev.siebrenvde.doylcraft.commands;
 
-import com.mojang.brigadier.Command;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
+import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
@@ -19,15 +19,13 @@ import static dev.siebrenvde.doylcraft.handlers.MemoryHandler.GET_OWNER_PLAYERS;
  * Command to get the owner of a clicked entity
  */
 @SuppressWarnings("UnstableApiUsage")
-public class GetOwnerCommand {
+public class GetOwnerCommand extends CommandBase {
 
     public static void register(Commands commands) {
         commands.register(
             Commands.literal("getowner")
-                .requires(source -> source.getSender() instanceof Player)
-                .executes(ctx -> {
-                    Player player = (Player) ctx.getSource().getSender();
-
+                .requires(CommandBase::isPlayer)
+                .executes(ctx -> withPlayer(ctx, player -> {
                     if(!GET_OWNER_PLAYERS.contains(player)) {
                         GET_OWNER_PLAYERS.add(player);
                         MemoryHandler.startGetOwnerCountdown(player);
@@ -36,21 +34,15 @@ public class GetOwnerCommand {
                         GET_OWNER_PLAYERS.remove(player);
                         player.sendMessage(Component.text("Disabled owner viewer", Colours.GENERIC));
                     }
-
-                    return Command.SINGLE_SUCCESS;
-                })
+                }))
                 .then(Commands.argument("entities", ArgumentTypes.entities())
                     .requires(source -> source.getSender().hasPermission("doylcraft.command.getowner.selector"))
-                    .executes(ctx -> {
+                    .executes(ctx -> withPlayer(ctx, player -> {
                         ctx.getArgument("entities", EntitySelectorArgumentResolver.class)
                             .resolve(ctx.getSource()).forEach(entity -> {
-                                handle(
-                                    (Player) ctx.getSource().getSender(),
-                                    entity
-                                );
+                                handle(player, entity);
                             });
-                        return Command.SINGLE_SUCCESS;
-                    })
+                    }))
                 )
                 .build(),
             "Get the owner of an entity"

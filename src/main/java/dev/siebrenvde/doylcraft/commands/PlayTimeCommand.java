@@ -7,6 +7,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
+import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -30,15 +31,13 @@ import static net.kyori.adventure.text.Component.*;
  * Command to get the current player's or another player's current and total time played
  */
 @SuppressWarnings("UnstableApiUsage")
-public class PlayTimeCommand {
+public class PlayTimeCommand extends CommandBase {
 
     public static void register(Commands commands) {
         commands.register(
             Commands.literal("playtime")
                 .requires(source -> source.getSender() instanceof Player)
-                .executes(ctx -> {
-                    Player player = (Player) ctx.getSource().getSender();
-
+                .executes(ctx -> withPlayer(ctx, player -> {
                     player.sendMessage(
                         text("Current Online Time: ", Colours.GENERIC)
                             .append(onlineTime(player).color(Colours.DATA))
@@ -46,9 +45,7 @@ public class PlayTimeCommand {
                             .append(text("Total Time Played: ", Colours.GENERIC))
                             .append(totalTime(player).color(Colours.DATA))
                     );
-
-                    return Command.SINGLE_SUCCESS;
-                })
+                }))
                 .then(Commands.argument("player", OfflinePlayerArgumentType.offlinePlayer())
                     .suggests(PlayTimeCommand::getOnlinePlayers)
                     .executes(ctx -> {

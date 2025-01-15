@@ -1,11 +1,12 @@
 package dev.siebrenvde.doylcraft.commands;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
+import dev.siebrenvde.doylcraft.utils.CommandBase;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
@@ -13,7 +14,7 @@ import static io.papermc.paper.command.brigadier.Commands.literal;
 import static net.kyori.adventure.text.Component.text;
 
 @SuppressWarnings("UnstableApiUsage")
-public class DoylCraftCommand {
+public class DoylCraftCommand extends CommandBase {
 
     private static final String GITHUB_URL = "https://github.com/Siebrenvde/DoylCraft";
 
@@ -33,26 +34,26 @@ public class DoylCraftCommand {
                     return SINGLE_SUCCESS;
                 })
                 .then(literal("debug")
-                    .requires(source -> source.getSender().hasPermission("doylcraft.command.debug"))
+                    .requires(source -> hasPermission(source, "debug"))
                     .then(literal("spawn_wandering_trader")
-                        .requires(source -> source.getSender() instanceof Player)
-                        .executes(ctx -> {
-                            Player player = (Player) ctx.getSource().getSender();
-
+                        .requires(CommandBase::isPlayer)
+                        .executes(ctx -> withPlayer(ctx, player -> {
                             // Spawns a Wandering Trader with the NATURAL spawn reason and immediately deletes it
                             player.getWorld().spawnEntity(
                                 player.getLocation(),
                                 EntityType.WANDERING_TRADER,
                                 CreatureSpawnEvent.SpawnReason.NATURAL
                             ).remove();
-
-                            return SINGLE_SUCCESS;
-                        })
+                        }))
                     )
                 )
                 .build(),
             "The DoylCraft command"
         );
+    }
+
+    private static boolean hasPermission(CommandSourceStack source, String permission) {
+        return source.getSender().hasPermission("doylcraft.command." + permission);
     }
 
 }

@@ -39,24 +39,32 @@ public class PvPCommand {
 
     public void register(Commands commands) {
         commands.register(
-                Commands.literal("pvp")
-                    .requires(source -> source.getSender().hasPermission("doylcraft.pvp.query"))
-                    .executes(this::queryAllWorldStates)
-                    .then(
-                        Commands.literal("on")
-                            .requires(source -> source.getSender().hasPermission("doylcraft.pvp.update"))
-                            .executes(ctx -> updateAllWorldStates(ctx, true))
-                            .then(Commands.argument("world", ArgumentTypes.world()).executes(ctx -> updateWorldState(ctx, true)))
-                    )
-                    .then(
-                        Commands.literal("off")
-                            .requires(source -> source.getSender().hasPermission("doylcraft.pvp.update"))
-                            .executes(ctx -> updateAllWorldStates(ctx, false))
-                            .then(Commands.argument("world", ArgumentTypes.world()).executes(ctx -> updateWorldState(ctx, false)))
-                    )
-                .build(),
+            Commands.literal("pvp")
+                .requires(source -> hasPermission(source, "query"))
+                .executes(this::queryAllWorldStates)
+                .then(
+                    Commands.literal("on")
+                        .requires(source -> hasPermission(source, "update"))
+                        .executes(ctx -> updateAllWorldStates(ctx, true))
+                        .then(Commands.argument("world", ArgumentTypes.world())
+                            .executes(ctx -> updateWorldState(ctx, true))
+                        )
+                )
+                .then(
+                    Commands.literal("off")
+                        .requires(source -> hasPermission(source, "update"))
+                        .executes(ctx -> updateAllWorldStates(ctx, false))
+                        .then(Commands.argument("world", ArgumentTypes.world())
+                            .executes(ctx -> updateWorldState(ctx, false))
+                        )
+                )
+            .build(),
             "Toggle PvP on or off"
         );
+    }
+
+    private static boolean hasPermission(CommandSourceStack source, String permission) {
+        return source.getSender().hasPermission("doylcraft.command.pvp." + permission);
     }
 
     private int queryAllWorldStates(CommandContext<CommandSourceStack> context) {
