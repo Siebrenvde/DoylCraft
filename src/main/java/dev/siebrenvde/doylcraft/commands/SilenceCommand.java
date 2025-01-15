@@ -1,10 +1,11 @@
 package dev.siebrenvde.doylcraft.commands;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
+import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
@@ -18,16 +19,14 @@ import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
 
 @SuppressWarnings("UnstableApiUsage")
-public class SilenceCommand {
+public class SilenceCommand extends CommandBase {
 
     public static void register(Commands commands) {
         commands.register(
             literal("silence")
-                .requires(source -> source.getSender() instanceof Player)
+                .requires(CommandBase::isPlayer)
                 .then(literal("query")
-                    .executes(ctx -> {
-                        Player player = (Player) ctx.getSource().getSender();
-
+                    .executes(ctx -> withPlayer(ctx, player -> {
                         if(!SILENCE_PLAYERS.containsKey(player)) {
                             SILENCE_PLAYERS.put(player, CommandType.QUERY);
                             MemoryHandler.startSilenceCountdown(player);
@@ -36,25 +35,19 @@ public class SilenceCommand {
                             SILENCE_PLAYERS.remove(player);
                             player.sendMessage(Component.text("Disabled animal silencer", Colours.GENERIC));
                         }
-
-                        return Command.SINGLE_SUCCESS;
-                    })
+                    }))
                     .then(argument("entities", ArgumentTypes.entities())
-                        .requires(source -> source.getSender().hasPermission("doylcraft.command.silence.query.selector"))
-                        .executes(ctx -> {
-                            Player player = (Player) ctx.getSource().getSender();
+                        .requires(source -> hasPermission(source, "query.selector"))
+                        .executes(ctx -> withPlayer(ctx, player -> {
                             ctx.getArgument("entities", EntitySelectorArgumentResolver.class)
                                 .resolve(ctx.getSource()).forEach(entity -> query(player, entity));
-                            return Command.SINGLE_SUCCESS;
-                        })
+                        }))
                     )
                 )
                 .then(literal("set")
                     .then(argument("state", BoolArgumentType.bool())
-                        .executes(ctx -> {
-                            Player player = (Player) ctx.getSource().getSender();
+                        .executes(ctx -> withPlayer(ctx, player -> {
                             boolean toSilence = BoolArgumentType.getBool(ctx, "state");
-
                             if(!SILENCE_PLAYERS.containsKey(player)) {
                                 SILENCE_PLAYERS.put(
                                     player,
@@ -69,25 +62,25 @@ public class SilenceCommand {
                                 SILENCE_PLAYERS.remove(player);
                                 player.sendMessage(Component.text("Disabled animal silencer", Colours.GENERIC));
                             }
-
-                            return Command.SINGLE_SUCCESS;
-                        })
+                        }))
                         .then(argument("entities", ArgumentTypes.entities())
-                            .requires(source -> source.getSender().hasPermission("doylcraft.command.silence.set.selector"))
-                            .executes(ctx -> {
-                                Player player = (Player) ctx.getSource().getSender();
+                            .requires(source -> hasPermission(source, "set.selector"))
+                            .executes(ctx -> withPlayer(ctx, player -> {
                                 ctx.getArgument("entities", EntitySelectorArgumentResolver.class)
                                     .resolve(ctx.getSource()).forEach(entity -> {
                                         set(player, entity, BoolArgumentType.getBool(ctx, "state"));
                                     });
-                                return Command.SINGLE_SUCCESS;
-                            })
+                            }))
                         )
                     )
                 )
                 .build(),
             "Silence an animal"
         );
+    }
+
+    private static boolean hasPermission(CommandSourceStack source, String permission) {
+        return source.getSender().hasPermission("doylcraft.command.silence." + permission);
     }
 
     public static void query(Player player, Entity entity) {

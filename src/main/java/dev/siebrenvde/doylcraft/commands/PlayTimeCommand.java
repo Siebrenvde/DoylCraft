@@ -36,7 +36,7 @@ public class PlayTimeCommand extends CommandBase {
     public static void register(Commands commands) {
         commands.register(
             Commands.literal("playtime")
-                .requires(source -> source.getSender() instanceof Player)
+                .requires(CommandBase::isPlayer)
                 .executes(ctx -> withPlayer(ctx, player -> {
                     player.sendMessage(
                         text("Current Online Time: ", Colours.GENERIC)
