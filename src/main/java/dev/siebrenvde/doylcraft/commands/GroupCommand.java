@@ -26,20 +26,16 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("UnstableApiUsage")
 public class GroupCommand extends CommandBase {
 
-    private final LuckPermsAddon luckPermsAddon;
-
-    public GroupCommand(LuckPermsAddon luckPermsAddon) { this.luckPermsAddon = luckPermsAddon; }
-
-    public void register(Commands commands) {
+    public static void register(Commands commands) {
 
         commands.register(
             Commands.literal("group")
                 .requires(hasPermission("doylcraft.command.group"))
                 .then(Commands.argument("player", OfflinePlayerArgumentType.offlinePlayer())
-                    .executes(this::getPlayerGroup)
+                    .executes(GroupCommand::getPlayerGroup)
                     .then(Commands.argument("group", StringArgumentType.word())
-                        .suggests(this::getGroups)
-                        .executes(this::setPlayerGroup)
+                        .suggests(GroupCommand::getGroups)
+                        .executes(GroupCommand::setPlayerGroup)
                     )
                 )
                 .build(),
@@ -49,12 +45,12 @@ public class GroupCommand extends CommandBase {
 
     }
 
-    private int getPlayerGroup(CommandContext<CommandSourceStack> context) {
+    private static int getPlayerGroup(CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getSender();
         OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
 
         try {
-            luckPermsAddon.getPlayerGroup(player).thenAcceptAsync(group -> {
+            LuckPermsAddon.get().getPlayerGroup(player).thenAcceptAsync(group -> {
 
                 if(group != null) {
                     sender.sendMessage(
@@ -84,12 +80,12 @@ public class GroupCommand extends CommandBase {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int setPlayerGroup(CommandContext<CommandSourceStack> context) {
+    private static int setPlayerGroup(CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getSender();
         OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
         String group = context.getArgument("group", String.class);
 
-        if(!luckPermsAddon.groupExists(group)) {
+        if(!LuckPermsAddon.get().groupExists(group)) {
             sender.sendMessage(
                 Component.text("Group ", Colours.ERROR)
                     .append(Component.text(group, Colours.DATA))
@@ -98,7 +94,7 @@ public class GroupCommand extends CommandBase {
         }
 
         try {
-            luckPermsAddon.setPlayerGroup(player, group);
+            LuckPermsAddon.get().setPlayerGroup(player, group);
             sender.sendMessage(
                 Component.text("Changed ", Colours.GENERIC)
                     .append(Components.entity(player).color(Colours.DATA))
@@ -117,8 +113,11 @@ public class GroupCommand extends CommandBase {
         return Command.SINGLE_SUCCESS;
     }
 
-    private CompletableFuture<Suggestions> getGroups(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        luckPermsAddon.getGroups().stream().map(Group::getName).filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase())).forEach(builder::suggest);
+    private static CompletableFuture<Suggestions> getGroups(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+        LuckPermsAddon.get().getGroups().stream()
+            .map(Group::getName)
+            .filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase()))
+            .forEach(builder::suggest);
         return builder.buildFuture();
     }
 

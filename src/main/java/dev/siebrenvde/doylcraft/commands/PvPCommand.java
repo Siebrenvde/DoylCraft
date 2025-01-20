@@ -1,7 +1,6 @@
 package dev.siebrenvde.doylcraft.commands;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.context.CommandContext;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -33,34 +32,26 @@ import static org.bukkit.Bukkit.getWorlds;
 @SuppressWarnings("UnstableApiUsage")
 public class PvPCommand extends CommandBase {
 
-    private final WorldGuardAddon worldGuardAddon;
-
-    public PvPCommand(WorldGuardAddon worldGuardAddon) {
-        this.worldGuardAddon = worldGuardAddon;
-    }
-
-    public void register(Commands commands) {
+    public static void register(Commands commands) {
         commands.register(
             Commands.literal("pvp")
                 .requires(hasSubPermission("query"))
-                .executes(this::queryAllWorldStates)
-                .then(
-                    Commands.literal("on")
-                        .requires(hasSubPermission("update"))
-                        .executes(ctx -> updateAllWorldStates(ctx, true))
-                        .then(Commands.argument("world", ArgumentTypes.world())
-                            .executes(ctx -> updateWorldState(ctx, true))
-                        )
+                .executes(queryAllWorldStates())
+                .then(Commands.literal("on")
+                    .requires(hasSubPermission("update"))
+                    .executes(updateAllWorldStates(true))
+                    .then(Commands.argument("world", ArgumentTypes.world())
+                        .executes(updateWorldState(true))
+                    )
                 )
-                .then(
-                    Commands.literal("off")
-                        .requires(hasSubPermission("update"))
-                        .executes(ctx -> updateAllWorldStates(ctx, false))
-                        .then(Commands.argument("world", ArgumentTypes.world())
-                            .executes(ctx -> updateWorldState(ctx, false))
-                        )
+                .then(Commands.literal("off")
+                    .requires(hasSubPermission("update"))
+                    .executes(updateAllWorldStates(false))
+                    .then(Commands.argument("world", ArgumentTypes.world())
+                        .executes(updateWorldState(false))
+                    )
                 )
-            .build(),
+                .build(),
             "Toggle PvP on or off"
         );
     }
@@ -69,97 +60,103 @@ public class PvPCommand extends CommandBase {
         return hasPermission("doylcraft.command.pvp." + permission);
     }
 
-    private int queryAllWorldStates(CommandContext<CommandSourceStack> context) {
-        CommandSender sender = context.getSource().getSender();
+    private static Command<CommandSourceStack> queryAllWorldStates() {
+        return ctx -> {
+            CommandSender sender = ctx.getSource().getSender();
 
-        List<World> enabled = new ArrayList<>();
-        List<World> disabled = new ArrayList<>();
+            List<World> enabled = new ArrayList<>();
+            List<World> disabled = new ArrayList<>();
 
-        for(World world : getWorlds()) {
-            if(getState(world)) {
-                enabled.add(world);
-            } else {
-                disabled.add(world);
+            for(World world : getWorlds()) {
+                if(getState(world)) {
+                    enabled.add(world);
+                } else {
+                    disabled.add(world);
+                }
             }
-        }
 
-        if(enabled.isEmpty() || disabled.isEmpty()) {
-            sender.sendMessage(text("PvP is ", Colours.GENERIC)
-                .append(disabled.isEmpty() ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
-                .append(text(" in "))
-                .append(
-                    text("all worlds")
-                        .hoverEvent(HoverEvent.hoverEvent(
-                            HoverEvent.Action.SHOW_TEXT,
-                            text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
-                        ))
-                )
+            if(enabled.isEmpty() || disabled.isEmpty()) {
+                sender.sendMessage(text("PvP is ", Colours.GENERIC)
+                    .append(disabled.isEmpty() ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
+                    .append(text(" in "))
+                    .append(
+                        text("all worlds")
+                            .hoverEvent(HoverEvent.hoverEvent(
+                                HoverEvent.Action.SHOW_TEXT,
+                                text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
+                            ))
+                    )
+                );
+                return Command.SINGLE_SUCCESS;
+            }
+
+            sender.sendMessage(
+                worldListStateComponent(enabled, true)
+                    .append(newline())
+                    .append(worldListStateComponent(disabled, false))
             );
+
             return Command.SINGLE_SUCCESS;
-        }
-
-        sender.sendMessage(
-            worldListStateComponent(enabled, true)
-                .append(newline())
-                .append(worldListStateComponent(disabled, false))
-        );
-
-        return Command.SINGLE_SUCCESS;
+        };
     }
 
-    private int updateAllWorldStates(CommandContext<CommandSourceStack> context, boolean state) {
-        CommandSender sender = context.getSource().getSender();
+    private static Command<CommandSourceStack> updateAllWorldStates(boolean state) {
+        return ctx -> {
+            CommandSender sender = ctx.getSource().getSender();
 
-        setAllStates(state);
-        sender.sendMessage(
-            empty().color(Colours.GENERIC)
-                .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
-                .append(Component.text(" PvP in ")
-                .append(
-                    text("all worlds")
-                        .hoverEvent(HoverEvent.hoverEvent(
-                            HoverEvent.Action.SHOW_TEXT,
-                            text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
+            setAllStates(state);
+            sender.sendMessage(
+                empty().color(Colours.GENERIC)
+                    .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
+                    .append(Component.text(" PvP in ")
+                        .append(
+                            text("all worlds")
+                                .hoverEvent(HoverEvent.hoverEvent(
+                                    HoverEvent.Action.SHOW_TEXT,
+                                    text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
+                                ))
                         ))
-                ))
-        );
+            );
 
-        return Command.SINGLE_SUCCESS;
+            return Command.SINGLE_SUCCESS;
+        };
     }
 
-    private int updateWorldState(CommandContext<CommandSourceStack> context, boolean state) {
-        CommandSender sender = context.getSource().getSender();
-        World world = context.getArgument("world", World.class);
+    private static Command<CommandSourceStack> updateWorldState(boolean state) {
+        return ctx -> {
+            CommandSender sender = ctx.getSource().getSender();
+            World world = ctx.getArgument("world", World.class);
 
-        setState(world, state);
-        sender.sendMessage(
-            empty().color(Colours.GENERIC)
-                .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
-                .append(Component.text(" PvP in "))
-                .append(Components.worldName(world).color(Colours.DATA))
-        );
+            setState(world, state);
+            sender.sendMessage(
+                empty().color(Colours.GENERIC)
+                    .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
+                    .append(Component.text(" PvP in "))
+                    .append(Components.worldName(world).color(Colours.DATA))
+            );
 
-        return Command.SINGLE_SUCCESS;
+            return Command.SINGLE_SUCCESS;
+        };
     }
 
-    private boolean getState(World world) {
-        ProtectedRegion region = worldGuardAddon.getOrCreateGlobalRegion(world);
+    private static boolean getState(World world) {
+        ProtectedRegion region = WorldGuardAddon.get().getOrCreateGlobalRegion(world);
         StateFlag.State state = region.getFlag(Flags.PVP);
         return state == StateFlag.State.ALLOW || state == null;
     }
 
-    private void setState(World world, boolean state) {
-        ProtectedRegion region = worldGuardAddon.getOrCreateGlobalRegion(world);
+    private static void setState(World world, boolean state) {
+        ProtectedRegion region = WorldGuardAddon.get().getOrCreateGlobalRegion(world);
         region.setFlag(Flags.PVP, state ? StateFlag.State.ALLOW : StateFlag.State.DENY);
     }
 
-    private void setAllStates(boolean state) {
+    private static void setAllStates(boolean state) {
         for(World world : getWorlds()) {
             setState(world, state);
         }
     }
 
-    private TextComponent worldListStateComponent(List<World> worlds, boolean state) {
+    private static TextComponent worldListStateComponent(List<World> worlds, boolean state) {
         return text("PvP is ", Colours.GENERIC)
             .append(state ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
             .append(text(" in ", Colours.GENERIC))

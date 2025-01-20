@@ -15,10 +15,16 @@ import java.util.stream.Collectors;
 
 public class LuckPermsAddon {
 
+    private static LuckPermsAddon instance;
     private final LuckPerms luckPerms;
 
     public LuckPermsAddon(DoylCraft doylCraft) {
+        instance = this;
         luckPerms = doylCraft.getServer().getServicesManager().load(LuckPerms.class);
+    }
+
+    public static LuckPermsAddon get() {
+        return instance;
     }
 
     /**

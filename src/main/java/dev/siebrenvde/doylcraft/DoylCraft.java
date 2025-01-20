@@ -69,9 +69,9 @@ public final class DoylCraft extends JavaPlugin {
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             GetOwnerCommand.register(commands);
-            new GroupCommand(luckPermsAddon).register(commands);
+            GroupCommand.register(commands);
             PlayTimeCommand.register(commands);
-            new PvPCommand(worldGuardAddon).register(commands);
+            PvPCommand.register(commands);
             DoylCraftCommand.register(commands);
             SilenceCommand.register(commands);
         });

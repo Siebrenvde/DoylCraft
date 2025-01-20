@@ -11,14 +11,20 @@ import org.jetbrains.annotations.Nullable;
 
 public class WorldGuardAddon {
 
+    private static WorldGuardAddon instance;
     private final RegionContainer container;
 
     public WorldGuardAddon() {
+        instance = this;
         container = WorldGuard.getInstance().getPlatform().getRegionContainer();
     }
 
     private RegionManager getRegionManager(World world) {
         return container.get(BukkitAdapter.adapt(world));
+    }
+
+    public static WorldGuardAddon get() {
+        return instance;
     }
 
     /**
