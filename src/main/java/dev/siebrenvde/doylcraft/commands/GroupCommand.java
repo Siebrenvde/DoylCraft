@@ -75,7 +75,7 @@ public class GroupCommand extends CommandBase {
         } catch(Exception exception) {
             sender.sendMessage(Components.exception(
                 Component.text("Failed to get ", Colours.ERROR)
-                    .append(Component.text(player.getName(), Colours.DATA))
+                    .append(Components.entity(player).color(Colours.DATA))
                     .append(Component.text("'s group", Colours.ERROR)), exception
             ));
             exception.printStackTrace();
@@ -108,7 +108,7 @@ public class GroupCommand extends CommandBase {
         } catch(Exception exception) {
             sender.sendMessage(Components.exception(
                 Component.text("Failed to change ", Colours.ERROR)
-                    .append(Component.text(player.getName(), Colours.DATA))
+                    .append(Components.entity(player).color(Colours.DATA))
                     .append(Component.text("'s group", Colours.ERROR)), exception
             ));
             exception.printStackTrace();
