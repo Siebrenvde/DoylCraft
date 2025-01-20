@@ -23,8 +23,8 @@ public class GetOwnerCommand extends CommandBase {
     public static void register(Commands commands) {
         commands.register(
             Commands.literal("getowner")
-                .requires(CommandBase::isPlayer)
-                .executes(ctx -> withPlayer(ctx, player -> {
+                .requires(isPlayer())
+                .executes(withPlayer((ctx, player) -> {
                     if(!GET_OWNER_PLAYERS.contains(player)) {
                         GET_OWNER_PLAYERS.add(player);
                         MemoryHandler.startGetOwnerCountdown(player);
@@ -36,7 +36,7 @@ public class GetOwnerCommand extends CommandBase {
                 }))
                 .then(Commands.argument("entities", ArgumentTypes.entities())
                     .requires(source -> source.getSender().hasPermission("doylcraft.command.getowner.selector"))
-                    .executes(ctx -> withPlayer(ctx, player -> {
+                    .executes(withPlayer((ctx, player) -> {
                         resolveEntities(ctx).forEach(entity -> {
                             handle(player, entity);
                         });

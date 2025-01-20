@@ -16,6 +16,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import static dev.siebrenvde.doylcraft.handlers.MemoryHandler.SILENCE_PLAYERS;
 import static io.papermc.paper.command.brigadier.Commands.argument;
@@ -28,9 +29,9 @@ public class SilenceCommand extends CommandBase {
     public static void register(Commands commands) {
         commands.register(
             literal("silence")
-                .requires(CommandBase::isPlayer)
+                .requires(isPlayer())
                 .then(literal("query")
-                    .executes(ctx -> withPlayer(ctx, player -> {
+                    .executes(withPlayer((ctx, player) -> {
                         if(!SILENCE_PLAYERS.containsKey(player)) {
                             SILENCE_PLAYERS.put(player, CommandType.QUERY);
                             MemoryHandler.startSilenceCountdown(player);
@@ -41,9 +42,9 @@ public class SilenceCommand extends CommandBase {
                         }
                     }))
                     .then(argument("entities", ArgumentTypes.entities())
-                        .requires(source -> hasPermission(source, "query.selector"))
+                        .requires(hasSubPermission("query.selector"))
                         .then(argument("duration", ArgumentTypes.time())
-                            .executes(ctx -> withPlayer(ctx, player -> {
+                            .executes(withPlayer((ctx, player) -> {
                                 // Gets all silent selected animals
                                 List<Entity> entities = resolveEntities(ctx).stream()
                                     .filter(entity -> entity instanceof Animals)
@@ -85,7 +86,7 @@ public class SilenceCommand extends CommandBase {
                 )
                 .then(literal("set")
                     .then(argument("state", BoolArgumentType.bool())
-                        .executes(ctx -> withPlayer(ctx, player -> {
+                        .executes(withPlayer((ctx, player) -> {
                             boolean toSilence = BoolArgumentType.getBool(ctx, "state");
                             if(!SILENCE_PLAYERS.containsKey(player)) {
                                 SILENCE_PLAYERS.put(
@@ -103,8 +104,8 @@ public class SilenceCommand extends CommandBase {
                             }
                         }))
                         .then(argument("entities", ArgumentTypes.entities())
-                            .requires(source -> hasPermission(source, "set.selector"))
-                            .executes(ctx -> withPlayer(ctx, player -> {
+                            .requires(hasSubPermission("set.selector"))
+                            .executes(withPlayer((ctx, player) -> {
                                 boolean toSilence = BoolArgumentType.getBool(ctx, "state");
                                 List<Entity> entities = resolveEntities(ctx).stream()
                                     .filter(entity -> entity instanceof Animals)
@@ -141,8 +142,8 @@ public class SilenceCommand extends CommandBase {
         );
     }
 
-    private static boolean hasPermission(CommandSourceStack source, String permission) {
-        return source.getSender().hasPermission("doylcraft.command.silence." + permission);
+    private static Predicate<CommandSourceStack> hasSubPermission(String permission) {
+        return hasPermission("doylcraft.command.silence." + permission);
     }
 
     public static void query(Player player, Entity entity) {

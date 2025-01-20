@@ -8,6 +8,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.addons.LuckPermsAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
+import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -23,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
  * Command to get or set a player's group
  */
 @SuppressWarnings("UnstableApiUsage")
-public class GroupCommand {
+public class GroupCommand extends CommandBase {
 
     private final LuckPermsAddon luckPermsAddon;
 
@@ -33,7 +34,7 @@ public class GroupCommand {
 
         commands.register(
             Commands.literal("group")
-                .requires(source -> source.getSender().hasPermission("doylcraft.group"))
+                .requires(hasPermission("doylcraft.command.group"))
                 .then(Commands.argument("player", OfflinePlayerArgumentType.offlinePlayer())
                     .executes(this::getPlayerGroup)
                     .then(Commands.argument("group", StringArgumentType.word())

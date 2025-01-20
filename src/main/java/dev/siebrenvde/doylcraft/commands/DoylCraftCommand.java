@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static io.papermc.paper.command.brigadier.Commands.argument;
@@ -43,10 +44,10 @@ public class DoylCraftCommand extends CommandBase {
                     return SINGLE_SUCCESS;
                 })
                 .then(literal("debug")
-                    .requires(source -> hasPermission(source, "debug"))
+                    .requires(hasSubPermission("debug"))
                     .then(literal("spawn_wandering_trader")
-                        .requires(CommandBase::isPlayer)
-                        .executes(ctx -> withPlayer(ctx, player -> {
+                        .requires(isPlayer())
+                        .executes(withPlayer((ctx, player) -> {
                             // Spawns a Wandering Trader with the NATURAL spawn reason and immediately deletes it
                             player.getWorld().spawnEntity(
                                 player.getLocation(),
@@ -58,10 +59,10 @@ public class DoylCraftCommand extends CommandBase {
                 )
                 .then(literal("utils")
                     .then(literal("highlight_entities")
-                        .requires(source -> isPlayer(source) && hasPermission(source, "utils.highlight-entities"))
+                        .requires(isPlayer().and(hasSubPermission("utils.highlight-entities")))
                         .then(argument("entities", ArgumentTypes.entities())
                             .then(argument("duration", ArgumentTypes.time())
-                                .executes(ctx -> withPlayer(ctx, player -> {
+                                .executes(withPlayer((ctx, player) -> {
                                     List<Entity> entities = resolveEntities(ctx);
                                     entities.forEach(entity -> entity.setGlowing(true));
 
@@ -95,8 +96,8 @@ public class DoylCraftCommand extends CommandBase {
         );
     }
 
-    private static boolean hasPermission(CommandSourceStack source, String permission) {
-        return source.getSender().hasPermission("doylcraft.command." + permission);
+    private static Predicate<CommandSourceStack> hasSubPermission(String permission) {
+        return hasPermission("doylcraft.command." + permission);
     }
 
 }

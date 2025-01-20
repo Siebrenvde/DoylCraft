@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.siebrenvde.doylcraft.addons.WorldGuardAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
+import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -20,6 +21,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static net.kyori.adventure.text.Component.*;
@@ -29,7 +31,7 @@ import static org.bukkit.Bukkit.getWorlds;
  * Command to toggle PvP on or off globally or for a specific world
  */
 @SuppressWarnings("UnstableApiUsage")
-public class PvPCommand {
+public class PvPCommand extends CommandBase {
 
     private final WorldGuardAddon worldGuardAddon;
 
@@ -40,11 +42,11 @@ public class PvPCommand {
     public void register(Commands commands) {
         commands.register(
             Commands.literal("pvp")
-                .requires(source -> hasPermission(source, "query"))
+                .requires(hasSubPermission("query"))
                 .executes(this::queryAllWorldStates)
                 .then(
                     Commands.literal("on")
-                        .requires(source -> hasPermission(source, "update"))
+                        .requires(hasSubPermission("update"))
                         .executes(ctx -> updateAllWorldStates(ctx, true))
                         .then(Commands.argument("world", ArgumentTypes.world())
                             .executes(ctx -> updateWorldState(ctx, true))
@@ -52,7 +54,7 @@ public class PvPCommand {
                 )
                 .then(
                     Commands.literal("off")
-                        .requires(source -> hasPermission(source, "update"))
+                        .requires(hasSubPermission("update"))
                         .executes(ctx -> updateAllWorldStates(ctx, false))
                         .then(Commands.argument("world", ArgumentTypes.world())
                             .executes(ctx -> updateWorldState(ctx, false))
@@ -63,8 +65,8 @@ public class PvPCommand {
         );
     }
 
-    private static boolean hasPermission(CommandSourceStack source, String permission) {
-        return source.getSender().hasPermission("doylcraft.command.pvp." + permission);
+    private static Predicate<CommandSourceStack> hasSubPermission(String permission) {
+        return hasPermission("doylcraft.command.pvp." + permission);
     }
 
     private int queryAllWorldStates(CommandContext<CommandSourceStack> context) {
