@@ -14,6 +14,9 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+
+import static net.kyori.adventure.text.Component.text;
+
 public class Components {
 
     /**
@@ -23,7 +26,7 @@ public class Components {
      * @return a new entity component
      */
     public static Component entity(Component component, Entity entity) {
-        return Component.text()
+        return text()
             .append(component)
             .hoverEvent(entity.asHoverEvent())
             .clickEvent(
@@ -42,7 +45,7 @@ public class Components {
     public static Component entity(Entity entity) {
         return entity(
             entity instanceof Player player
-                ? Component.text(player.getName())
+                ? text(player.getName())
                 : entity.customName() != null
                     ? entity.customName()
                     : Component.translatable(entity.getType()),
@@ -65,14 +68,14 @@ public class Components {
      * @return a new entity component
      */
     public static Component entity(OfflinePlayer offlinePlayer) {
-        if(offlinePlayer == null || offlinePlayer.getName() == null) return Component.text("Unknown Player");
+        if(offlinePlayer == null || offlinePlayer.getName() == null) return text("Unknown Player");
         if(offlinePlayer.isOnline()) return entity(offlinePlayer.getPlayer());
-        return Component.text()
+        return text()
             .content(offlinePlayer.getName())
             .hoverEvent(HoverEvent.showEntity(
                 EntityType.PLAYER,
                 offlinePlayer.getUniqueId(),
-                Component.text(offlinePlayer.getName())
+                text(offlinePlayer.getName())
             ))
             .clickEvent(ClickEvent.suggestCommand("/mail send " + offlinePlayer.getName() + " "))
             .build();
@@ -84,7 +87,7 @@ public class Components {
      * @return a new world name component
      */
     public static Component worldName(World world) {
-        return Component.text(world.getKey().getKey()).hoverEvent(HoverEvent.showText(Component.text(world.getKey().toString())));
+        return text(world.getKey().getKey()).hoverEvent(HoverEvent.showText(text(world.getKey().toString())));
     }
 
     /**
@@ -93,6 +96,8 @@ public class Components {
      * @return a new duration component
      */
     public static Component duration(Duration duration) {
+        if(duration.isNegative()) return text("Invalid Duration");
+
         long days = duration.toDays();
         long hours = duration.toHoursPart();
         long minutes = duration.toMinutesPart();
@@ -110,7 +115,7 @@ public class Components {
         if(hasMinutes) appendTimeUnit(builder, minutes, "minute");
         if(hasSeconds) appendTimeUnit(builder, seconds, "second");
 
-        return Component.text(builder.toString());
+        return text(builder.toString());
     }
 
     private static void appendTimeUnit(StringBuilder builder, long time, String unit) {
@@ -125,7 +130,7 @@ public class Components {
      */
     public static Component timestamp(Instant instant) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a").withZone(ZoneId.from(ZoneOffset.UTC));
-        return Component.text(formatter.format(instant));
+        return text(formatter.format(instant));
     }
 
     /**
@@ -135,11 +140,11 @@ public class Components {
      * @return a new exception component
      */
     public static Component exception(Component message, Exception exception) {
-        TextComponent.Builder builder = Component.text();
+        TextComponent.Builder builder = text();
         builder.content(exception.getClass().getSimpleName()).color(Colours.ERROR);
         if(exception.getMessage() != null) {
             builder.appendNewline();
-            builder.append(Component.text(exception.getMessage(), Colours.DATA));
+            builder.append(text(exception.getMessage(), Colours.DATA));
         }
         return message.hoverEvent(HoverEvent.showText(builder.build()));
     }
