@@ -4,9 +4,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -16,6 +18,8 @@ import java.time.format.DateTimeFormatter;
 
 
 import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.Component.translatable;
+
 
 public class Components {
 
@@ -48,7 +52,7 @@ public class Components {
                 ? text(player.getName())
                 : entity.customName() != null
                     ? entity.customName()
-                    : Component.translatable(entity.getType()),
+                    : translatable(entity.getType()),
             entity
         );
     }
@@ -88,6 +92,16 @@ public class Components {
      */
     public static Component worldName(World world) {
         return text(world.getKey().getKey()).hoverEvent(HoverEvent.showText(text(world.getKey().toString())));
+    }
+
+    /**
+     * Builds an ItemStack component
+     * @param item the item
+     * @return a new ItemStack component
+     */
+    public static Component itemStack(ItemStack item) {
+        if(item.getType() == Material.AIR) return translatable(item);
+        return item.effectiveName().hoverEvent(item.asHoverEvent());
     }
 
     /**
