@@ -94,7 +94,8 @@ public final class DoylCraft extends JavaPlugin {
             new WarpModifyListener(blueMapAddon),
             new SilenceEntityListener(),
             new PlayerSleepListener(),
-            new WanderingTraderListener()
+            new WanderingTraderListener(),
+            new ItemDamageListener()
         );
     }
 
