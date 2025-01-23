@@ -1,6 +1,0 @@
-name: DoylCraft
-version: ${version}
-main: dev.siebrenvde.doylcraft.DoylCraft
-api-version: 1.21
-authors: [Siebrenvde]
-depend: [LuckPerms, WorldGuard, DiscordSRV, Essentials, voicechat, BlueMap]
