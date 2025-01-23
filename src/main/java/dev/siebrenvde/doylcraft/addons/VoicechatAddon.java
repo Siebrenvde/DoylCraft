@@ -52,26 +52,25 @@ public class VoicechatAddon implements VoicechatPlugin {
                 VoicechatConnection connection = serverApi.getConnectionOf(player.getUniqueId());
                 if (connection != null && !connection.isInstalled()) {
                     player.sendMessage(
-                        text(String.format("Simple Voice Chat (%s) is supported on this server", VOICECHAT_VERSION), NamedTextColor.GOLD)
-                            .append(Component.newline())
+                        text()
+                            .append(text(String.format("Simple Voice Chat (%s) is supported on this server", VOICECHAT_VERSION)))
+                            .appendNewline()
                             .append(text("You can download it from "))
-                            .append(
-                                text("Modrinth")
-                                    .decorate(TextDecoration.UNDERLINED)
-                                    .clickEvent(ClickEvent.openUrl(MODRINTH_URL))
-                                    .hoverEvent(HoverEvent.showText(text(MODRINTH_URL)))
-                            )
+                            .append(link("Modrinth", MODRINTH_URL))
                             .append(text(" or "))
-                            .append(
-                                text("CurseForge")
-                                    .decorate(TextDecoration.UNDERLINED)
-                                    .clickEvent(ClickEvent.openUrl(CURSEFORGE_URL))
-                                    .hoverEvent(HoverEvent.showText(text(CURSEFORGE_URL)))
-                            )
+                            .append(link("CurseForge", CURSEFORGE_URL))
+                            .color(NamedTextColor.GOLD)
                     );
                 }
             }
         }.runTaskLater(DoylCraft.getInstance(), 40);
+    }
+
+    private static Component link(String name, String url) {
+        return text(name)
+            .decorate(TextDecoration.UNDERLINED)
+            .clickEvent(ClickEvent.openUrl(url))
+            .hoverEvent(HoverEvent.showText(text(url)));
     }
 
 }

@@ -74,7 +74,8 @@ public class PetDamageListener implements Listener {
         if(damager.equals(owner)) {
             if(Preferences.get(damager).petDamageMessages.attacker()) {
                 damager.sendMessage(
-                    text("You did " + df.format(damage) + " damage to ")
+                    text()
+                        .append(text("You did " + df.format(damage) + " damage to "))
                         .append(petName == null ? text("your ") : empty())
                         .append(Components.entity(pet))
                         .color(MESSAGE_COLOUR)
@@ -85,7 +86,7 @@ public class PetDamageListener implements Listener {
                 Player ownerPlayer = (Player) owner;
                 if(Preferences.get(ownerPlayer).petDamageMessages.owner()) {
                     ownerPlayer.sendMessage(
-                        empty()
+                        text()
                             .append(Components.entity(damager))
                             .append(text(" did " + df.format(damage) + " damage to "))
                             .append(petName == null ? text("your ") : empty())
@@ -97,7 +98,8 @@ public class PetDamageListener implements Listener {
 
             if(Preferences.get(damager).petDamageMessages.attacker()) {
                 damager.sendMessage(
-                    text("You did " + df.format(damage) + " damage to ")
+                    text()
+                        .append(text("You did " + df.format(damage) + " damage to "))
                         .append(Components.entity(owner))
                         .append(text("'s "))
                         .append(petName != null
@@ -111,20 +113,22 @@ public class PetDamageListener implements Listener {
         }
 
         discordSRVAddon.sendDiscordMessage("pet-log",
-            text(":heart: ")
+            text()
+                .append(text(":heart: "))
                 .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
                 .append(text(" did " + df.format(damage) + " damage to "))
                 .append(petName != null ? petName : petType)
                 .append(text(" ("))
                 .append(petName != null ? petType.append(text(", ")) : empty())
                 .append(text(MarkdownSanitizer.escape(owner.getName() != null ? owner.getName() : "Unknown Player", true)))
+                .build()
         );
 
         if((health - damage) <= 0.0) {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 if(!Preferences.get(player).petDamageMessages.broadcast()) return;
                 player.sendMessage(
-                    Component.empty()
+                    text()
                         .append(Components.entity(damager))
                         .append(text(" killed "))
                         .append(damager != owner
@@ -141,7 +145,8 @@ public class PetDamageListener implements Listener {
             });
 
             discordSRVAddon.sendDiscordMessage("pet-log",
-                text(":skull: ")
+                text()
+                    .append(text(":skull: "))
                     .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
                     .append(text(" killed "))
                     .append(petName != null ? petName : petType)
@@ -149,6 +154,7 @@ public class PetDamageListener implements Listener {
                     .append(petName != null ? petType.append(text(", ")) : empty())
                     .append(text(MarkdownSanitizer.escape(owner.getName() != null ? owner.getName() : "Unknown Player", true)))
                     .append(text(")"))
+                    .build()
             );
         }
 

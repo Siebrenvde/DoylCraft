@@ -39,11 +39,13 @@ public class PlayTimeCommand extends CommandBase {
                 .requires(isPlayer())
                 .executes(withPlayer((ctx, player) -> {
                     player.sendMessage(
-                        text("Current Online Time: ", Colours.GENERIC)
+                        text()
+                            .append(text("Current Online Time: "))
                             .append(onlineTime(player).color(Colours.DATA))
                             .appendNewline()
-                            .append(text("Total Time Played: ", Colours.GENERIC))
+                            .append(text("Total Time Played: "))
                             .append(totalTime(player).color(Colours.DATA))
+                            .color(Colours.GENERIC)
                     );
                 }))
                 .then(Commands.argument("player", OfflinePlayerArgumentType.offlinePlayer())
@@ -67,7 +69,7 @@ public class PlayTimeCommand extends CommandBase {
                             .append(text("'s Total Time Played: ", Colours.GENERIC))
                             .append(totalTime(player).color(Colours.DATA));
 
-                        sender.sendMessage(message.build());
+                        sender.sendMessage(message);
 
                         return Command.SINGLE_SUCCESS;
                     })
@@ -88,7 +90,8 @@ public class PlayTimeCommand extends CommandBase {
     private static Component onlineTime(Player player) {
         return Components.duration(Duration.between(MemoryHandler.LOGIN_TIMES.get(player), Instant.now()))
             .hoverEvent(HoverEvent.showText(
-                text("Login Time (UTC): ", Colours.GENERIC)
+                text()
+                    .append(text("Login Time (UTC): ", Colours.GENERIC))
                     .append(Components.timestamp(MemoryHandler.LOGIN_TIMES.get(player)).color(Colours.DATA))
             ));
     }
@@ -96,7 +99,8 @@ public class PlayTimeCommand extends CommandBase {
     private static Component totalTime(OfflinePlayer player) {
         return Components.duration(Tick.of(player.getStatistic(Statistic.PLAY_ONE_MINUTE)))
             .hoverEvent(HoverEvent.showText(
-                text("First Login Time (UTC): ", Colours.GENERIC)
+                text()
+                    .append(text("First Login Time (UTC): ", Colours.GENERIC))
                     .append(Components.timestamp(Instant.ofEpochMilli(player.getFirstPlayed())).color(Colours.DATA))
             ));
     }

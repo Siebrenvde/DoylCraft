@@ -76,23 +76,21 @@ public class PvPCommand extends CommandBase {
             }
 
             if(enabled.isEmpty() || disabled.isEmpty()) {
-                sender.sendMessage(text("PvP is ", Colours.GENERIC)
-                    .append(disabled.isEmpty() ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
-                    .append(text(" in "))
-                    .append(
-                        text("all worlds")
-                            .hoverEvent(HoverEvent.hoverEvent(
-                                HoverEvent.Action.SHOW_TEXT,
-                                text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
-                            ))
-                    )
+                sender.sendMessage(
+                    text()
+                        .append(text("PvP is "))
+                        .append(disabled.isEmpty() ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
+                        .append(text(" in "))
+                        .append(allWorlds())
+                        .color(Colours.GENERIC)
                 );
                 return Command.SINGLE_SUCCESS;
             }
 
             sender.sendMessage(
-                worldListStateComponent(enabled, true)
-                    .append(newline())
+                text()
+                    .append(worldListStateComponent(enabled, true))
+                    .appendNewline()
                     .append(worldListStateComponent(disabled, false))
             );
 
@@ -106,20 +104,26 @@ public class PvPCommand extends CommandBase {
 
             setAllStates(state);
             sender.sendMessage(
-                empty().color(Colours.GENERIC)
+                text()
+                    .color(Colours.GENERIC)
                     .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
-                    .append(Component.text(" PvP in ")
-                        .append(
-                            text("all worlds")
-                                .hoverEvent(HoverEvent.hoverEvent(
-                                    HoverEvent.Action.SHOW_TEXT,
-                                    text(getWorlds().stream().map(w -> w.getKey().toString()).collect(Collectors.joining("\n")))
-                                ))
-                        ))
+                    .append(Component.text(" PvP in "))
+                    .append(allWorlds())
             );
 
             return Command.SINGLE_SUCCESS;
         };
+    }
+
+    private static Component allWorlds() {
+        return text("all worlds")
+            .hoverEvent(HoverEvent.hoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                join(
+                    JoinConfiguration.newlines(),
+                    getWorlds().stream().map(w -> text(w.getKey().toString())).toList()
+                )
+            ));
     }
 
     private static Command<CommandSourceStack> updateWorldState(boolean state) {
@@ -129,7 +133,8 @@ public class PvPCommand extends CommandBase {
 
             setState(world, state);
             sender.sendMessage(
-                empty().color(Colours.GENERIC)
+                text()
+                    .color(Colours.GENERIC)
                     .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
                     .append(Component.text(" PvP in "))
                     .append(Components.worldName(world).color(Colours.DATA))
@@ -157,15 +162,18 @@ public class PvPCommand extends CommandBase {
     }
 
     private static TextComponent worldListStateComponent(List<World> worlds, boolean state) {
-        return text("PvP is ", Colours.GENERIC)
-            .append(state ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
-            .append(text(" in ", Colours.GENERIC))
-            .append(
-                join(
-                    JoinConfiguration.separator(Component.text(", ", Colours.GENERIC)),
-                    worlds.stream().map(world -> Components.worldName(world).color(Colours.DATA)).collect(Collectors.toList())
+        return
+            text()
+                .append(text("PvP is ", Colours.GENERIC))
+                .append(state ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
+                .append(text(" in ", Colours.GENERIC))
+                .append(
+                    join(
+                        JoinConfiguration.separator(Component.text(", ", Colours.GENERIC)),
+                        worlds.stream().map(world -> Components.worldName(world).color(Colours.DATA)).collect(Collectors.toList())
+                    )
                 )
-            );
+                .build();
     }
 
 }

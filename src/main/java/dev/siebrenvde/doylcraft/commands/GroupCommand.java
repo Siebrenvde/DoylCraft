@@ -12,7 +12,6 @@ import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.text.Component;
 import net.luckperms.api.model.group.Group;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -20,10 +19,13 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static dev.siebrenvde.doylcraft.utils.Components.entity;
+import static net.kyori.adventure.text.Component.text;
+
 /**
  * Command to get or set a player's group
  */
-@SuppressWarnings("UnstableApiUsage")
+@SuppressWarnings({"UnstableApiUsage", "CallToPrintStackTrace"})
 public class GroupCommand extends CommandBase {
 
     public static void register(Commands commands) {
@@ -54,25 +56,29 @@ public class GroupCommand extends CommandBase {
 
                 if(group != null) {
                     sender.sendMessage(
-                        Component.empty()
-                            .append(Components.entity(player).color(Colours.DATA))
-                            .append(Component.text(" is a member of ", Colours.GENERIC))
-                            .append(Component.text(group, Colours.DATA))
+                        text()
+                            .append(entity(player).color(Colours.DATA))
+                            .append(text(" is a member of ", Colours.GENERIC))
+                            .append(text(group, Colours.DATA))
                     );
                 } else {
                     sender.sendMessage(
-                        Component.empty()
-                            .append(Components.entity(player).color(Colours.DATA))
-                            .append(Component.text(" is not a member of any group", Colours.GENERIC))
+                        text()
+                            .append(entity(player).color(Colours.DATA))
+                            .append(text(" is not a member of any group", Colours.GENERIC))
                     );
                 }
 
             });
         } catch(Exception exception) {
             sender.sendMessage(Components.exception(
-                Component.text("Failed to get ", Colours.ERROR)
-                    .append(Components.entity(player).color(Colours.DATA))
-                    .append(Component.text("'s group", Colours.ERROR)), exception
+                text()
+                    .append(text("Failed to get "))
+                    .append(entity(player).color(Colours.DATA))
+                    .append(text("'s group"))
+                    .color(Colours.ERROR)
+                    .build(),
+                exception
             ));
             exception.printStackTrace();
         }
@@ -87,25 +93,33 @@ public class GroupCommand extends CommandBase {
 
         if(!LuckPermsAddon.get().groupExists(group)) {
             sender.sendMessage(
-                Component.text("Group ", Colours.ERROR)
-                    .append(Component.text(group, Colours.DATA))
-                    .append(Component.text(" does not exist", Colours.ERROR))
+                text()
+                    .append(text("Group "))
+                    .append(text(group, Colours.DATA))
+                    .append(text(" does not exist"))
+                    .color(Colours.ERROR)
             );
         }
 
         try {
             LuckPermsAddon.get().setPlayerGroup(player, group);
             sender.sendMessage(
-                Component.text("Changed ", Colours.GENERIC)
-                    .append(Components.entity(player).color(Colours.DATA))
-                    .append(Component.text("'s group to ", Colours.GENERIC))
-                    .append(Component.text(group, Colours.DATA))
+                text()
+                    .append(text("Changed "))
+                    .append(entity(player).color(Colours.DATA))
+                    .append(text("'s group to "))
+                    .append(text(group, Colours.DATA))
+                    .color(Colours.GENERIC)
             );
         } catch(Exception exception) {
             sender.sendMessage(Components.exception(
-                Component.text("Failed to change ", Colours.ERROR)
-                    .append(Components.entity(player).color(Colours.DATA))
-                    .append(Component.text("'s group", Colours.ERROR)), exception
+                text()
+                    .append(text("Failed to change "))
+                    .append(entity(player).color(Colours.DATA))
+                    .append(text("'s group"))
+                    .color(Colours.ERROR)
+                    .build(),
+                exception
             ));
             exception.printStackTrace();
         }
