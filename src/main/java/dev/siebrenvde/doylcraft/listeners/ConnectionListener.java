@@ -5,6 +5,7 @@ import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.addons.VoicechatAddon;
+import dev.siebrenvde.doylcraft.preferences.Preferences;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,6 +34,7 @@ public class ConnectionListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        Preferences.initPlayer(player);
         scoreboardHandler.initPlayer(player);
         MemoryHandler.LOGIN_TIMES.put(player, Instant.now());
         VoicechatAddon.checkVoicechatInstalled(player);

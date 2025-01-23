@@ -1,6 +1,8 @@
 package dev.siebrenvde.doylcraft.commands;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
+import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.PreferencesSubCommand;
+import dev.siebrenvde.doylcraft.preferences.Preferences;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
@@ -26,7 +28,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static dev.siebrenvde.doylcraft.listeners.ItemDamageListener.COOLDOWN_DURATION_SECONDS;
 import static dev.siebrenvde.doylcraft.listeners.ItemDamageListener.LAST_PING_KEY;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
@@ -52,6 +53,7 @@ public class DoylCraftCommand extends CommandBase {
                     );
                     return SINGLE_SUCCESS;
                 })
+                .then(PreferencesSubCommand.get())
                 .then(literal("debug")
                     .requires(hasSubPermission("debug"))
                     .then(literal("spawn_wandering_trader")
@@ -83,7 +85,7 @@ public class DoylCraftCommand extends CommandBase {
                             Instant lastPing = Instant.ofEpochMilli(Objects.requireNonNull(container.get(LAST_PING_KEY, PersistentDataType.LONG)));
                             Duration duration = Duration.between(
                                 Instant.now(),
-                                lastPing.plusSeconds(COOLDOWN_DURATION_SECONDS)
+                                lastPing.plusSeconds(Preferences.get(player).durabilityPing.cooldown())
                             );
 
                             TextComponent.Builder builder = text();

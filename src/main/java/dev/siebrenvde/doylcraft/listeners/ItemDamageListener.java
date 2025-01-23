@@ -1,6 +1,8 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
+import dev.siebrenvde.doylcraft.preferences.PlayerPreferences;
+import dev.siebrenvde.doylcraft.preferences.Preferences;
 import dev.siebrenvde.doylcraft.utils.Components;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.NamespacedKey;
@@ -47,13 +49,16 @@ public class ItemDamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onItemDamage(PlayerItemDamageEvent event) {
+        PlayerPreferences.PrefDurabilityPing prefs = Preferences.get(event.getPlayer()).durabilityPing;
+        if(!prefs.enabled()) return;
+
         ItemStack item = event.getItem();
         Damageable meta = (Damageable) item.getItemMeta();
 
         int damage = meta.getDamage() + event.getDamage();
         short maxDurability = item.getType().getMaxDurability();
 
-        int pingDurability = (int) (maxDurability - (maxDurability * DURABILITY_PING_PERCENTAGE));
+        int pingDurability = maxDurability - ((maxDurability * prefs.percentage()) / 100);
         if(damage < pingDurability || damage == maxDurability) return;
 
         PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -64,7 +69,7 @@ public class ItemDamageListener implements Listener {
         }
 
         Instant lastPing = Instant.ofEpochMilli(Objects.requireNonNull(container.get(LAST_PING_KEY, PersistentDataType.LONG)));
-        if(Instant.now().isBefore(lastPing.plusSeconds(COOLDOWN_DURATION_SECONDS))) return;
+        if(Instant.now().isBefore(lastPing.plusSeconds(prefs.cooldown()))) return;
 
         pingPlayer(event.getPlayer(), item, damage, maxDurability);
     }
