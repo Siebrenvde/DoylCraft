@@ -13,6 +13,7 @@ public class PlayerPreferences extends ReflectiveConfig {
     public final TrackedValue<Boolean> voicechatReminder = value(true);
 
     public final PrefDurabilityPing durabilityPing = new PrefDurabilityPing();
+    public final PrefPetDamageMessages petDamageMessages = new PrefPetDamageMessages();
 
     public static class PrefDurabilityPing extends Section {
         public final TrackedValue<Boolean> enabled = value(true);
@@ -22,6 +23,16 @@ public class PlayerPreferences extends ReflectiveConfig {
         public boolean enabled() { return enabled.getRealValue(); }
         public int percentage() { return percentage.getRealValue(); }
         public int cooldown() { return cooldown.getRealValue(); }
+    }
+
+    public static class PrefPetDamageMessages extends Section {
+        public final TrackedValue<Boolean> broadcast = value(true);
+        public final TrackedValue<Boolean> owner = value(true);
+        public final TrackedValue<Boolean> attacker = value(true);
+
+        public boolean broadcast() { return broadcast.getRealValue(); }
+        public boolean owner() { return owner.getRealValue(); }
+        public boolean attacker() { return attacker.getRealValue(); }
     }
 
     public boolean voicechatReminder() { return voicechatReminder.getRealValue(); }

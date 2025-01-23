@@ -1,6 +1,7 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
+import dev.siebrenvde.doylcraft.preferences.Preferences;
 import dev.siebrenvde.doylcraft.utils.Components;
 import github.scarsz.discordsrv.dependencies.jda.api.utils.MarkdownSanitizer;
 import net.kyori.adventure.text.Component;
@@ -71,35 +72,42 @@ public class PetDamageListener implements Listener {
         Component petName = pet.customName();
 
         if(damager.equals(owner)) {
-            damager.sendMessage(
-                text("You did " + df.format(damage) + " damage to ")
-                    .append(petName == null ? text("your ") : empty())
-                    .append(Components.entity(pet))
-                    .color(MESSAGE_COLOUR)
-            );
-        } else {
-            if(owner.isOnline()) {
-                ((Player) owner).sendMessage(
-                    empty()
-                        .append(Components.entity(damager))
-                        .append(text(" did " + df.format(damage) + " damage to "))
+            if(Preferences.get(damager).petDamageMessages.attacker()) {
+                damager.sendMessage(
+                    text("You did " + df.format(damage) + " damage to ")
                         .append(petName == null ? text("your ") : empty())
                         .append(Components.entity(pet))
                         .color(MESSAGE_COLOUR)
                 );
             }
+        } else {
+            if(owner.isOnline()) {
+                Player ownerPlayer = (Player) owner;
+                if(Preferences.get(ownerPlayer).petDamageMessages.owner()) {
+                    ownerPlayer.sendMessage(
+                        empty()
+                            .append(Components.entity(damager))
+                            .append(text(" did " + df.format(damage) + " damage to "))
+                            .append(petName == null ? text("your ") : empty())
+                            .append(Components.entity(pet))
+                            .color(MESSAGE_COLOUR)
+                    );
+                }
+            }
 
-            damager.sendMessage(
-                text("You did " + df.format(damage) + " damage to ")
-                    .append(Components.entity(owner))
-                    .append(text("'s "))
-                    .append(petName != null
-                        ? petType.append(text(", "))
-                        : empty()
-                    )
-                    .append(Components.entity(pet))
-                    .color(MESSAGE_COLOUR)
-            );
+            if(Preferences.get(damager).petDamageMessages.attacker()) {
+                damager.sendMessage(
+                    text("You did " + df.format(damage) + " damage to ")
+                        .append(Components.entity(owner))
+                        .append(text("'s "))
+                        .append(petName != null
+                            ? petType.append(text(", "))
+                            : empty()
+                        )
+                        .append(Components.entity(pet))
+                        .color(MESSAGE_COLOUR)
+                );
+            }
         }
 
         discordSRVAddon.sendDiscordMessage("pet-log",
@@ -113,21 +121,24 @@ public class PetDamageListener implements Listener {
         );
 
         if((health - damage) <= 0.0) {
-            Bukkit.broadcast(
-                Component.empty()
-                    .append(Components.entity(damager))
-                    .append(text(" killed "))
-                    .append(damager != owner
-                        ? Components.entity(owner).append(text("'s "))
-                        : text("their ")
-                    )
-                    .append(petName != null
-                        ? petType.append(text(", "))
-                        : empty()
-                    )
-                    .append(Components.entity(pet))
-                    .color(MESSAGE_COLOUR)
-            );
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                if(!Preferences.get(player).petDamageMessages.broadcast()) return;
+                player.sendMessage(
+                    Component.empty()
+                        .append(Components.entity(damager))
+                        .append(text(" killed "))
+                        .append(damager != owner
+                            ? Components.entity(owner).append(text("'s "))
+                            : text("their ")
+                        )
+                        .append(petName != null
+                            ? petType.append(text(", "))
+                            : empty()
+                        )
+                        .append(Components.entity(pet))
+                        .color(MESSAGE_COLOUR)
+                );
+            });
 
             discordSRVAddon.sendDiscordMessage("pet-log",
                 text(":skull: ")

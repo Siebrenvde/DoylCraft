@@ -172,6 +172,110 @@ public class PreferencesSubCommand extends CommandBase {
                         }))
                     )
                 )
+            )
+            .then(literal("pet_damage_messages")
+                .then(literal("broadcast")
+                    .then(literal("get")
+                        .executes(withPreferences((ctx, player, prefs) -> {
+                            player.sendMessage(
+                                text()
+                                    .append(text("Pet death broadcasts are "))
+                                    .append(text(
+                                        prefs.petDamageMessages.broadcast()
+                                            ? "enabled"
+                                            : "disabled",
+                                        Colours.DATA
+                                    ))
+                            );
+                        }))
+                    )
+                    .then(literal("set")
+                        .then(argument("value", BoolArgumentType.bool())
+                            .executes(withPreferences((ctx, player, prefs) -> {
+                                boolean value = BoolArgumentType.getBool(ctx, "value");
+                                prefs.petDamageMessages.broadcast.setValue(value);
+                                player.sendMessage(
+                                    text()
+                                        .append(text("Pet death broadcasts are now "))
+                                        .append(text(
+                                            value
+                                                ? "enabled"
+                                                : "disabled",
+                                            Colours.DATA
+                                        ))
+                                );
+                            }))
+                        )
+                    )
+                )
+                .then(literal("owner")
+                    .then(literal("get")
+                        .executes(withPreferences((ctx, player, prefs) -> {
+                            player.sendMessage(
+                                text()
+                                    .append(text("Pet damage owner messages are "))
+                                    .append(text(
+                                        prefs.petDamageMessages.owner()
+                                            ? "enabled"
+                                            : "disabled",
+                                        Colours.DATA
+                                    ))
+                            );
+                        }))
+                    )
+                    .then(literal("set")
+                        .then(argument("value", BoolArgumentType.bool())
+                            .executes(withPreferences((ctx, player, prefs) -> {
+                                boolean value = BoolArgumentType.getBool(ctx, "value");
+                                prefs.petDamageMessages.owner.setValue(value);
+                                player.sendMessage(
+                                    text()
+                                        .append(text("Pet damage owner messages are now "))
+                                        .append(text(
+                                            value
+                                                ? "enabled"
+                                                : "disabled",
+                                            Colours.DATA
+                                        ))
+                                );
+                            }))
+                        )
+                    )
+                )
+                .then(literal("attacker")
+                    .then(literal("get")
+                        .executes(withPreferences((ctx, player, prefs) -> {
+                            player.sendMessage(
+                                text()
+                                    .append(text("Pet damage attacker messages are "))
+                                    .append(text(
+                                        prefs.petDamageMessages.attacker()
+                                            ? "enabled"
+                                            : "disabled",
+                                        Colours.DATA
+                                    ))
+                            );
+                        }))
+                    )
+                    .then(literal("set")
+                        .then(argument("value", BoolArgumentType.bool())
+                            .executes(withPreferences((ctx, player, prefs) -> {
+                                boolean value = BoolArgumentType.getBool(ctx, "value");
+                                prefs.petDamageMessages.attacker.setValue(value);
+                                player.sendMessage(
+                                    text()
+                                        .append(text("Pet damage attacker messages are now "))
+                                        .append(text(
+                                            value
+                                                ? "enabled"
+                                                : "disabled",
+                                            Colours.DATA
+                                        ))
+                                );
+                            }))
+                        )
+                    )
+                )
             );
     }
 
