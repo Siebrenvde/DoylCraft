@@ -121,6 +121,7 @@ public class PetDamageListener implements Listener {
                 .append(text(" ("))
                 .append(petName != null ? petType.append(text(", ")) : empty())
                 .append(text(MarkdownSanitizer.escape(owner.getName() != null ? owner.getName() : "Unknown Player", true)))
+                .append(text(")"))
                 .build()
         );
 
