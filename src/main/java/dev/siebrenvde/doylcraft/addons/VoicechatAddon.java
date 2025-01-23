@@ -6,6 +6,7 @@ import de.maxhenkel.voicechat.api.VoicechatServerApi;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.VoicechatServerStartedEvent;
 import dev.siebrenvde.doylcraft.DoylCraft;
+import dev.siebrenvde.doylcraft.preferences.Preferences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -44,6 +45,7 @@ public class VoicechatAddon implements VoicechatPlugin {
      * @param player the player to check
      */
     public static void checkVoicechatInstalled(Player player) {
+        if(!Preferences.get(player).voicechatReminder()) return;
         new BukkitRunnable() {
             @Override
             public void run() {

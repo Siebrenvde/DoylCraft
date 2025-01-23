@@ -10,6 +10,8 @@ import dev.siebrenvde.configlib.metadata.NoOptionSpacing;
 @SerializedNameConvention(NamingSchemes.SNAKE_CASE)
 public class PlayerPreferences extends ReflectiveConfig {
 
+    public final TrackedValue<Boolean> voicechatReminder = value(true);
+
     public final PrefDurabilityPing durabilityPing = new PrefDurabilityPing();
 
     public static class PrefDurabilityPing extends Section {
@@ -21,5 +23,7 @@ public class PlayerPreferences extends ReflectiveConfig {
         public int percentage() { return percentage.getRealValue(); }
         public int cooldown() { return cooldown.getRealValue(); }
     }
+
+    public boolean voicechatReminder() { return voicechatReminder.getRealValue(); }
 
 }

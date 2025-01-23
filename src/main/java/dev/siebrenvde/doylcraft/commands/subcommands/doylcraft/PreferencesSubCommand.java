@@ -31,6 +31,40 @@ public class PreferencesSubCommand extends CommandBase {
     public static LiteralArgumentBuilder<CommandSourceStack> get() {
         return literal("preferences")
             .requires(isPlayer())
+            .then(literal("voicechat_reminder")
+                .then(literal("get")
+                    .executes(withPreferences((ctx, player, prefs) -> {
+                        player.sendMessage(
+                            text()
+                                .append(text("Simple Voice Chat reminder is "))
+                                .append(text(
+                                    prefs.voicechatReminder()
+                                        ? "enabled"
+                                        : "disabled",
+                                    Colours.DATA
+                                ))
+                        );
+                    }))
+                )
+                .then(literal("set")
+                    .then(argument("value", BoolArgumentType.bool())
+                        .executes(withPreferences((ctx, player, prefs) -> {
+                            boolean value = BoolArgumentType.getBool(ctx, "value");
+                            prefs.voicechatReminder.setValue(value);
+                            player.sendMessage(
+                                text()
+                                    .append(text("Simple Voice Chat reminder is now "))
+                                    .append(text(
+                                        value
+                                            ? "enabled"
+                                            : "disabled",
+                                        Colours.DATA
+                                    ))
+                            );
+                        }))
+                    )
+                )
+            )
             .then(literal("durability_ping")
                 .then(literal("enabled")
                     .then(literal("get")
