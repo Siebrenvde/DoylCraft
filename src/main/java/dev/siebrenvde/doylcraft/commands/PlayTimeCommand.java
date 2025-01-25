@@ -53,7 +53,6 @@ public class PlayTimeCommand extends CommandBase {
                     );
                 }))
                 .then(Commands.argument("player", OfflinePlayerArgumentType.offlinePlayer())
-                    .suggests(PlayTimeCommand::getOnlinePlayers)
                     .executes(ctx -> {
                         CommandSender sender = ctx.getSource().getSender();
                         OfflinePlayer player = ctx.getArgument("player", OfflinePlayer.class);
@@ -84,14 +83,6 @@ public class PlayTimeCommand extends CommandBase {
                 .build(),
             "Get your or another player's time played"
         );
-    }
-
-    private static CompletableFuture<Suggestions> getOnlinePlayers(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        Bukkit.getOnlinePlayers().stream()
-            .map(Player::getName)
-            .filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase()))
-            .forEach(builder::suggest);
-        return builder.buildFuture();
     }
 
     private static Component onlineTime(Player player, ZoneId zone) {
