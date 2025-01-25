@@ -6,10 +6,13 @@ import dev.siebrenvde.configlib.libs.quilt.config.api.metadata.NamingSchemes;
 import dev.siebrenvde.configlib.libs.quilt.config.api.values.TrackedValue;
 import dev.siebrenvde.configlib.metadata.NoOptionSpacing;
 
+import java.time.ZoneId;
+
 @NoOptionSpacing
 @SerializedNameConvention(NamingSchemes.SNAKE_CASE)
 public class PlayerPreferences extends ReflectiveConfig {
 
+    public final TrackedValue<String> timezone = value("UTC");
     public final TrackedValue<Boolean> voicechatReminder = value(true);
 
     public final PrefDurabilityPing durabilityPing = new PrefDurabilityPing();
@@ -35,6 +38,7 @@ public class PlayerPreferences extends ReflectiveConfig {
         public boolean attacker() { return attacker.getRealValue(); }
     }
 
+    public ZoneId timezone() { return ZoneId.of(timezone.getRealValue()); }
     public boolean voicechatReminder() { return voicechatReminder.getRealValue(); }
 
 }

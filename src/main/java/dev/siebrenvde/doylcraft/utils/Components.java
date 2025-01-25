@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 
@@ -140,10 +139,11 @@ public class Components {
     /**
      * Builds a timestamp component
      * @param instant the instant
+     * @param zone the time zone
      * @return a new timestamp component
      */
-    public static Component timestamp(Instant instant) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a").withZone(ZoneId.from(ZoneOffset.UTC));
+    public static Component timestamp(Instant instant, ZoneId zone) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a").withZone(zone);
         return text(formatter.format(instant));
     }
 

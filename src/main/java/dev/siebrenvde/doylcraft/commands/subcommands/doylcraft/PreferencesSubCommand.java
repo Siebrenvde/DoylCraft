@@ -3,6 +3,7 @@ package dev.siebrenvde.doylcraft.commands.subcommands.doylcraft;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -16,6 +17,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
+import java.time.ZoneId;
 
 import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
@@ -31,6 +33,53 @@ public class PreferencesSubCommand extends CommandBase {
     public static LiteralArgumentBuilder<CommandSourceStack> get() {
         return literal("preferences")
             .requires(isPlayer())
+            .then(literal("timezone")
+                .then(literal("get")
+                    .executes(withPreferences((ctx, player, prefs) -> {
+                        player.sendMessage(
+                            text()
+                                .append(text("Your time zone is "))
+                                .append(text(prefs.timezone().getId(), Colours.DATA))
+                        );
+                    }))
+                )
+                .then(literal("set")
+                    .then(argument("timezone", StringArgumentType.greedyString())
+                        .suggests((ctx, builder) -> {
+                            ZoneId.getAvailableZoneIds().stream()
+                                .filter(s -> {
+                                    if(s.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) return true;
+                                    for(String part : s.split("/")) {
+                                        if(part.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) return true;
+                                    }
+                                    return false;
+                                })
+                                .forEach(builder::suggest);
+                            return builder.buildFuture();
+                        })
+                        .executes(withPreferences((ctx, player, prefs) -> {
+                            String timezone = StringArgumentType.getString(ctx, "timezone");
+
+                            if(!ZoneId.getAvailableZoneIds().contains(timezone)) {
+                                player.sendMessage(
+                                    text()
+                                        .append(text("Invalid time zone: "))
+                                        .append(text(timezone, Colours.DATA))
+                                        .color(Colours.ERROR)
+                                );
+                                return;
+                            }
+
+                            prefs.timezone.setValue(timezone);
+                            player.sendMessage(
+                                text()
+                                    .append(text("Set your time zone to "))
+                                    .append(text(timezone, Colours.DATA))
+                            );
+                        }))
+                    )
+                )
+            )
             .then(literal("voicechat_reminder")
                 .then(literal("get")
                     .executes(withPreferences((ctx, player, prefs) -> {

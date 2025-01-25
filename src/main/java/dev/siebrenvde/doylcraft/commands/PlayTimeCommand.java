@@ -6,6 +6,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
+import dev.siebrenvde.doylcraft.preferences.Preferences;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
@@ -23,6 +24,8 @@ import org.bukkit.entity.Player;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.concurrent.CompletableFuture;
 
 import static net.kyori.adventure.text.Component.*;
@@ -38,13 +41,14 @@ public class PlayTimeCommand extends CommandBase {
             Commands.literal("playtime")
                 .requires(isPlayer())
                 .executes(withPlayer((ctx, player) -> {
+                    ZoneId zone = Preferences.get(player).timezone();
                     player.sendMessage(
                         text()
                             .append(text("Current Online Time: "))
-                            .append(onlineTime(player).color(Colours.DATA))
+                            .append(onlineTime(player, zone).color(Colours.DATA))
                             .appendNewline()
                             .append(text("Total Time Played: "))
-                            .append(totalTime(player).color(Colours.DATA))
+                            .append(totalTime(player, zone).color(Colours.DATA))
                             .color(Colours.GENERIC)
                     );
                 }))
@@ -53,6 +57,9 @@ public class PlayTimeCommand extends CommandBase {
                     .executes(ctx -> {
                         CommandSender sender = ctx.getSource().getSender();
                         OfflinePlayer player = ctx.getArgument("player", OfflinePlayer.class);
+                        ZoneId zone = sender instanceof Player
+                            ? Preferences.get((Player) sender).timezone()
+                            : ZoneId.from(ZoneOffset.UTC);
 
                         TextComponent.Builder message = text();
 
@@ -60,14 +67,14 @@ public class PlayTimeCommand extends CommandBase {
                             message
                                 .append(Components.entity(player).color(Colours.GENERIC))
                                 .append(text("'s Current Online Time: ", Colours.GENERIC))
-                                .append(onlineTime(player.getPlayer()).color(Colours.DATA))
+                                .append(onlineTime(player.getPlayer(), zone).color(Colours.DATA))
                                 .appendNewline();
                         }
 
                         message
                             .append(Components.entity(player).color(Colours.GENERIC))
                             .append(text("'s Total Time Played: ", Colours.GENERIC))
-                            .append(totalTime(player).color(Colours.DATA));
+                            .append(totalTime(player, zone).color(Colours.DATA));
 
                         sender.sendMessage(message);
 
@@ -87,21 +94,29 @@ public class PlayTimeCommand extends CommandBase {
         return builder.buildFuture();
     }
 
-    private static Component onlineTime(Player player) {
+    private static Component onlineTime(Player player, ZoneId zone) {
         return Components.duration(Duration.between(MemoryHandler.LOGIN_TIMES.get(player), Instant.now()))
             .hoverEvent(HoverEvent.showText(
                 text()
-                    .append(text("Login Time (UTC): ", Colours.GENERIC))
-                    .append(Components.timestamp(MemoryHandler.LOGIN_TIMES.get(player)).color(Colours.DATA))
+                    .append(text(String.format("Login Time (%s): ", zone.getId()), Colours.GENERIC))
+                    .appendNewline()
+                    .append(Components.timestamp(
+                        MemoryHandler.LOGIN_TIMES.get(player),
+                        zone
+                    ).color(Colours.DATA))
             ));
     }
 
-    private static Component totalTime(OfflinePlayer player) {
+    private static Component totalTime(OfflinePlayer player, ZoneId zone) {
         return Components.duration(Tick.of(player.getStatistic(Statistic.PLAY_ONE_MINUTE)))
             .hoverEvent(HoverEvent.showText(
                 text()
-                    .append(text("First Login Time (UTC): ", Colours.GENERIC))
-                    .append(Components.timestamp(Instant.ofEpochMilli(player.getFirstPlayed())).color(Colours.DATA))
+                    .append(text(String.format("First Login Time (%s): ", zone.getId()), Colours.GENERIC))
+                    .appendNewline()
+                    .append(Components.timestamp(
+                        Instant.ofEpochMilli(player.getFirstPlayed()),
+                        zone
+                    ).color(Colours.DATA))
             ));
     }
 
