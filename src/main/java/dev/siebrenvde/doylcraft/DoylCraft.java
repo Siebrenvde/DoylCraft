@@ -74,6 +74,7 @@ public final class DoylCraft extends JavaPlugin {
             PvPCommand.register(commands);
             DoylCraftCommand.register(commands);
             SilenceCommand.register(commands);
+            RemainingBiomesCommand.register(commands);
         });
     }
 
