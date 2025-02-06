@@ -9,10 +9,15 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Getter
 public final class DoylCraft extends JavaPlugin {
@@ -37,6 +42,7 @@ public final class DoylCraft extends JavaPlugin {
         initHandlers();
         registerCommands();
         registerListeners();
+        addServerLinks();
     }
 
     /**
@@ -65,7 +71,7 @@ public final class DoylCraft extends JavaPlugin {
      */
     @SuppressWarnings("UnstableApiUsage")
     private void registerCommands() {
-        LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
+        LifecycleEventManager<@NotNull Plugin> lifecycleManager = this.getLifecycleManager();
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             GetOwnerCommand.register(commands);
@@ -107,6 +113,21 @@ public final class DoylCraft extends JavaPlugin {
     private void registerListeners(Listener... listeners) {
         for(Listener listener : listeners) {
             getServer().getPluginManager().registerEvents(listener, this);
+        }
+    }
+
+    /**
+     * Adds our server links
+     */
+    @SuppressWarnings("UnstableApiUsage")
+    private void addServerLinks() {
+        try {
+            getServer().getServerLinks().addLink(
+                Component.text("Discord"),
+                new URI(discordSRVAddon.getInviteLink())
+            );
+        } catch(URISyntaxException e) {
+            LOGGER.error("Failed to add Discord invite link", e);
         }
     }
 

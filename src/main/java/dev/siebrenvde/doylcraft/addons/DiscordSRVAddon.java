@@ -61,6 +61,13 @@ public class DiscordSRVAddon {
         return discord.getMainGuild().getMembers();
     }
 
+    /**
+     * {@return the invite link}
+     */
+    public String getInviteLink() {
+        return DiscordSRV.config().getString("DiscordInviteLink");
+    }
+
     private static class Listeners extends ListenerAdapter {
 
         private final DiscordSRV discord;
