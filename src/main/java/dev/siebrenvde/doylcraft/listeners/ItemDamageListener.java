@@ -37,16 +37,6 @@ public class ItemDamageListener implements Listener {
         "last_durability_ping"
     );
 
-    /**
-     * The durability percentage at which to ping the player
-     */
-    private static final double DURABILITY_PING_PERCENTAGE = 0.1;
-
-    /**
-     * The cooldown duration in seconds
-     */
-    public static final int COOLDOWN_DURATION_SECONDS = 60;
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onItemDamage(PlayerItemDamageEvent event) {
         PlayerPreferences.PrefDurabilityPing prefs = Preferences.get(event.getPlayer()).durabilityPing;
@@ -75,9 +65,7 @@ public class ItemDamageListener implements Listener {
     }
 
     private void pingPlayer(Player player, ItemStack item, int damage, short maxDurability) {
-        item.editMeta(meta -> {
-            meta.getPersistentDataContainer().set(LAST_PING_KEY, PersistentDataType.LONG, Instant.now().toEpochMilli());
-        });
+        item.editPersistentDataContainer(pdc -> pdc.set(LAST_PING_KEY, PersistentDataType.LONG, Instant.now().toEpochMilli()));
         player.sendActionBar(
             text()
                 .append(Components.itemStack(item).colorIfAbsent(NamedTextColor.WHITE))
