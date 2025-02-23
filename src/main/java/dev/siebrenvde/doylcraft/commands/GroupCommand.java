@@ -15,6 +15,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.luckperms.api.model.group.Group;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -26,6 +27,7 @@ import static net.kyori.adventure.text.Component.text;
  * Command to get or set a player's group
  */
 @SuppressWarnings({"UnstableApiUsage", "CallToPrintStackTrace"})
+@NullMarked
 public class GroupCommand extends CommandBase {
 
     public static void register(Commands commands) {

@@ -1,30 +1,35 @@
 package dev.siebrenvde.doylcraft.addons;
 
-import dev.siebrenvde.doylcraft.DoylCraft;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.InheritanceNode;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
+@NullMarked
 public class LuckPermsAddon {
 
-    private static LuckPermsAddon instance;
+    @Nullable private static LuckPermsAddon instance;
     private final LuckPerms luckPerms;
 
-    public LuckPermsAddon(DoylCraft doylCraft) {
+    public LuckPermsAddon() {
         instance = this;
-        luckPerms = doylCraft.getServer().getServicesManager().load(LuckPerms.class);
+        luckPerms = requireNonNull(Bukkit.getServicesManager().load(LuckPerms.class));
     }
 
     public static LuckPermsAddon get() {
-        return instance;
+        return requireNonNull(instance);
     }
 
     /**
@@ -38,7 +43,7 @@ public class LuckPermsAddon {
      * {@return the group of the provided player}
      * @param player the player
      */
-    public CompletableFuture<String> getPlayerGroup(OfflinePlayer player) {
+    public CompletableFuture<@Nullable String> getPlayerGroup(OfflinePlayer player) {
         return luckPerms.getUserManager().loadUser(player.getUniqueId())
             .thenApplyAsync(user -> {
                 Set<String> groups = user.getNodes(NodeType.INHERITANCE).stream()
@@ -54,7 +59,7 @@ public class LuckPermsAddon {
      * @param groupName the name of the group
      */
     public void setPlayerGroup(OfflinePlayer player, String groupName) {
-        Group group = luckPerms.getGroupManager().getGroup(groupName);
+        Group group = requireNonNull(luckPerms.getGroupManager().getGroup(groupName));
         luckPerms.getUserManager().modifyUser(player.getUniqueId(), (User user) -> {
             user.data().clear(NodeType.INHERITANCE::matches);
             Node node = InheritanceNode.builder(group).build();

@@ -1,6 +1,6 @@
 package dev.siebrenvde.doylcraft.listeners;
 
-import dev.siebrenvde.doylcraft.DoylCraft;
+import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.event.player.PlayerDeepSleepEvent;
 import net.kyori.adventure.text.Component;
@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.jspecify.annotations.NullMarked;
 
 import static net.kyori.adventure.text.Component.text;
 
@@ -17,6 +18,7 @@ import static net.kyori.adventure.text.Component.text;
  * <p>
  * Broadcasts a message to the server and Discord when a player sleeps and skips the night
  */
+@NullMarked
 public class PlayerSleepListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -27,7 +29,7 @@ public class PlayerSleepListener implements Listener {
             .colorIfAbsent(NamedTextColor.AQUA)
             .build();
         Bukkit.broadcast(message);
-        DoylCraft.getInstance().getDiscordSRVAddon().sendDiscordMessage(
+        DiscordSRVAddon.get().sendDiscordMessage(
             "global",
             text(":sunrise: **").append(message).append(text("**"))
         );

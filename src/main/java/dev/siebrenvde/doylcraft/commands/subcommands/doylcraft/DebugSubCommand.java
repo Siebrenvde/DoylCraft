@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.jspecify.annotations.NullMarked;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -26,6 +27,7 @@ import static net.kyori.adventure.text.Component.text;
  * that provides some debug commands
  */
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class DebugSubCommand extends CommandBase {
 
     public static LiteralArgumentBuilder<CommandSourceStack> get() {

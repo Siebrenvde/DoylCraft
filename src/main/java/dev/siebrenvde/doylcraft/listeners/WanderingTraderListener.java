@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.jspecify.annotations.NullMarked;
 
 import static net.kyori.adventure.text.Component.text;
 
@@ -17,6 +18,7 @@ import static net.kyori.adventure.text.Component.text;
  * <p>
  * Sends a message to nearby players when a Wandering Trader spawns
  */
+@NullMarked
 public class WanderingTraderListener implements Listener {
 
     private static final int SPAWN_RADIUS = 48;

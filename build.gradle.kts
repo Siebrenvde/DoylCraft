@@ -2,7 +2,6 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
     id("java")
-    id("io.freefair.lombok") version "8.11"
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.0"
 }
 

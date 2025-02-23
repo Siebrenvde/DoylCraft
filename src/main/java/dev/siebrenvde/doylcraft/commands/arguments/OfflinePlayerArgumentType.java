@@ -12,7 +12,7 @@ import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,15 +20,15 @@ import java.util.concurrent.CompletableFuture;
  * A {@link CustomArgumentType} that returns an {@link OfflinePlayer} and suggests all online players
  */
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class OfflinePlayerArgumentType implements CustomArgumentType<OfflinePlayer, String> {
 
     public static OfflinePlayerArgumentType offlinePlayer() {
         return new OfflinePlayerArgumentType();
     }
 
-    @NotNull
     @Override
-    public OfflinePlayer parse(@NotNull StringReader stringReader) throws CommandSyntaxException {
+    public OfflinePlayer parse(StringReader stringReader) throws CommandSyntaxException {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayerIfCached(stringReader.readString());
         if (offlinePlayer == null) {
             throw new SimpleCommandExceptionType(new LiteralMessage("No player was found")).create();
@@ -37,12 +37,12 @@ public class OfflinePlayerArgumentType implements CustomArgumentType<OfflinePlay
     }
 
     @Override
-    public @NotNull StringArgumentType getNativeType() {
+    public StringArgumentType getNativeType() {
         return StringArgumentType.word();
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> listSuggestions(@NotNull CommandContext context, @NotNull SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> listSuggestions(CommandContext context, SuggestionsBuilder builder) {
         Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase())).forEach(builder::suggest);
         return builder.buildFuture();
     }

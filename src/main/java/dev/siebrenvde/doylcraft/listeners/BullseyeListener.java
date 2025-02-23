@@ -10,12 +10,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.projectiles.ProjectileSource;
+import org.jspecify.annotations.NullMarked;
+
+import java.util.Objects;
 
 /**
  * Listener for {@link TargetHitEvent}
  * <p>
  * Broadcasts a message when a player hits a bullseye on a target block from at least 30 blocks away
  */
+@NullMarked
 public class BullseyeListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -26,7 +30,7 @@ public class BullseyeListener implements Listener {
         if(shooter instanceof Player player) {
 
             if(event.getSignalStrength() == 15) {
-                double distance = player.getLocation().distance(event.getHitBlock().getLocation());
+                double distance = player.getLocation().distance(Objects.requireNonNull(event.getHitBlock()).getLocation());
                 if(distance >= 30) {
                     Bukkit.broadcast(
                         Component.text()

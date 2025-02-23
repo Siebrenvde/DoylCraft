@@ -1,6 +1,6 @@
 package dev.siebrenvde.doylcraft.listeners;
 
-import dev.siebrenvde.doylcraft.DoylCraft;
+import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
 import dev.siebrenvde.doylcraft.utils.Components;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import net.kyori.adventure.text.Component;
@@ -21,6 +21,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.List;
  * Broadcasts a message when a villager dies
  */
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class VillagerDeathListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -41,22 +43,24 @@ public class VillagerDeathListener implements Listener {
         String translationKey = "death.attack." + source.getDamageType().getTranslationKey();
         List<TranslationArgument> arguments = new ArrayList<>();
 
+        Component villagerName = villager.customName();
         arguments.add(TranslationArgument.component(Components.entity(
-            villager.customName() != null
-                ? villager.customName().append(Component.text(" the ")).append(Component.translatable(villager.getProfession()))
+            villagerName != null
+                ? villagerName.append(Component.text(" the ")).append(Component.translatable(villager.getProfession()))
                 : Component.translatable(villager.getProfession()),
             villager
         )));
 
-        if(source.getCausingEntity() == null && source.getDirectEntity() == null) {
+        Entity causingEntity = source.getCausingEntity();
+        Entity directEntity = source.getDirectEntity();
+
+        if(causingEntity == null && directEntity == null) {
             Player killer = event.getEntity().getKiller();
             if(killer != null) {
                 arguments.add(TranslationArgument.component(Components.entity(killer)));
                 translationKey += ".player";
             }
         } else {
-            Entity causingEntity = source.getCausingEntity();
-
             if(causingEntity != null) {
                 arguments.add(TranslationArgument.component(Components.entity(causingEntity)));
 
@@ -73,7 +77,7 @@ public class VillagerDeathListener implements Listener {
                     }
                 }
             } else {
-                arguments.add(TranslationArgument.component(Components.entity(source.getDirectEntity())));
+                arguments.add(TranslationArgument.component(Components.entity(directEntity)));
             }
         }
 
@@ -96,7 +100,7 @@ public class VillagerDeathListener implements Listener {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(PlainTextComponentSerializer.plainText().serialize(component));
         embed.setDescription("A villager died at " + formattedLocation);
-        DoylCraft.getInstance().getDiscordSRVAddon().sendDiscordEmbed("global", embed);
+        DiscordSRVAddon.get().sendDiscordEmbed("global", embed);
 
     }
 

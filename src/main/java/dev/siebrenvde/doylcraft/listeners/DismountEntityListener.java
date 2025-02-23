@@ -7,12 +7,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Listener for {@link PlayerInteractEntityEvent}
  * <p>
  * Dismount an entity from a vehicle by shift-right-clicking the vehicle
  */
+@NullMarked
 public class DismountEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

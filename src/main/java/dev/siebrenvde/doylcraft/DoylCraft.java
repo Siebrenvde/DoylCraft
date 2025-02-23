@@ -3,41 +3,34 @@ package dev.siebrenvde.doylcraft;
 import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import dev.siebrenvde.doylcraft.addons.*;
 import dev.siebrenvde.doylcraft.commands.*;
+import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.listeners.*;
-import dev.siebrenvde.doylcraft.handlers.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@Getter
+import static java.util.Objects.requireNonNull;
+
+@NullMarked
 public final class DoylCraft extends JavaPlugin {
 
-    @Getter private static DoylCraft instance;
-    public static ComponentLogger LOGGER;
-
-    /* Addons */
-    private BlueMapAddon blueMapAddon;
-    private DiscordSRVAddon discordSRVAddon;
-    private LuckPermsAddon luckPermsAddon;
-    private WorldGuardAddon worldGuardAddon;
-
-    /* Handlers */
-    private ScoreboardHandler scoreboardHandler;
+    @Nullable private static DoylCraft instance;
+    @Nullable private static ComponentLogger logger;
 
     @Override
     public void onEnable() {
         instance = this;
-        LOGGER = getComponentLogger();
+        logger = getComponentLogger();
         initAddons();
         initHandlers();
         registerCommands();
@@ -49,21 +42,19 @@ public final class DoylCraft extends JavaPlugin {
      * Initialise addon classes
      */
     private void initAddons() {
-        blueMapAddon = new BlueMapAddon();
-        discordSRVAddon = new DiscordSRVAddon();
-        luckPermsAddon = new LuckPermsAddon(this);
-        worldGuardAddon = new WorldGuardAddon();
+        new BlueMapAddon();
+        new DiscordSRVAddon();
+        new LuckPermsAddon();
+        new WorldGuardAddon();
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
-        if(voicechatService != null) {
-            voicechatService.registerPlugin(new VoicechatAddon());
-        }
+        if(voicechatService != null) voicechatService.registerPlugin(new VoicechatAddon());
     }
 
     /**
      * Initialise handler classes
      */
     private void initHandlers() {
-        scoreboardHandler = new ScoreboardHandler();
+        new ScoreboardHandler();
     }
 
     /**
@@ -71,7 +62,7 @@ public final class DoylCraft extends JavaPlugin {
      */
     @SuppressWarnings("UnstableApiUsage")
     private void registerCommands() {
-        LifecycleEventManager<@NotNull Plugin> lifecycleManager = this.getLifecycleManager();
+        LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             GetOwnerCommand.register(commands);
@@ -89,16 +80,16 @@ public final class DoylCraft extends JavaPlugin {
      */
     private void registerListeners() {
         registerListeners(
-            new PetDamageListener(discordSRVAddon),
-            new AFKListener(discordSRVAddon),
-            new ChatListener(discordSRVAddon),
-            new ConnectionListener(this),
+            new PetDamageListener(),
+            new AFKListener(),
+            new ChatListener(),
+            new ConnectionListener(),
             new BullseyeListener(),
             new PlayerInteractEntityListener(),
             new DismountEntityListener(),
             new MobGriefingListener(),
             new VillagerDeathListener(),
-            new WarpModifyListener(blueMapAddon),
+            new WarpModifyListener(),
             new SilenceEntityListener(),
             new PlayerSleepListener(),
             new WanderingTraderListener(),
@@ -124,11 +115,14 @@ public final class DoylCraft extends JavaPlugin {
         try {
             getServer().getServerLinks().addLink(
                 Component.text("Discord"),
-                new URI(discordSRVAddon.getInviteLink())
+                new URI(DiscordSRVAddon.get().getInviteLink())
             );
         } catch(URISyntaxException e) {
-            LOGGER.error("Failed to add Discord invite link", e);
+            logger().error("Failed to add Discord invite link", e);
         }
     }
+
+    public static DoylCraft instance() { return requireNonNull(instance); }
+    public static ComponentLogger logger() { return requireNonNull(logger); }
 
 }

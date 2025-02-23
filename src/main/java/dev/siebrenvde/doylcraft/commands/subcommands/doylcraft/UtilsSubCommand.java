@@ -10,6 +10,7 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.util.Tick;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -23,6 +24,7 @@ import static net.kyori.adventure.text.Component.text;
  * that provides some utility commands
  */
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class UtilsSubCommand extends CommandBase {
 
     public static LiteralArgumentBuilder<CommandSourceStack> get() {
@@ -50,7 +52,7 @@ public class UtilsSubCommand extends CommandBase {
 
                             if(!entities.isEmpty()) {
                                 Bukkit.getScheduler().runTaskLater(
-                                    DoylCraft.getInstance(),
+                                    DoylCraft.instance(),
                                     () -> entities.forEach(entity -> entity.setGlowing(false)),
                                     ctx.getArgument("duration", Integer.class)
                                 );

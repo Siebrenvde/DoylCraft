@@ -1,32 +1,28 @@
 package dev.siebrenvde.doylcraft.commands;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.preferences.Preferences;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.util.Tick;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.concurrent.CompletableFuture;
+import java.util.Objects;
 
 import static net.kyori.adventure.text.Component.*;
 
@@ -34,6 +30,7 @@ import static net.kyori.adventure.text.Component.*;
  * Command to get the current player's or another player's current and total time played
  */
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class PlayTimeCommand extends CommandBase {
 
     public static void register(Commands commands) {
@@ -66,7 +63,7 @@ public class PlayTimeCommand extends CommandBase {
                             message
                                 .append(Components.entity(player).color(Colours.GENERIC))
                                 .append(text("'s Current Online Time: ", Colours.GENERIC))
-                                .append(onlineTime(player.getPlayer(), zone).color(Colours.DATA))
+                                .append(onlineTime(Objects.requireNonNull(player.getPlayer()), zone).color(Colours.DATA))
                                 .appendNewline();
                         }
 

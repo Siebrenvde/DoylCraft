@@ -12,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +25,7 @@ import static net.kyori.adventure.text.Component.*;
  * Adventuring Time and Hot Tourist Destinations advancements
  */
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class RemainingBiomesCommand extends CommandBase {
 
     /**

@@ -15,17 +15,22 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Objects;
 
 import static net.kyori.adventure.text.Component.text;
 
+@NullMarked
 public class VoicechatAddon implements VoicechatPlugin {
 
     private static final String MODRINTH_URL = "https://modrinth.com/plugin/simple-voice-chat";
     private static final String CURSEFORGE_URL = "https://www.curseforge.com/minecraft/mc-mods/simple-voice-chat";
 
-    private static String VOICECHAT_VERSION;
+    private static String VOICECHAT_VERSION = "";
 
-    private static VoicechatServerApi serverApi;
+    @Nullable private static VoicechatServerApi serverApi;
 
     @Override
     public String getPluginId() { return "doylcraft"; }
@@ -35,9 +40,10 @@ public class VoicechatAddon implements VoicechatPlugin {
         registration.registerEvent(VoicechatServerStartedEvent.class, this::onServerStart);
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     private void onServerStart(VoicechatServerStartedEvent event) {
         serverApi = event.getVoicechat();
-        VOICECHAT_VERSION = Bukkit.getServer().getPluginManager().getPlugin("voicechat").getPluginMeta().getVersion();
+        VOICECHAT_VERSION = Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("voicechat")).getPluginMeta().getVersion();
     }
 
     /**
@@ -49,7 +55,7 @@ public class VoicechatAddon implements VoicechatPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-                VoicechatConnection connection = serverApi.getConnectionOf(player.getUniqueId());
+                VoicechatConnection connection = serverApi().getConnectionOf(player.getUniqueId());
                 if (connection != null && !connection.isInstalled()) {
                     player.sendMessage(
                         text()
@@ -63,7 +69,7 @@ public class VoicechatAddon implements VoicechatPlugin {
                     );
                 }
             }
-        }.runTaskLater(DoylCraft.getInstance(), 40);
+        }.runTaskLater(DoylCraft.instance(), 40);
     }
 
     private static Component link(String name, String url) {
@@ -72,5 +78,7 @@ public class VoicechatAddon implements VoicechatPlugin {
             .clickEvent(ClickEvent.openUrl(url))
             .hoverEvent(HoverEvent.showText(text(url)));
     }
+
+    private static VoicechatServerApi serverApi() { return Objects.requireNonNull(serverApi); }
 
 }

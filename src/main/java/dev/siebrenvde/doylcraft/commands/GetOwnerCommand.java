@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
+import org.jspecify.annotations.NullMarked;
 
 import static dev.siebrenvde.doylcraft.handlers.MemoryHandler.GET_OWNER_PLAYERS;
 
@@ -18,6 +19,7 @@ import static dev.siebrenvde.doylcraft.handlers.MemoryHandler.GET_OWNER_PLAYERS;
  * Command to get the owner of a clicked entity
  */
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class GetOwnerCommand extends CommandBase {
 
     public static void register(Commands commands) {

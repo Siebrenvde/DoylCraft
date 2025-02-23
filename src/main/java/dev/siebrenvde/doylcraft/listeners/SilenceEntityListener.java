@@ -5,12 +5,14 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Listener for {@link PlayerNameEntityEvent}
  * <p>
  * Silences an entity if it is named <i>shut up</i> or <i>silenced</i>
  */
+@NullMarked
 public class SilenceEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

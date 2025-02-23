@@ -3,11 +3,13 @@ package dev.siebrenvde.doylcraft.preferences;
 import dev.siebrenvde.configlib.ConfigLib;
 import dev.siebrenvde.doylcraft.DoylCraft;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@NullMarked
 public class Preferences {
 
     private static final Map<UUID, PlayerPreferences> PREFERENCES = new HashMap<>();
@@ -21,7 +23,7 @@ public class Preferences {
             PREFERENCES.put(
                 player.getUniqueId(),
                 ConfigLib.toml(
-                    DoylCraft.getInstance().getDataPath(),
+                    DoylCraft.instance().getDataPath(),
                     "preferences",
                     player.getUniqueId().toString(),
                     PlayerPreferences.class

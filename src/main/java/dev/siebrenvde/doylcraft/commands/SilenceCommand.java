@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -24,6 +25,7 @@ import static io.papermc.paper.command.brigadier.Commands.literal;
 import static net.kyori.adventure.text.Component.text;
 
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class SilenceCommand extends CommandBase {
 
     public static void register(Commands commands) {
@@ -75,7 +77,7 @@ public class SilenceCommand extends CommandBase {
                                 // Remove glow after duration
                                 if(!entities.isEmpty()) {
                                     Bukkit.getScheduler().runTaskLater(
-                                        DoylCraft.getInstance(),
+                                        DoylCraft.instance(),
                                         () -> entities.forEach(entity -> entity.setGlowing(false)),
                                         duration
                                     );
@@ -128,7 +130,7 @@ public class SilenceCommand extends CommandBase {
                                 // Remove glow after duration
                                 if(!entities.isEmpty()) {
                                     Bukkit.getScheduler().runTaskLater(
-                                        DoylCraft.getInstance(),
+                                        DoylCraft.instance(),
                                         () -> entities.forEach(entity -> entity.setGlowing(false)),
                                         200 // 10 seconds
                                     );

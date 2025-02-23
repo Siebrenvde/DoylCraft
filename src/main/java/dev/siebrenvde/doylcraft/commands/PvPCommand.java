@@ -17,6 +17,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import static org.bukkit.Bukkit.getWorlds;
  * Command to toggle PvP on or off globally or for a specific world
  */
 @SuppressWarnings("UnstableApiUsage")
+@NullMarked
 public class PvPCommand extends CommandBase {
 
     public static void register(Commands commands) {

@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jspecify.annotations.NullMarked;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -27,13 +28,14 @@ import static net.kyori.adventure.text.Component.text;
  * <p>
  * Warns players when an item reaches a low duration level
  */
+@NullMarked
 public class ItemDamageListener implements Listener {
 
     /**
      * The key for the durability ping cooldown
      */
     public static final NamespacedKey LAST_PING_KEY = new NamespacedKey(
-        DoylCraft.getInstance(),
+        DoylCraft.instance(),
         "last_durability_ping"
     );
 

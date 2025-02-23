@@ -9,17 +9,20 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
 
-
+@NullMarked
 public class Components {
 
     /**
@@ -50,7 +53,7 @@ public class Components {
             entity instanceof Player player
                 ? text(player.getName())
                 : entity.customName() != null
-                    ? entity.customName()
+                    ? Objects.requireNonNull(entity.customName())
                     : translatable(entity.getType()),
             entity
         );
@@ -70,9 +73,9 @@ public class Components {
      * @param offlinePlayer the player
      * @return a new entity component
      */
-    public static Component entity(OfflinePlayer offlinePlayer) {
+    public static Component entity(@Nullable OfflinePlayer offlinePlayer) {
         if(offlinePlayer == null || offlinePlayer.getName() == null) return text("Unknown Player");
-        if(offlinePlayer.isOnline()) return entity(offlinePlayer.getPlayer());
+        if(offlinePlayer.isOnline()) return entity(Objects.requireNonNull(offlinePlayer.getPlayer()));
         return text()
             .content(offlinePlayer.getName())
             .hoverEvent(HoverEvent.showEntity(

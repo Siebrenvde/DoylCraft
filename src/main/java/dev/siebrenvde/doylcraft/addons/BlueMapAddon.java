@@ -10,19 +10,26 @@ import dev.siebrenvde.doylcraft.DoylCraft;
 import net.ess3.api.IEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * BlueMap addon for adding Essentials warp markers
  */
+@NullMarked
 public class BlueMapAddon {
 
-    private BlueMapAPI bluemap;
-    private Map<BlueMapWorld, MarkerSet> markerSets;
+    @Nullable private static BlueMapAddon instance;
+
+    @Nullable private BlueMapAPI bluemap;
+    private Map<BlueMapWorld, MarkerSet> markerSets = Map.of();
 
     public BlueMapAddon() {
+        instance = this;
         BlueMapAPI.onEnable(api -> {
             bluemap = api;
             markerSets = new HashMap<>();
@@ -47,7 +54,7 @@ public class BlueMapAddon {
      * @param location the location of the warp
      */
     public void addMarker(String label, Location location) {
-        bluemap.getWorld(location.getWorld()).ifPresent(world -> {
+        bluemap().getWorld(location.getWorld()).ifPresent(world -> {
             if(!markerSets.containsKey(world)) createMarkerSet(world);
             markerSets.get(world).put(
                 label,
@@ -62,7 +69,7 @@ public class BlueMapAddon {
      * @param location the location of the warp
      */
     public void removeMarker(String label, Location location) {
-        bluemap.getWorld(location.getWorld()).ifPresent(world -> {
+        bluemap().getWorld(location.getWorld()).ifPresent(world -> {
             if(!markerSets.containsKey(world)) return;
             markerSets.get(world).remove(label);
         });
@@ -86,7 +93,7 @@ public class BlueMapAddon {
     private void populateWarps() {
         IEssentials essentials = (IEssentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
         if(essentials == null) {
-            DoylCraft.LOGGER.error("Failed to populate warps: Essentials not found");
+            DoylCraft.logger().error("Failed to populate warps: Essentials not found");
             return;
         }
         IWarps warps = essentials.getWarps(); // Why would you deprecate a class and then not provide a method to get the non-deprecated class
@@ -94,9 +101,12 @@ public class BlueMapAddon {
             try {
                 addMarker(warp, warps.getWarp(warp));
             } catch (Exception e) {
-                DoylCraft.LOGGER.error("Failed to add warp '{}': {}: {}", warp, e.getClass().getSimpleName(), e.getMessage());
+                DoylCraft.logger().error("Failed to add warp '{}': {}: {}", warp, e.getClass().getSimpleName(), e.getMessage());
             }
         });
     }
+
+    public static BlueMapAddon get() { return Objects.requireNonNull(instance); }
+    private BlueMapAPI bluemap() { return Objects.requireNonNull(bluemap); }
 
 }

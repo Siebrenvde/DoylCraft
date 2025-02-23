@@ -14,14 +14,21 @@ import github.scarsz.discordsrv.dependencies.jda.api.hooks.ListenerAdapter;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
+@NullMarked
 public class DiscordSRVAddon {
+
+    @Nullable private static DiscordSRVAddon instance;
 
     private final DiscordSRV discord = DiscordSRV.getPlugin();
 
     public DiscordSRVAddon() {
+        instance = this;
         DiscordSRV.api.subscribe(new Listeners(discord));
     }
 
@@ -77,7 +84,7 @@ public class DiscordSRVAddon {
         }
 
         @Subscribe
-        public void onDiscordReady(DiscordReadyEvent event) {
+        public void onDiscordReady(DiscordReadyEvent ignored) {
             discord.getJda().addEventListener(this);
         }
 
@@ -152,5 +159,7 @@ public class DiscordSRVAddon {
         }
 
     }
+
+    public static DiscordSRVAddon get() { return Objects.requireNonNull(instance); }
 
 }

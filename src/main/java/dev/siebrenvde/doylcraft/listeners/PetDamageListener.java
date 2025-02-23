@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.projectiles.ProjectileSource;
+import org.jspecify.annotations.NullMarked;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -34,15 +35,14 @@ import static net.kyori.adventure.text.Component.text;
  * <br>
  * Logs all damage and deaths to a Discord channel
  */
+@NullMarked
 public class PetDamageListener implements Listener {
 
-    private final DiscordSRVAddon discordSRVAddon;
     private final DecimalFormat df;
 
     private static final TextColor MESSAGE_COLOUR = NamedTextColor.RED;
 
-    public PetDamageListener(DiscordSRVAddon discordSRVAddon) {
-        this.discordSRVAddon = discordSRVAddon;
+    public PetDamageListener() {
         df = new DecimalFormat("#.#");
         df.setRoundingMode(RoundingMode.CEILING);
     }
@@ -112,7 +112,7 @@ public class PetDamageListener implements Listener {
             }
         }
 
-        discordSRVAddon.sendDiscordMessage("pet-log",
+        DiscordSRVAddon.get().sendDiscordMessage("pet-log",
             text()
                 .append(text(":heart: "))
                 .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
@@ -145,7 +145,7 @@ public class PetDamageListener implements Listener {
                 );
             });
 
-            discordSRVAddon.sendDiscordMessage("pet-log",
+            DiscordSRVAddon.get().sendDiscordMessage("pet-log",
                 text()
                     .append(text(":skull: "))
                     .append(text(MarkdownSanitizer.escape(damager.getName(), true)))

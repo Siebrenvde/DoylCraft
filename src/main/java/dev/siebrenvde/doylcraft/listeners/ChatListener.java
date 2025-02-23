@@ -14,6 +14,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.regex.Pattern;
 
@@ -24,13 +25,8 @@ import static net.kyori.adventure.text.Component.text;
  * <p>
  * Colours mentions of Discord members in blurple and adds a hover component with member info
  */
+@NullMarked
 public class ChatListener implements Listener {
-
-    private final DiscordSRVAddon discordSRVAddon;
-
-    public ChatListener(DiscordSRVAddon discordSRVAddon) {
-        this.discordSRVAddon = discordSRVAddon;
-    }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(AsyncChatEvent event) {
@@ -41,7 +37,7 @@ public class ChatListener implements Listener {
         if(!messageContent.contains("@")) { return; }
 
 
-        for(Member member : discordSRVAddon.getMembers()) {
+        for(Member member : DiscordSRVAddon.get().getMembers()) {
             // Message must contain effective name of member
             if(!messageContent.toLowerCase().contains("@" + member.getEffectiveName().toLowerCase())) { continue; }
 

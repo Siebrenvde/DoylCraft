@@ -5,11 +5,13 @@ import dev.siebrenvde.configlib.libs.quilt.config.api.annotations.SerializedName
 import dev.siebrenvde.configlib.libs.quilt.config.api.metadata.NamingSchemes;
 import dev.siebrenvde.configlib.libs.quilt.config.api.values.TrackedValue;
 import dev.siebrenvde.configlib.metadata.NoOptionSpacing;
+import org.jspecify.annotations.NullMarked;
 
 import java.time.ZoneId;
 
 @NoOptionSpacing
 @SerializedNameConvention(NamingSchemes.SNAKE_CASE)
+@NullMarked
 public class PlayerPreferences extends ReflectiveConfig {
 
     public final TrackedValue<String> timezone = value("UTC");

@@ -7,11 +7,16 @@ import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.World;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+import java.util.Objects;
+import java.util.Optional;
+
+@NullMarked
 public class WorldGuardAddon {
 
-    private static WorldGuardAddon instance;
+    @Nullable private static WorldGuardAddon instance;
     private final RegionContainer container;
 
     public WorldGuardAddon() {
@@ -20,11 +25,11 @@ public class WorldGuardAddon {
     }
 
     private RegionManager getRegionManager(World world) {
-        return container.get(BukkitAdapter.adapt(world));
+        return Objects.requireNonNull(container.get(BukkitAdapter.adapt(world)));
     }
 
     public static WorldGuardAddon get() {
-        return instance;
+        return Objects.requireNonNull(instance);
     }
 
     /**
@@ -32,9 +37,8 @@ public class WorldGuardAddon {
      * @param world the world the region is in
      * @param region the name of the region
      */
-    @Nullable
-    public ProtectedRegion getRegion(World world, String region) {
-        return getRegionManager(world).getRegion(region);
+    public Optional<ProtectedRegion> getRegion(World world, String region) {
+        return Optional.ofNullable(getRegionManager(world).getRegion(region));
     }
 
     /**

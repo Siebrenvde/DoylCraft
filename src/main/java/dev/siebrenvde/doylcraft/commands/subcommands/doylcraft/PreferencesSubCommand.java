@@ -15,6 +15,7 @@ import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.time.Duration;
 import java.time.ZoneId;
@@ -28,6 +29,7 @@ import static net.kyori.adventure.text.Component.text;
  * that allows players to view and edit their preferences
  */
 @SuppressWarnings({"UnstableApiUsage", "CodeBlock2Expr"})
+@NullMarked
 public class PreferencesSubCommand extends CommandBase {
 
     public static LiteralArgumentBuilder<CommandSourceStack> get() {

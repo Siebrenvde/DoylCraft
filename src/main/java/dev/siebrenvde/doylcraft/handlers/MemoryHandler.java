@@ -4,6 +4,7 @@ import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.commands.SilenceCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NullMarked
 public class MemoryHandler {
 
     /**
@@ -36,7 +38,7 @@ public class MemoryHandler {
      */
     public static void startGetOwnerCountdown(Player player) {
         Bukkit.getScheduler().runTaskLaterAsynchronously(
-            DoylCraft.getInstance(),
+            DoylCraft.instance(),
             () -> GET_OWNER_PLAYERS.remove(player),
             200L
         );
@@ -48,7 +50,7 @@ public class MemoryHandler {
      */
     public static void startSilenceCountdown(Player player) {
         Bukkit.getScheduler().runTaskLaterAsynchronously(
-            DoylCraft.getInstance(),
+            DoylCraft.instance(),
             () -> SILENCE_PLAYERS.remove(player),
             200L
         );
