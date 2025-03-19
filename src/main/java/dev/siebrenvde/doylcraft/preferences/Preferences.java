@@ -22,7 +22,7 @@ public class Preferences {
         if(!PREFERENCES.containsKey(player.getUniqueId())) {
             PREFERENCES.put(
                 player.getUniqueId(),
-                ConfigLib.toml(
+                ConfigLib.json(
                     DoylCraft.instance().getDataPath(),
                     "preferences",
                     player.getUniqueId().toString(),

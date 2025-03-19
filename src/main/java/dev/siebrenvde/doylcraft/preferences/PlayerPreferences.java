@@ -1,11 +1,11 @@
 package dev.siebrenvde.doylcraft.preferences;
 
-import dev.siebrenvde.configlib.libs.quilt.config.api.ReflectiveConfig;
-import dev.siebrenvde.configlib.libs.quilt.config.api.annotations.SerializedNameConvention;
-import dev.siebrenvde.configlib.libs.quilt.config.api.metadata.NamingSchemes;
-import dev.siebrenvde.configlib.libs.quilt.config.api.values.TrackedValue;
 import dev.siebrenvde.configlib.metadata.NoOptionSpacing;
 import org.jspecify.annotations.NullMarked;
+import org.quiltmc.config.api.ReflectiveConfig;
+import org.quiltmc.config.api.annotations.SerializedNameConvention;
+import org.quiltmc.config.api.metadata.NamingSchemes;
+import org.quiltmc.config.api.values.TrackedValue;
 
 import java.time.ZoneId;
 

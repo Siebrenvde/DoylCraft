@@ -31,7 +31,7 @@ repositories {
     maven("https://repo.bluecolored.de/releases") {
         name = "bluemap"
     }
-    maven("https://files.siebrenvde.dev/repository/releases/") {
+    maven("https://repo.siebrenvde.dev/snapshots/") { // TODO: Change back to releases
         name = "siebrenvde"
     }
 }
@@ -46,7 +46,7 @@ dependencies {
     }
     compileOnly("de.maxhenkel.voicechat:voicechat-api:2.5.0")
     compileOnly("de.bluecolored:bluemap-api:2.7.3")
-    compileOnly("dev.siebrenvde:ConfigLib:0.2.0")
+    compileOnly("dev.siebrenvde:ConfigLib:0.3.0-SNAPSHOT")
 }
 
 paperPluginYaml {

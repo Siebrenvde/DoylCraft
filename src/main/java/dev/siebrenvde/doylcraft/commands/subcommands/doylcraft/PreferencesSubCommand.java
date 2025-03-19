@@ -7,7 +7,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.siebrenvde.configlib.libs.quilt.config.api.values.TrackedValue;
 import dev.siebrenvde.doylcraft.preferences.PlayerPreferences;
 import dev.siebrenvde.doylcraft.preferences.Preferences;
 import dev.siebrenvde.doylcraft.utils.Colours;
@@ -16,6 +15,7 @@ import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
+import org.quiltmc.config.api.values.TrackedValue;
 
 import java.time.Duration;
 import java.time.ZoneId;
