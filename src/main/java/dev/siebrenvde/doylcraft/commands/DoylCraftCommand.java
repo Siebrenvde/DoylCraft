@@ -1,13 +1,14 @@
 package dev.siebrenvde.doylcraft.commands;
 
-import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.DebugSubCommand;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.PreferencesSubCommand;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.UtilsSubCommand;
+import dev.siebrenvde.doylcraft.utils.BuildParameters;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.jspecify.annotations.NullMarked;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
@@ -26,12 +27,23 @@ public class DoylCraftCommand extends CommandBase {
                 .executes(ctx -> {
                     ctx.getSource().getSender().sendMessage(
                         text()
-                            .append(text("DoylCraft v"))
-                            .append(text(DoylCraft.instance().getPluginMeta().getVersion()))
-                            .append(text(" by Siebrenvde"))
-                            .hoverEvent(HoverEvent.showText(text(GITHUB_URL)))
-                            .clickEvent(ClickEvent.openUrl(GITHUB_URL))
-                            .build()
+                            .append(
+                                text("DoylCraft")
+                                    .hoverEvent(HoverEvent.showText(text(GITHUB_URL)))
+                                    .clickEvent(ClickEvent.openUrl(GITHUB_URL))
+                            )
+                            .append(text(" version "))
+                            .append(text(BuildParameters.VERSION, NamedTextColor.YELLOW))
+                            .appendSpace()
+                            .append(
+                                text()
+                                    .append(text("("))
+                                    .append(text(BuildParameters.GIT_BRANCH, NamedTextColor.AQUA))
+                                    .append(text("@"))
+                                    .append(text(BuildParameters.GIT_COMMIT.substring(0, 7), NamedTextColor.GREEN))
+                                    .append(text(")"))
+                                    .clickEvent(ClickEvent.openUrl(GITHUB_URL + "/commit/" + BuildParameters.GIT_COMMIT))
+                            )
                     );
                     return SINGLE_SUCCESS;
                 })

@@ -2,7 +2,10 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
     id("java")
-    id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.0"
+    alias(libs.plugins.resource.factory)
+    alias(libs.plugins.indra.git)
+    alias(libs.plugins.blossom)
+    alias(libs.plugins.idea.ext)
 }
 
 group = "dev.siebrenvde"
@@ -37,16 +40,16 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("net.luckperms:api:5.4")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
-    compileOnly("com.discordsrv:discordsrv:1.28.0")
-    compileOnly("net.essentialsx:EssentialsX:2.20.1") {
+    compileOnly(libs.paper)
+    compileOnly(libs.luckperms)
+    compileOnly(libs.worldguard)
+    compileOnly(libs.discordsrv)
+    compileOnly(libs.essentials) {
         exclude(module = "spigot-api")
     }
-    compileOnly("de.maxhenkel.voicechat:voicechat-api:2.5.0")
-    compileOnly("de.bluecolored:bluemap-api:2.7.3")
-    compileOnly("dev.siebrenvde:ConfigLib:0.3.0-SNAPSHOT")
+    compileOnly(libs.voicechat)
+    compileOnly(libs.bluemap)
+    compileOnly(libs.configlib)
 }
 
 paperPluginYaml {
@@ -62,6 +65,15 @@ paperPluginYaml {
         server("Essentials", PaperPluginYaml.Load.BEFORE)
         server("voicechat", PaperPluginYaml.Load.BEFORE)
         server("BlueMap", PaperPluginYaml.Load.BEFORE)
+    }
+}
+
+sourceSets.main {
+    blossom.javaSources {
+        property("version", project.version.toString())
+        property("gitCommit", indraGit.commit()?.name())
+        property("gitBranch", indraGit.branchName())
+        property("configLibVersion", libs.configlib.get().version)
     }
 }
 

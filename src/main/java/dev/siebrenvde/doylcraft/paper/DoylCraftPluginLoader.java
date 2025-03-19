@@ -1,5 +1,6 @@
 package dev.siebrenvde.doylcraft.paper;
 
+import dev.siebrenvde.doylcraft.utils.BuildParameters;
 import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
 import io.papermc.paper.plugin.loader.PluginLoader;
 import io.papermc.paper.plugin.loader.library.impl.MavenLibraryResolver;
@@ -22,7 +23,7 @@ public class DoylCraftPluginLoader implements PluginLoader {
             "https://repo.siebrenvde.dev/snapshots/" // TODO: Change back to releases
         ).build());
         resolver.addDependency(new Dependency(
-            new DefaultArtifact("dev.siebrenvde:ConfigLib:0.3.0-SNAPSHOT"),
+            new DefaultArtifact("dev.siebrenvde:ConfigLib:" + BuildParameters.CONFIGLIB_VERSION),
             null
         ));
 
