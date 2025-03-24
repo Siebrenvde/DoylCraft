@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -158,12 +159,14 @@ public class Components {
      */
     public static Component exception(Component message, Exception exception) {
         TextComponent.Builder builder = text();
-        builder.content(exception.getClass().getSimpleName()).color(Colours.ERROR);
+        builder.content(exception.getClass().getSimpleName()).color(NamedTextColor.RED);
         if(exception.getMessage() != null) {
             builder.appendNewline();
-            builder.append(text(exception.getMessage(), Colours.DATA));
+            builder.append(text(exception.getMessage(), NamedTextColor.WHITE));
         }
-        return message.hoverEvent(HoverEvent.showText(builder.build()));
+        return message
+            .colorIfAbsent(NamedTextColor.RED)
+            .hoverEvent(HoverEvent.showText(builder.build()));
     }
 
 }
