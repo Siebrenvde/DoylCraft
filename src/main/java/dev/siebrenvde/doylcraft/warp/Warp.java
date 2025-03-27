@@ -11,7 +11,6 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 
-import static dev.siebrenvde.doylcraft.warp.Warps.saveWarps;
 import static net.kyori.adventure.text.Component.text;
 
 @NullMarked
@@ -53,7 +52,6 @@ public final class Warp implements ComponentLike {
 
     public void key(String key) {
         this.key = key;
-        saveWarps();
     }
 
     public Component displayName() {
@@ -62,7 +60,6 @@ public final class Warp implements ComponentLike {
 
     public void displayName(Component displayName) {
         this.displayName = displayName;
-        saveWarps();
     }
 
     public Location location() {
@@ -71,7 +68,6 @@ public final class Warp implements ComponentLike {
 
     public void location(Location location) {
         this.location = location;
-        saveWarps();
     }
 
 }
