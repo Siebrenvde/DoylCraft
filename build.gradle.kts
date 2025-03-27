@@ -2,6 +2,7 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
     id("java")
+    alias(libs.plugins.paperweight)
     alias(libs.plugins.resource.factory)
     alias(libs.plugins.indra.git)
     alias(libs.plugins.blossom)
@@ -40,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.paper)
+    paperweight.paperDevBundle(libs.versions.paper)
     compileOnly(libs.luckperms)
     compileOnly(libs.worldguard)
     compileOnly(libs.discordsrv)
