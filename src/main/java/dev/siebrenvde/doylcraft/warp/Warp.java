@@ -22,7 +22,7 @@ public final class Warp implements ComponentLike {
         Codecs.LOCATION.fieldOf("location").forGetter(Warp::location)
     ).apply(instance, Warp::new));
 
-    private String key;
+    private final String key;
     private Component displayName;
     private Location location;
 
@@ -48,10 +48,6 @@ public final class Warp implements ComponentLike {
 
     public String key() {
         return key;
-    }
-
-    public void key(String key) {
-        this.key = key;
     }
 
     public Component displayName() {
