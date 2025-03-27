@@ -5,6 +5,7 @@ import dev.siebrenvde.doylcraft.addons.*;
 import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.listeners.*;
+import dev.siebrenvde.doylcraft.warp.Warps;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -25,17 +26,16 @@ import static java.util.Objects.requireNonNull;
 public final class DoylCraft extends JavaPlugin {
 
     @Nullable private static DoylCraft instance;
-    @Nullable private static ComponentLogger logger;
 
     @Override
     public void onEnable() {
         instance = this;
-        logger = getComponentLogger();
         initAddons();
         initHandlers();
         registerCommands();
         registerListeners();
         addServerLinks();
+        Warps.loadWarps(true);
     }
 
     /**
@@ -123,6 +123,6 @@ public final class DoylCraft extends JavaPlugin {
     }
 
     public static DoylCraft instance() { return requireNonNull(instance); }
-    public static ComponentLogger logger() { return requireNonNull(logger); }
+    public static ComponentLogger logger() { return instance().getComponentLogger(); }
 
 }
