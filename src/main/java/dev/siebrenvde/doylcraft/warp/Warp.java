@@ -7,12 +7,16 @@ import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.adventure.AdventureCodecs;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 
+import java.util.List;
+
+import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;
 
 @NullMarked
@@ -37,18 +41,16 @@ public final class Warp implements ComponentLike {
     @Override
     public @NotNull Component asComponent() {
         return displayName
-            .hoverEvent(description())
+            .hoverEvent(join(JoinConfiguration.newlines(), info()))
             .clickEvent(ClickEvent.suggestCommand("/warp " + key));
     }
 
-    public Component description() {
-        return text()
-            .append(text(key, NamedTextColor.YELLOW))
-            .appendNewline()
-            .append(Components.location(location))
-            .appendNewline()
-            .append(text(location.getWorld().getName(), NamedTextColor.GRAY))
-            .build();
+    public List<Component> info() {
+        return List.of(
+            text(key, NamedTextColor.YELLOW),
+            Components.location(location),
+            text(location.getWorld().getName(), NamedTextColor.GRAY)
+        );
     }
 
     public String key() {
