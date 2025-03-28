@@ -5,6 +5,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -18,7 +19,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
@@ -149,6 +149,16 @@ public class Components {
     public static Component timestamp(Instant instant, ZoneId zone) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a").withZone(zone);
         return text(formatter.format(instant));
+    }
+
+    /**
+     * Builds a location component
+     * @param location the location
+     * @return a new location component
+     */
+    @SuppressWarnings("UnstableApiUsage")
+    public static Component location(Location location) {
+        return text(location.blockX() + ", " + location.blockY() + ", " + location.blockZ(), NamedTextColor.GREEN);
     }
 
     /**

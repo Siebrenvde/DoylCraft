@@ -72,6 +72,7 @@ public final class DoylCraft extends JavaPlugin {
             DoylCraftCommand.register(commands);
             SilenceCommand.register(commands);
             RemainingBiomesCommand.register(commands);
+            WarpCommands.register(commands);
         });
     }
 

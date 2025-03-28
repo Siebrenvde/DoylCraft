@@ -3,6 +3,7 @@ package dev.siebrenvde.doylcraft.warp;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.siebrenvde.doylcraft.utils.Codecs;
+import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.adventure.AdventureCodecs;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
@@ -33,18 +34,21 @@ public final class Warp implements ComponentLike {
         this.location = location;
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     @Override
     public @NotNull Component asComponent() {
-        return displayName.hoverEvent(
-            text()
-                .append(text(key, NamedTextColor.YELLOW))
-                .appendNewline()
-                .append(text(String.format("%s %s %s", location.blockX(), location.blockY(), location.blockZ()), NamedTextColor.GREEN))
-                .appendNewline()
-                .append(text(location.getWorld().getName(), NamedTextColor.GRAY))
-                .build()
-        ).clickEvent(ClickEvent.suggestCommand("/warp " + key));
+        return displayName
+            .hoverEvent(description())
+            .clickEvent(ClickEvent.suggestCommand("/warp " + key));
+    }
+
+    public Component description() {
+        return text()
+            .append(text(key, NamedTextColor.YELLOW))
+            .appendNewline()
+            .append(Components.location(location))
+            .appendNewline()
+            .append(text(location.getWorld().getName(), NamedTextColor.GRAY))
+            .build();
     }
 
     public String key() {
