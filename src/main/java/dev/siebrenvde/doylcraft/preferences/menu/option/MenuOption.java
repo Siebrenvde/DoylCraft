@@ -4,7 +4,6 @@ import dev.siebrenvde.doylcraft.preferences.menu.PreferencesMenu;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +11,7 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.quiltmc.config.api.values.TrackedValue;
 
+import static dev.siebrenvde.doylcraft.utils.MenuUtils.forLore;
 import static io.papermc.paper.datacomponent.DataComponentTypes.ITEM_NAME;
 import static io.papermc.paper.datacomponent.DataComponentTypes.LORE;
 
@@ -57,12 +57,6 @@ public abstract class MenuOption {
 
     public ItemStack itemStack() {
         return stack;
-    }
-
-    private Component forLore(Component component) {
-        return component
-            .colorIfAbsent(NamedTextColor.WHITE)
-            .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.byBoolean(false));
     }
 
     public static class Builder {

@@ -9,6 +9,7 @@ import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import dev.siebrenvde.doylcraft.warp.Warp;
+import dev.siebrenvde.doylcraft.warp.WarpMenu;
 import dev.siebrenvde.doylcraft.warp.Warps;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -217,8 +218,8 @@ public class WarpCommands extends CommandBase {
 
     private static int openOrListWarps(CommandContext<CommandSourceStack> ctx) {
         if (ctx.getSource().getSender() instanceof Player player) {
-            // TODO: Open GUI
-            return listWarps(ctx);
+            WarpMenu.open(player);
+            return 1;
         }
         return listWarps(ctx);
     }
