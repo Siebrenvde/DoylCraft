@@ -119,6 +119,7 @@ public class WarpCommands extends CommandBase {
                                 .color(Colours.GENERIC)
                         );
 
+                        BlueMapAddon.get().addMarker(warp);
                         saveWarps();
                         return 1;
                     })
@@ -139,6 +140,7 @@ public class WarpCommands extends CommandBase {
                                 .append(text("]"))
                                 .color(Colours.GENERIC)
                         );
+                        BlueMapAddon.get().removeMarker(warp);
                         saveWarps();
                         return 1;
                     }))
@@ -235,7 +237,9 @@ public class WarpCommands extends CommandBase {
 
     private static int setLocation(CommandContext<CommandSourceStack> ctx, Location location) {
         Warp warp = getWarp(ctx, "warp");
+        Warp oldWarp = warp.copy();
         warp.location(location);
+        BlueMapAddon.get().updateMarker(oldWarp, warp);
         saveWarps();
         ctx.getSource().getSender().sendMessage(
             text("Changed location to ").append(Components.location(location))
