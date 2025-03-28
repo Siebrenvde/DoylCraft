@@ -30,12 +30,12 @@ public final class DoylCraft extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        Warps.loadWarps(true);
         initAddons();
         initHandlers();
         registerCommands();
         registerListeners();
         addServerLinks();
-        Warps.loadWarps(true);
     }
 
     /**
@@ -89,7 +89,6 @@ public final class DoylCraft extends JavaPlugin {
             new DismountEntityListener(),
             new MobGriefingListener(),
             new VillagerDeathListener(),
-            new WarpModifyListener(),
             new SilenceEntityListener(),
             new PlayerSleepListener(),
             new WanderingTraderListener(),

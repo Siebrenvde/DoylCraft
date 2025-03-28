@@ -66,4 +66,8 @@ public final class Warp implements ComponentLike {
         this.location = location;
     }
 
+    public Warp copy() {
+        return new Warp(key, displayName, location.clone());
+    }
+
 }
