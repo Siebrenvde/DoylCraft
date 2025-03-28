@@ -6,6 +6,7 @@ import dev.siebrenvde.doylcraft.utils.Codecs;
 import io.papermc.paper.adventure.AdventureCodecs;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +44,7 @@ public final class Warp implements ComponentLike {
                 .appendNewline()
                 .append(text(location.getWorld().getName(), NamedTextColor.GRAY))
                 .build()
-        );
+        ).clickEvent(ClickEvent.suggestCommand("/warp " + key));
     }
 
     public String key() {
