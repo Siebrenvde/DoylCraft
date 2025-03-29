@@ -1,7 +1,5 @@
 package dev.siebrenvde.doylcraft.warp;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
@@ -19,12 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static dev.siebrenvde.doylcraft.DoylCraft.GSON;
 import static dev.siebrenvde.doylcraft.DoylCraft.logger;
 
 @NullMarked
 public class Warps {
-
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static final Path PATH = DoylCraft.instance().getDataPath().resolve("warps.json");
 

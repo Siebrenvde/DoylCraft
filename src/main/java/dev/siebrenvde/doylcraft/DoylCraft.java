@@ -1,5 +1,7 @@
 package dev.siebrenvde.doylcraft;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import dev.siebrenvde.doylcraft.addons.*;
 import dev.siebrenvde.doylcraft.commands.*;
@@ -24,6 +26,8 @@ import static java.util.Objects.requireNonNull;
 
 @NullMarked
 public final class DoylCraft extends JavaPlugin {
+
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Nullable private static DoylCraft instance;
 
