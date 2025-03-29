@@ -4,9 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.inventory.CraftItemType;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -29,5 +33,10 @@ public class Codecs {
         Codec.FLOAT.fieldOf("yaw").forGetter(Location::getYaw),
         Codec.FLOAT.fieldOf("pitch").forGetter(Location::getPitch)
     ).apply(instance, Location::new));
+
+    public static final Codec<Material> MATERIAL = Item.CODEC.xmap(
+        item -> CraftItemType.minecraftToBukkit(item.value()),
+        material -> BuiltInRegistries.ITEM.wrapAsHolder(CraftItemType.bukkitToMinecraft(material))
+    );
 
 }
