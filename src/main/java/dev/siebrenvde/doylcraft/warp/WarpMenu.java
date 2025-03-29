@@ -5,7 +5,6 @@ import dev.siebrenvde.doylcraft.utils.MenuUtils;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -45,7 +44,7 @@ public class WarpMenu implements InventoryHolder, Listener {
 
         int i = 0;
         for (Warp warp : warps) {
-            ItemStack stack = ItemStack.of(Material.ENDER_PEARL);
+            ItemStack stack = ItemStack.of(warp.icon());
             stack.setData(ITEM_NAME, warp.displayName());
             stack.setData(LORE, ItemLore.lore()
                 .addLines(warp.info().stream().map(MenuUtils::forLore).toList())

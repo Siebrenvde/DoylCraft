@@ -11,6 +11,7 @@ import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 
@@ -22,20 +23,29 @@ import static net.kyori.adventure.text.Component.text;
 @NullMarked
 public final class Warp implements ComponentLike {
 
+    private static final Material DEFAULT_ICON = Material.ENDER_PEARL;
+
     public static final Codec<Warp> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.fieldOf("key").forGetter(Warp::key),
         AdventureCodecs.COMPONENT_CODEC.fieldOf("display_name").forGetter(Warp::displayName),
-        Codecs.LOCATION.fieldOf("location").forGetter(Warp::location)
+        Codecs.LOCATION.fieldOf("location").forGetter(Warp::location),
+        Codecs.MATERIAL.optionalFieldOf("icon", DEFAULT_ICON).forGetter(Warp::icon)
     ).apply(instance, Warp::new));
 
     private final String key;
     private Component displayName;
     private Location location;
+    private Material icon;
 
     public Warp(String key, Component displayName, Location location) {
+        this(key, displayName, location, DEFAULT_ICON);
+    }
+
+    public Warp(String key, Component displayName, Location location, Material icon) {
         this.key = key;
         this.displayName = displayName.colorIfAbsent(NamedTextColor.WHITE);
         this.location = location;
+        this.icon = icon;
     }
 
     @Override
@@ -73,8 +83,16 @@ public final class Warp implements ComponentLike {
         this.location = location;
     }
 
+    public Material icon() {
+        return icon;
+    }
+
+    public void icon(Material icon) {
+        this.icon = icon;
+    }
+
     public Warp copy() {
-        return new Warp(key, displayName, location.clone());
+        return new Warp(key, displayName, location.clone(), icon);
     }
 
 }

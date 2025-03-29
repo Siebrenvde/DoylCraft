@@ -17,16 +17,21 @@ import io.papermc.paper.command.brigadier.argument.resolvers.FinePositionResolve
 import io.papermc.paper.command.brigadier.argument.resolvers.RotationResolver;
 import io.papermc.paper.math.FinePosition;
 import io.papermc.paper.math.Rotation;
+import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NullMarked;
+
+import java.util.Objects;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
@@ -38,9 +43,11 @@ import static dev.siebrenvde.doylcraft.warp.Warps.saveWarps;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
 import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.finePosition;
+import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.resource;
 import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.rotation;
 import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.world;
 import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.Component.translatable;
 
 @SuppressWarnings("UnstableApiUsage")
 @NullMarked
@@ -207,6 +214,18 @@ public class WarpCommands extends CommandBase {
                                     })
                                 )
                             )
+                        )
+                    )
+                    .then(literal("icon")
+                        .then(argument("icon", resource(RegistryKey.ITEM))
+                            .executes(withWarp((ctx, sender, warp) -> {
+                                //noinspection deprecation
+                                Material icon = Objects.requireNonNull(ctx.getArgument("icon", ItemType.class).asMaterial());
+                                warp.icon(icon);
+                                saveWarps();
+                                sender.sendMessage(text("Changed icon to ").append(translatable(icon)));
+                                return 1;
+                            }))
                         )
                     )
                 )
