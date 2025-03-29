@@ -8,9 +8,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.inventory.CraftItemType;
+import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -34,9 +34,10 @@ public class Codecs {
         Codec.FLOAT.fieldOf("pitch").forGetter(Location::getPitch)
     ).apply(instance, Location::new));
 
-    public static final Codec<Material> MATERIAL = Item.CODEC.xmap(
-        item -> CraftItemType.minecraftToBukkit(item.value()),
-        material -> BuiltInRegistries.ITEM.wrapAsHolder(CraftItemType.bukkitToMinecraft(material))
+    @SuppressWarnings("UnstableApiUsage")
+    public static final Codec<ItemType> ITEM_TYPE = Item.CODEC.xmap(
+        item -> CraftItemType.minecraftToBukkitNew(item.value()),
+        material -> BuiltInRegistries.ITEM.wrapAsHolder(CraftItemType.bukkitToMinecraftNew(material))
     );
 
 }

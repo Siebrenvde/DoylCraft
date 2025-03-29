@@ -44,7 +44,7 @@ public class WarpMenu implements InventoryHolder, Listener {
 
         int i = 0;
         for (Warp warp : warps) {
-            ItemStack stack = ItemStack.of(warp.icon());
+            ItemStack stack = warp.icon().createItemStack();
             stack.setData(ITEM_NAME, warp.displayName());
             stack.setData(LORE, ItemLore.lore()
                 .addLines(warp.info().stream().map(MenuUtils::forLore).toList())

@@ -23,15 +23,12 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NullMarked;
-
-import java.util.Objects;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
@@ -219,11 +216,10 @@ public class WarpCommands extends CommandBase {
                     .then(literal("icon")
                         .then(argument("icon", resource(RegistryKey.ITEM))
                             .executes(withWarp((ctx, sender, warp) -> {
-                                //noinspection deprecation
-                                Material icon = Objects.requireNonNull(ctx.getArgument("icon", ItemType.class).asMaterial());
+                                ItemType icon = ctx.getArgument("icon", ItemType.class);
                                 warp.icon(icon);
                                 saveWarps();
-                                sender.sendMessage(text("Changed icon to ").append(translatable(icon)));
+                                sender.sendMessage(text("Changed icon to ").append(translatable(icon, Colours.DATA)));
                                 return 1;
                             }))
                         )
