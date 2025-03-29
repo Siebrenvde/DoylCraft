@@ -7,23 +7,16 @@ import dev.siebrenvde.doylcraft.addons.BlueMapAddon;
 import dev.siebrenvde.doylcraft.addons.EssentialsAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
-import dev.siebrenvde.doylcraft.utils.Components;
 import dev.siebrenvde.doylcraft.warp.Warp;
 import dev.siebrenvde.doylcraft.warp.WarpMenu;
 import dev.siebrenvde.doylcraft.warp.Warps;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.command.brigadier.argument.resolvers.FinePositionResolver;
-import io.papermc.paper.command.brigadier.argument.resolvers.RotationResolver;
-import io.papermc.paper.math.FinePosition;
-import io.papermc.paper.math.Rotation;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -39,10 +32,7 @@ import static dev.siebrenvde.doylcraft.warp.Warps.WARPS;
 import static dev.siebrenvde.doylcraft.warp.Warps.saveWarps;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
-import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.finePosition;
 import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.resource;
-import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.rotation;
-import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.world;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
 
@@ -98,8 +88,8 @@ public class WarpCommands extends CommandBase {
 
                         Warp warp = new Warp(
                             getString(ctx, "key"),
-                            displayNameMM.deserialize(getString(ctx, "display_name")),
-                            player.getLocation()
+                            player.getLocation(),
+                            displayNameMM.deserialize(getString(ctx, "display_name"))
                         );
 
                         Warp existing = Warps.WARPS.putIfAbsent(warp.key(), warp);
@@ -195,24 +185,6 @@ public class WarpCommands extends CommandBase {
                             }))
                         )
                     )
-                    .then(literal("location")
-                        .then(literal("here")
-                            .requires(isPlayer())
-                            .executes(ctx -> setLocation(ctx, ((Player) ctx.getSource().getSender()).getLocation()))
-                        )
-                        .then(argument("position", finePosition())
-                            .then(argument("rotation", rotation())
-                                .then(argument("world", world())
-                                    .executes(ctx -> {
-                                        FinePosition pos = ctx.getArgument("position", FinePositionResolver.class).resolve(ctx.getSource());
-                                        Rotation rot = ctx.getArgument("rotation", RotationResolver.class).resolve(ctx.getSource());
-                                        World world = ctx.getArgument("world", World.class);
-                                        return setLocation(ctx, pos.toLocation(world).setRotation(rot));
-                                    })
-                                )
-                            )
-                        )
-                    )
                     .then(literal("icon")
                         .then(argument("icon", resource(RegistryKey.ITEM))
                             .executes(withWarp((ctx, sender, warp) -> {
@@ -249,18 +221,6 @@ public class WarpCommands extends CommandBase {
         );
         WARPS.values().forEach(sender::sendMessage);
         return WARPS.size();
-    }
-
-    private static int setLocation(CommandContext<CommandSourceStack> ctx, Location location) {
-        Warp warp = getWarp(ctx, "warp");
-        Warp oldWarp = warp.copy();
-        warp.location(location);
-        BlueMapAddon.get().updateMarker(oldWarp, warp);
-        saveWarps();
-        ctx.getSource().getSender().sendMessage(
-            text("Changed location to ").append(Components.location(location))
-        );
-        return 1;
     }
 
     private static Command<CommandSourceStack> withWarp(WarpCommand command) {

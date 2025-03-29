@@ -91,7 +91,7 @@ public class DebugSubCommand extends CommandBase {
                     AtomicInteger migrated = new AtomicInteger();
                     AtomicInteger skipped = new AtomicInteger();
                     EssentialsAddon.getWarps().forEach((name, loc) -> {
-                        Warp warp = new Warp(name, text(name), loc);
+                        Warp warp = new Warp(name, loc, text(name));
                         if (Warps.WARPS.putIfAbsent(name, warp) != null) {
                             sender.sendMessage(
                                 text("Conflicting warp '" + name + "', skipping", NamedTextColor.RED)
