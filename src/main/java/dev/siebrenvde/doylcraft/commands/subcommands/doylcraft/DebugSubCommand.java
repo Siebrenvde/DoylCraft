@@ -2,7 +2,7 @@ package dev.siebrenvde.doylcraft.commands.subcommands.doylcraft;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.siebrenvde.doylcraft.addons.EssentialsAddon;
-import dev.siebrenvde.doylcraft.preferences.Preferences;
+import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
@@ -68,7 +68,7 @@ public class DebugSubCommand extends CommandBase {
                     Instant lastPing = Instant.ofEpochMilli(Objects.requireNonNull(container.get(LAST_PING_KEY, PersistentDataType.LONG)));
                     Duration duration = Duration.between(
                         Instant.now(),
-                        lastPing.plusSeconds(Preferences.get(player).durabilityPing.cooldown())
+                        lastPing.plusSeconds(PlayerData.preferences(player).durabilityPing.cooldown())
                     );
 
                     TextComponent.Builder builder = text();

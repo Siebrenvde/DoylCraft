@@ -59,7 +59,6 @@ public class Warps {
             .encodeStart(JsonOps.INSTANCE, List.copyOf(WARPS.values()))
             .getOrThrow(RuntimeException::new);
         try {
-            Files.createDirectories(PATH.getParent());
             BufferedWriter writer = Files.newBufferedWriter(PATH, StandardCharsets.UTF_8);
             GSON.toJson(warps, writer);
             writer.write('\n');

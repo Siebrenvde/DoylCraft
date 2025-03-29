@@ -1,7 +1,7 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
-import dev.siebrenvde.doylcraft.preferences.Preferences;
+import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.utils.Components;
 import github.scarsz.discordsrv.dependencies.jda.api.utils.MarkdownSanitizer;
 import net.kyori.adventure.text.Component;
@@ -23,6 +23,7 @@ import org.jspecify.annotations.NullMarked;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import static dev.siebrenvde.doylcraft.player.PlayerData.preferences;
 import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 
@@ -72,7 +73,7 @@ public class PetDamageListener implements Listener {
         Component petName = pet.customName();
 
         if(damager.equals(owner)) {
-            if(Preferences.get(damager).petDamageMessages.attacker()) {
+            if(preferences(damager).petDamageMessages.attacker()) {
                 damager.sendMessage(
                     text()
                         .append(text("You did " + df.format(damage) + " damage to "))
@@ -84,7 +85,7 @@ public class PetDamageListener implements Listener {
         } else {
             if(owner.isOnline()) {
                 Player ownerPlayer = (Player) owner;
-                if(Preferences.get(ownerPlayer).petDamageMessages.owner()) {
+                if(preferences(ownerPlayer).petDamageMessages.owner()) {
                     ownerPlayer.sendMessage(
                         text()
                             .append(Components.entity(damager))
@@ -96,7 +97,7 @@ public class PetDamageListener implements Listener {
                 }
             }
 
-            if(Preferences.get(damager).petDamageMessages.attacker()) {
+            if(preferences(damager).petDamageMessages.attacker()) {
                 damager.sendMessage(
                     text()
                         .append(text("You did " + df.format(damage) + " damage to "))
@@ -127,7 +128,7 @@ public class PetDamageListener implements Listener {
 
         if((health - damage) <= 0.0) {
             Bukkit.getOnlinePlayers().forEach(player -> {
-                if(!Preferences.get(player).petDamageMessages.broadcast()) return;
+                if(!preferences(player).petDamageMessages.broadcast()) return;
                 player.sendMessage(
                     text()
                         .append(Components.entity(damager))

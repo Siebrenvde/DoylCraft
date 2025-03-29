@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.preferences;
+package dev.siebrenvde.doylcraft.player.preferences;
 
 import dev.siebrenvde.configlib.metadata.NoOptionSpacing;
 import org.jspecify.annotations.NullMarked;

@@ -7,6 +7,7 @@ import dev.siebrenvde.doylcraft.addons.*;
 import dev.siebrenvde.doylcraft.commands.*;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.listeners.*;
+import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.warp.Warps;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -19,8 +20,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 
 import static java.util.Objects.requireNonNull;
 
@@ -34,6 +37,7 @@ public final class DoylCraft extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        createDirs();
         Warps.loadWarps(true);
         initAddons();
         initHandlers();
@@ -123,6 +127,15 @@ public final class DoylCraft extends JavaPlugin {
             );
         } catch(URISyntaxException e) {
             logger().error("Failed to add Discord invite link", e);
+        }
+    }
+
+    private void createDirs() {
+        try {
+            Files.createDirectories(getDataPath());
+            PlayerData.createDir();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create plugin directories", e);
         }
     }
 

@@ -1,8 +1,8 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
-import dev.siebrenvde.doylcraft.preferences.PlayerPreferences;
-import dev.siebrenvde.doylcraft.preferences.Preferences;
+import dev.siebrenvde.doylcraft.player.preferences.PlayerPreferences;
+import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.utils.Components;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.NamespacedKey;
@@ -41,7 +41,7 @@ public class ItemDamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onItemDamage(PlayerItemDamageEvent event) {
-        PlayerPreferences.PrefDurabilityPing prefs = Preferences.get(event.getPlayer()).durabilityPing;
+        PlayerPreferences.PrefDurabilityPing prefs = PlayerData.preferences(event.getPlayer()).durabilityPing;
         if(!prefs.enabled()) return;
 
         ItemStack item = event.getItem();

@@ -1,7 +1,7 @@
-package dev.siebrenvde.doylcraft.preferences.menu.option;
+package dev.siebrenvde.doylcraft.player.preferences.menu.option;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
-import dev.siebrenvde.doylcraft.preferences.menu.PreferencesMenu;
+import dev.siebrenvde.doylcraft.player.preferences.menu.PreferencesMenu;
 import dev.siebrenvde.doylcraft.utils.Components;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

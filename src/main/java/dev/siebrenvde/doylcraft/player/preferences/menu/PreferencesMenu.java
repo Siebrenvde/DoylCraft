@@ -1,9 +1,9 @@
-package dev.siebrenvde.doylcraft.preferences.menu;
+package dev.siebrenvde.doylcraft.player.preferences.menu;
 
 import dev.siebrenvde.doylcraft.DoylCraft;
-import dev.siebrenvde.doylcraft.preferences.PlayerPreferences;
-import dev.siebrenvde.doylcraft.preferences.Preferences;
-import dev.siebrenvde.doylcraft.preferences.menu.option.MenuOption;
+import dev.siebrenvde.doylcraft.player.preferences.PlayerPreferences;
+import dev.siebrenvde.doylcraft.player.PlayerData;
+import dev.siebrenvde.doylcraft.player.preferences.menu.option.MenuOption;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -32,7 +32,7 @@ public abstract class PreferencesMenu {
 
     protected PreferencesMenu(Player player, InventoryView view) {
         this.player = player;
-        this.preferences = Preferences.get(player);
+        this.preferences = PlayerData.preferences(player);
         this.view = view;
         Bukkit.getPluginManager().registerEvents(new Listeners(), DoylCraft.instance());
     }

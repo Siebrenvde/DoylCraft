@@ -3,7 +3,7 @@ package dev.siebrenvde.doylcraft.commands;
 import com.mojang.brigadier.Command;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
 import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
-import dev.siebrenvde.doylcraft.preferences.Preferences;
+import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
@@ -38,7 +38,7 @@ public class PlayTimeCommand extends CommandBase {
             Commands.literal("playtime")
                 .requires(isPlayer())
                 .executes(withPlayer((ctx, player) -> {
-                    ZoneId zone = Preferences.get(player).timezone();
+                    ZoneId zone = PlayerData.preferences(player).timezone();
                     player.sendMessage(
                         text()
                             .append(text("Current Online Time: "))
@@ -54,7 +54,7 @@ public class PlayTimeCommand extends CommandBase {
                         CommandSender sender = ctx.getSource().getSender();
                         OfflinePlayer player = ctx.getArgument("player", OfflinePlayer.class);
                         ZoneId zone = sender instanceof Player
-                            ? Preferences.get((Player) sender).timezone()
+                            ? PlayerData.preferences((Player) sender).timezone()
                             : ZoneId.from(ZoneOffset.UTC);
 
                         TextComponent.Builder message = text();

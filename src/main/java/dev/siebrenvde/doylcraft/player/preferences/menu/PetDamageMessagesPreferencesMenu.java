@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.preferences.menu;
+package dev.siebrenvde.doylcraft.player.preferences.menu;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

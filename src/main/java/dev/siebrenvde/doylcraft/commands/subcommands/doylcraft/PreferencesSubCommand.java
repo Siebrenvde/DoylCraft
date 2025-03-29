@@ -6,11 +6,11 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.siebrenvde.doylcraft.preferences.PlayerPreferences;
-import dev.siebrenvde.doylcraft.preferences.Preferences;
-import dev.siebrenvde.doylcraft.preferences.menu.DurabilityPingPreferencesMenu;
-import dev.siebrenvde.doylcraft.preferences.menu.MainPreferencesMenu;
-import dev.siebrenvde.doylcraft.preferences.menu.PetDamageMessagesPreferencesMenu;
+import dev.siebrenvde.doylcraft.player.preferences.PlayerPreferences;
+import dev.siebrenvde.doylcraft.player.PlayerData;
+import dev.siebrenvde.doylcraft.player.preferences.menu.DurabilityPingPreferencesMenu;
+import dev.siebrenvde.doylcraft.player.preferences.menu.MainPreferencesMenu;
+import dev.siebrenvde.doylcraft.player.preferences.menu.PetDamageMessagesPreferencesMenu;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
@@ -115,7 +115,7 @@ public class PreferencesSubCommand extends CommandBase {
 
     private static Command<CommandSourceStack> withPreferences(PreferenceCommand command) {
         return withPlayer((ctx, player) -> {
-            command.run(ctx, player, Preferences.get(player));
+            command.run(ctx, player, PlayerData.preferences(player));
         });
     }
 
