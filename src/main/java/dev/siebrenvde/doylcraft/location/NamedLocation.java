@@ -1,7 +1,9 @@
-package dev.siebrenvde.doylcraft.utils;
+package dev.siebrenvde.doylcraft.location;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.siebrenvde.doylcraft.utils.Codecs;
+import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.adventure.AdventureCodecs;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;

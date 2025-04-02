@@ -1,7 +1,7 @@
 package dev.siebrenvde.doylcraft.warp;
 
 import com.mojang.serialization.Codec;
-import dev.siebrenvde.doylcraft.utils.NamedLocation;
+import dev.siebrenvde.doylcraft.location.NamedLocation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
