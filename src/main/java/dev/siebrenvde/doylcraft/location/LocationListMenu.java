@@ -44,7 +44,7 @@ public abstract class LocationListMenu<T extends NamedLocation> implements Inven
         );
 
         int i = 0;
-        for (T location: locations) {
+        for (T location : locations) {
             ItemStack stack = location.icon().createItemStack();
             stack.setData(ITEM_NAME, location.displayName());
             stack.setData(LORE, ItemLore.lore()

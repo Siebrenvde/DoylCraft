@@ -2,6 +2,7 @@ package dev.siebrenvde.doylcraft.warp;
 
 import dev.siebrenvde.doylcraft.location.LocationListMenu;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
@@ -17,7 +18,12 @@ public class WarpMenu extends LocationListMenu<Warp> {
     }
 
     public static void open(Player player) {
-        new WarpMenu(player, Warps.WARPS.values().stream().toList());
+        List<Warp> warps = Warps.WARPS.values().stream().toList();
+        if (warps.isEmpty()) {
+            player.sendMessage(Component.text("There are no warps", NamedTextColor.RED));
+            return;
+        }
+        new WarpMenu(player, warps);
     }
 
     @Override
