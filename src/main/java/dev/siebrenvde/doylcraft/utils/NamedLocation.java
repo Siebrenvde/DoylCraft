@@ -8,12 +8,10 @@ import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
-import java.util.Objects;
 
 import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;
@@ -22,7 +20,7 @@ import static net.kyori.adventure.text.Component.text;
 @NullMarked
 public abstract class NamedLocation implements ComponentLike {
 
-    protected static final ItemType DEFAULT_ICON = Objects.requireNonNull(Material.ENDER_PEARL.asItemType());
+    protected static final ItemType DEFAULT_ICON = ItemType.ENDER_PEARL;
 
     protected final String key;
     protected final Location location;
