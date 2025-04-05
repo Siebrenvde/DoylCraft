@@ -2,6 +2,7 @@ package dev.siebrenvde.doylcraft.player.preferences.menu.option;
 
 import dev.siebrenvde.doylcraft.player.preferences.menu.PreferencesMenu;
 import io.papermc.paper.datacomponent.item.ItemLore;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -12,12 +13,32 @@ import org.jspecify.annotations.Nullable;
 import org.quiltmc.config.api.values.TrackedValue;
 
 import static dev.siebrenvde.doylcraft.utils.MenuUtils.forLore;
+import static io.papermc.paper.datacomponent.DataComponentTypes.ATTRIBUTE_MODIFIERS;
+import static io.papermc.paper.datacomponent.DataComponentTypes.BUNDLE_CONTENTS;
+import static io.papermc.paper.datacomponent.DataComponentTypes.FIREWORKS;
+import static io.papermc.paper.datacomponent.DataComponentTypes.INSTRUMENT;
 import static io.papermc.paper.datacomponent.DataComponentTypes.ITEM_NAME;
 import static io.papermc.paper.datacomponent.DataComponentTypes.LORE;
+import static io.papermc.paper.datacomponent.DataComponentTypes.OMINOUS_BOTTLE_AMPLIFIER;
+import static io.papermc.paper.datacomponent.DataComponentTypes.PAINTING_VARIANT;
+import static io.papermc.paper.datacomponent.DataComponentTypes.POTION_CONTENTS;
+import static io.papermc.paper.datacomponent.DataComponentTypes.TOOLTIP_DISPLAY;
 
 @SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public abstract class MenuOption {
+
+    private static final TooltipDisplay HIDDEN_COMPONENTS = TooltipDisplay.tooltipDisplay()
+        .addHiddenComponents(
+            ATTRIBUTE_MODIFIERS,
+            BUNDLE_CONTENTS,
+            FIREWORKS,
+            INSTRUMENT,
+            OMINOUS_BOTTLE_AMPLIFIER,
+            PAINTING_VARIANT,
+            POTION_CONTENTS
+        )
+        .build();
 
     protected final ItemStack stack;
     protected final Component name;
@@ -31,6 +52,7 @@ public abstract class MenuOption {
         this.description = description;
         this.defaultLore = defaultLore;
         this.player = player;
+        stack.setData(TOOLTIP_DISPLAY, HIDDEN_COMPONENTS);
         stack.setData(ITEM_NAME, name.colorIfAbsent(NamedTextColor.WHITE));
         setLore();
     }
