@@ -35,7 +35,7 @@ repositories {
     maven("https://repo.bluecolored.de/releases") {
         name = "bluemap"
     }
-    maven("https://repo.siebrenvde.dev/snapshots/") { // TODO: Change back to releases
+    maven("https://repo.siebrenvde.dev/releases/") {
         name = "siebrenvde"
     }
 }

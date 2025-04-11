@@ -20,7 +20,7 @@ public class DoylCraftPluginLoader implements PluginLoader {
         resolver.addRepository(new RemoteRepository.Builder(
             "siebrenvde",
             "default",
-            "https://repo.siebrenvde.dev/snapshots/" // TODO: Change back to releases
+            "https://repo.siebrenvde.dev/releases/"
         ).build());
         resolver.addDependency(new Dependency(
             new DefaultArtifact("dev.siebrenvde:ConfigLib:" + BuildParameters.CONFIGLIB_VERSION),
