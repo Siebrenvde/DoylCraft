@@ -1,7 +1,6 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
-import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.utils.Components;
 import github.scarsz.discordsrv.dependencies.jda.api.utils.MarkdownSanitizer;
 import net.kyori.adventure.text.Component;

@@ -17,7 +17,7 @@ public class WarpMenu extends LocationListMenu<Warp> {
         super(player, locations);
     }
 
-    public static void open(Player player) {
+    public static void tryOpen(Player player) {
         List<Warp> warps = Warps.WARPS.values().stream().toList();
         if (warps.isEmpty()) {
             player.sendMessage(Component.text("There are no warps", NamedTextColor.RED));

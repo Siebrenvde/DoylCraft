@@ -14,9 +14,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -28,6 +25,8 @@ import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static dev.siebrenvde.doylcraft.commands.arguments.WarpArgumentType.getWarp;
 import static dev.siebrenvde.doylcraft.commands.arguments.WarpArgumentType.warp;
+import static dev.siebrenvde.doylcraft.location.NamedLocation.DISPLAY_NAME_MM;
+import static dev.siebrenvde.doylcraft.player.PlayerData.preferences;
 import static dev.siebrenvde.doylcraft.warp.Warps.WARPS;
 import static dev.siebrenvde.doylcraft.warp.Warps.saveWarps;
 import static io.papermc.paper.command.brigadier.Commands.argument;
@@ -39,22 +38,6 @@ import static net.kyori.adventure.text.Component.translatable;
 @SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class WarpCommands extends CommandBase {
-
-    private static final MiniMessage displayNameMM = MiniMessage.builder()
-        .tags(TagResolver.resolver(
-            StandardTags.decorations(),
-            StandardTags.color(),
-            StandardTags.keybind(),
-            StandardTags.translatable(),
-            StandardTags.translatableFallback(),
-            StandardTags.font(),
-            StandardTags.gradient(),
-            StandardTags.rainbow(),
-            StandardTags.reset(),
-            StandardTags.pride(),
-            StandardTags.shadowColor()
-        ))
-        .build();
 
     public static void register(Commands commands) {
 
@@ -89,7 +72,7 @@ public class WarpCommands extends CommandBase {
                         Warp warp = new Warp(
                             getString(ctx, "key"),
                             player.getLocation(),
-                            displayNameMM.deserialize(getString(ctx, "display_name"))
+                            DISPLAY_NAME_MM.deserialize(getString(ctx, "display_name"))
                         );
 
                         Warp existing = Warps.WARPS.putIfAbsent(warp.key(), warp);
@@ -172,7 +155,7 @@ public class WarpCommands extends CommandBase {
                         .then(argument("display_name", greedyString())
                             .executes(withWarp((ctx, sender, warp) -> {
                                 Warp oldWarp = warp.copy();
-                                warp.displayName(displayNameMM.deserialize(getString(ctx, "display_name")));
+                                warp.displayName(DISPLAY_NAME_MM.deserialize(getString(ctx, "display_name")));
                                 saveWarps();
                                 BlueMapAddon.get().updateMarker(oldWarp, warp);
                                 ctx.getSource().getSender().sendMessage(
@@ -204,8 +187,8 @@ public class WarpCommands extends CommandBase {
     }
 
     private static int openOrListWarps(CommandContext<CommandSourceStack> ctx) {
-        if (ctx.getSource().getSender() instanceof Player player) {
-            WarpMenu.open(player);
+        if (ctx.getSource().getSender() instanceof Player player && preferences(player).useTeleportMenus()) {
+            WarpMenu.tryOpen(player);
             return 1;
         }
         return listWarps(ctx);

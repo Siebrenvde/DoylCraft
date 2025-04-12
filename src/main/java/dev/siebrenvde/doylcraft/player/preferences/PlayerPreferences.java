@@ -16,6 +16,8 @@ public class PlayerPreferences extends ReflectiveConfig {
 
     public final TrackedValue<String> timezone = value("UTC");
     public final TrackedValue<Boolean> voicechatReminder = value(true);
+    public final TrackedValue<Boolean> replaceHomes = value(false);
+    public final TrackedValue<Boolean> useTeleportMenus = value(true);
 
     public final PrefDurabilityPing durabilityPing = new PrefDurabilityPing();
     public final PrefPetDamageMessages petDamageMessages = new PrefPetDamageMessages();
@@ -42,5 +44,7 @@ public class PlayerPreferences extends ReflectiveConfig {
 
     public ZoneId timezone() { return ZoneId.of(timezone.getRealValue()); }
     public boolean voicechatReminder() { return voicechatReminder.getRealValue(); }
+    public boolean replaceHomes() { return replaceHomes.getRealValue(); }
+    public boolean useTeleportMenus() { return useTeleportMenus.getRealValue(); }
 
 }

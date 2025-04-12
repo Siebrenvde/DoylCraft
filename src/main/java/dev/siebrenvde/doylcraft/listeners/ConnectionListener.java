@@ -41,6 +41,7 @@ public class ConnectionListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         MemoryHandler.LOGIN_TIMES.remove(event.getPlayer());
+        PlayerData.deinitPlayer(event.getPlayer());
     }
 
 }

@@ -9,6 +9,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NullMarked;
@@ -117,5 +120,21 @@ public abstract class NamedLocation implements ComponentLike {
             }
         }));
     }
+
+    public static final MiniMessage DISPLAY_NAME_MM = MiniMessage.builder()
+        .tags(TagResolver.resolver(
+            StandardTags.decorations(),
+            StandardTags.color(),
+            StandardTags.keybind(),
+            StandardTags.translatable(),
+            StandardTags.translatableFallback(),
+            StandardTags.font(),
+            StandardTags.gradient(),
+            StandardTags.rainbow(),
+            StandardTags.reset(),
+            StandardTags.pride(),
+            StandardTags.shadowColor()
+        ))
+        .build();
 
 }
