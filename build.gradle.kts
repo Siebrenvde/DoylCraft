@@ -72,9 +72,13 @@ paperPluginYaml {
 sourceSets.main {
     blossom.javaSources {
         property("version", project.version.toString())
-        property("gitCommit", indraGit.commit()?.name())
-        property("gitBranch", indraGit.branchName())
         property("configLibVersion", libs.configlib.get().version)
+        property("gitBranch", indraGit.branchName())
+        property("gitIsClean", indraGit.git()?.status()?.call()?.isClean.toString())
+        val commit = indraGit.git()?.log()?.call()?.first()
+        property("gitCommitHash", commit?.name())
+        property("gitCommitMessage", commit?.shortMessage)
+        property("gitCommitAuthor", commit?.authorIdent?.name)
     }
 }
 

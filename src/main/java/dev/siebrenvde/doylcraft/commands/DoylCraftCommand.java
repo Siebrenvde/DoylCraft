@@ -6,6 +6,8 @@ import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.UtilsSubCommand;
 import dev.siebrenvde.doylcraft.utils.BuildParameters;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -25,26 +27,41 @@ public class DoylCraftCommand extends CommandBase {
         commands.register(
             literal("doylcraft")
                 .executes(ctx -> {
-                    ctx.getSource().getSender().sendMessage(
-                        text()
-                            .append(
-                                text("DoylCraft")
-                                    .hoverEvent(HoverEvent.showText(text(GITHUB_URL)))
-                                    .clickEvent(ClickEvent.openUrl(GITHUB_URL))
-                            )
-                            .append(text(" version "))
-                            .append(text(BuildParameters.VERSION, NamedTextColor.YELLOW))
-                            .appendSpace()
-                            .append(
-                                text()
-                                    .append(text("("))
-                                    .append(text(BuildParameters.GIT_BRANCH, NamedTextColor.AQUA))
-                                    .append(text("@"))
-                                    .append(text(BuildParameters.GIT_COMMIT.substring(0, 7), NamedTextColor.GREEN))
-                                    .append(text(")"))
-                                    .clickEvent(ClickEvent.openUrl(GITHUB_URL + "/commit/" + BuildParameters.GIT_COMMIT))
-                            )
+                    TextComponent.Builder builder = Component.text();
+                    builder.append(
+                        text("DoylCraft")
+                            .hoverEvent(HoverEvent.showText(text(GITHUB_URL)))
+                            .clickEvent(ClickEvent.openUrl(GITHUB_URL)),
+                        text(" version "),
+                        text(BuildParameters.VERSION, NamedTextColor.YELLOW)
                     );
+
+                    if (!BuildParameters.GIT_IS_CLEAN) {
+                        builder.appendSpace();
+                        builder.append(text("(DEV)", NamedTextColor.RED));
+                    }
+
+                    builder.appendSpace();
+                    builder.append(
+                        text()
+                            .append(text("("))
+                            .append(text(BuildParameters.GIT_BRANCH, NamedTextColor.AQUA))
+                            .append(text("@"))
+                            .append(
+                                text(BuildParameters.GIT_COMMIT_HASH.substring(0, 7), NamedTextColor.GREEN)
+                                    .hoverEvent(HoverEvent.showText(
+                                        text()
+                                            .append(text(BuildParameters.GIT_COMMIT_MESSAGE, NamedTextColor.GREEN))
+                                            .appendNewline()
+                                            .append(text(BuildParameters.GIT_COMMIT_AUTHOR, NamedTextColor.YELLOW))
+                                    ))
+                            )
+                            .append(text(")"))
+                            .clickEvent(ClickEvent.openUrl(GITHUB_URL + "/commit/" + BuildParameters.GIT_COMMIT_HASH))
+                    );
+
+                    builder.color(NamedTextColor.WHITE);
+                    ctx.getSource().getSender().sendMessage(builder);
                     return SINGLE_SUCCESS;
                 })
                 .then(PreferencesSubCommand.get())

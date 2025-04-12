@@ -3,7 +3,10 @@ package dev.siebrenvde.doylcraft.utils;
 @SuppressWarnings("ALL")
 public class BuildParameters {
     public static final String VERSION = "{{ version }}";
-    public static final String GIT_COMMIT = "{{ gitCommit | default("unknown") }}";
-    public static final String GIT_BRANCH = "{{ gitBranch | default("unknown") }}";
     public static final String CONFIGLIB_VERSION = "{{ configLibVersion }}";
+    public static final String GIT_BRANCH = "{{ gitBranch }}";
+    public static final boolean GIT_IS_CLEAN = {{ gitIsClean }};
+    public static final String GIT_COMMIT_HASH = "{{ gitCommitHash }}";
+    public static final String GIT_COMMIT_MESSAGE = "{{ gitCommitMessage }}";
+    public static final String GIT_COMMIT_AUTHOR = "{{ gitCommitAuthor }}";
 }
