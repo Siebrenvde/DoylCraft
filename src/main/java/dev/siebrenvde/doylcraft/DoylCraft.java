@@ -53,7 +53,7 @@ public final class DoylCraft extends JavaPlugin {
         new BlueMapAddon();
         new DiscordSRVAddon();
         new LuckPermsAddon();
-        new WorldGuardAddon();
+        //new WorldGuardAddon();
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
         if(voicechatService != null) voicechatService.registerPlugin(new VoicechatAddon());
     }
@@ -76,7 +76,7 @@ public final class DoylCraft extends JavaPlugin {
             GetOwnerCommand.register(commands);
             GroupCommand.register(commands);
             PlayTimeCommand.register(commands);
-            PvPCommand.register(commands);
+            //PvPCommand.register(commands);
             DoylCraftCommand.register(commands);
             SilenceCommand.register(commands);
             RemainingBiomesCommand.register(commands);
