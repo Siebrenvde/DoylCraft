@@ -1,5 +1,5 @@
 [versions]
-paper = "1.21.5-no-moonrise-SNAPSHOT"
+paper = "1.21.5-R0.1-SNAPSHOT"
 
 [libraries]
 luckperms = "net.luckperms:api:5.4"
