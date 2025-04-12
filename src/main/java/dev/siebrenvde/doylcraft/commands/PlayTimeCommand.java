@@ -2,7 +2,6 @@ package dev.siebrenvde.doylcraft.commands;
 
 import com.mojang.brigadier.Command;
 import dev.siebrenvde.doylcraft.commands.arguments.OfflinePlayerArgumentType;
-import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
@@ -24,6 +23,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
+import static dev.siebrenvde.doylcraft.player.PlayerData.loginTime;
 import static net.kyori.adventure.text.Component.*;
 
 /**
@@ -83,15 +83,12 @@ public class PlayTimeCommand extends CommandBase {
     }
 
     private static Component onlineTime(Player player, ZoneId zone) {
-        return Components.duration(Duration.between(MemoryHandler.LOGIN_TIMES.get(player), Instant.now()))
+        return Components.duration(Duration.between(loginTime(player), Instant.now()))
             .hoverEvent(HoverEvent.showText(
                 text()
                     .append(text(String.format("Login Time (%s): ", zone.getId()), Colours.GENERIC))
                     .appendNewline()
-                    .append(Components.timestamp(
-                        MemoryHandler.LOGIN_TIMES.get(player),
-                        zone
-                    ).color(Colours.DATA))
+                    .append(Components.timestamp(loginTime(player), zone).color(Colours.DATA))
             ));
     }
 

@@ -1,19 +1,21 @@
 package dev.siebrenvde.doylcraft.commands;
 
-import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
+import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.jspecify.annotations.NullMarked;
 
-import static dev.siebrenvde.doylcraft.handlers.MemoryHandler.GET_OWNER_PLAYERS;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Command to get the owner of a clicked entity
@@ -22,6 +24,12 @@ import static dev.siebrenvde.doylcraft.handlers.MemoryHandler.GET_OWNER_PLAYERS;
 @NullMarked
 public class GetOwnerCommand extends CommandBase {
 
+    /**
+     * The list of players who executed the command
+     * and have not yet interacted with an entity
+     */
+    public static final List<Player> GET_OWNER_PLAYERS = new ArrayList<>();
+
     public static void register(Commands commands) {
         commands.register(
             Commands.literal("getowner")
@@ -29,7 +37,7 @@ public class GetOwnerCommand extends CommandBase {
                 .executes(withPlayer((ctx, player) -> {
                     if(!GET_OWNER_PLAYERS.contains(player)) {
                         GET_OWNER_PLAYERS.add(player);
-                        MemoryHandler.startGetOwnerCountdown(player);
+                        startCountdown(player);
                         player.sendMessage(Component.text("Right click a pet to get its owner", Colours.GENERIC));
                     } else {
                         GET_OWNER_PLAYERS.remove(player);
@@ -67,6 +75,18 @@ public class GetOwnerCommand extends CommandBase {
             Component.empty()
                 .append(Components.entity(entity).color(Colours.DATA))
                 .append(Component.text(" doesn't have an owner", Colours.GENERIC))
+        );
+    }
+
+    /**
+     * Removes the player from {@link GetOwnerCommand#GET_OWNER_PLAYERS} after 10 seconds
+     * @param player the player
+     */
+    private static void startCountdown(Player player) {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(
+            DoylCraft.instance(),
+            () -> GET_OWNER_PLAYERS.remove(player),
+            200L
         );
     }
 

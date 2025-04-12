@@ -1,7 +1,6 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
-import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.addons.VoicechatAddon;
 import dev.siebrenvde.doylcraft.player.PlayerData;
@@ -13,7 +12,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jspecify.annotations.NullMarked;
 
-import java.time.Instant;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +27,6 @@ public class ConnectionListener implements Listener {
         Player player = event.getPlayer();
         PlayerData.initPlayer(player);
         ScoreboardHandler.get().initPlayer(player);
-        MemoryHandler.LOGIN_TIMES.put(player, Instant.now());
         VoicechatAddon.checkVoicechatInstalled(player);
         player.addCustomChatCompletions(
             DiscordSRVAddon.get().getMembers().stream()
@@ -40,7 +37,6 @@ public class ConnectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        MemoryHandler.LOGIN_TIMES.remove(event.getPlayer());
         PlayerData.deinitPlayer(event.getPlayer());
     }
 

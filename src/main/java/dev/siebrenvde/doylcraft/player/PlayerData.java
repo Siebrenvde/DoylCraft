@@ -11,6 +11,7 @@ import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class PlayerData {
 
     private static final Map<UUID, PlayerPreferences> PREFERENCES = new HashMap<>();
     private static final Map<UUID, Homes> HOMES = new HashMap<>();
+    private static final Map<UUID, Instant> LOGIN_TIMES = new HashMap<>();
 
     public static PlayerPreferences preferences(Player player) {
         return PREFERENCES.get(player.getUniqueId());
@@ -35,14 +37,21 @@ public class PlayerData {
         return HOMES.get(uuid);
     }
 
+    public static Instant loginTime(Player player) {
+        return LOGIN_TIMES.get(player.getUniqueId());
+    }
+
     public static void initPlayer(Player player) {
         UUID uuid = player.getUniqueId();
         loadPreferences(uuid);
         HOMES.put(uuid, new Homes(player));
+        LOGIN_TIMES.put(uuid, Instant.now());
     }
 
     public static void deinitPlayer(Player player) {
+        UUID uuid = player.getUniqueId();
         HOMES.remove(player.getUniqueId());
+        LOGIN_TIMES.remove(uuid);
     }
 
     private static void loadPreferences(UUID uuid) {

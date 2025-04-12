@@ -2,7 +2,6 @@ package dev.siebrenvde.doylcraft.commands;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import dev.siebrenvde.doylcraft.DoylCraft;
-import dev.siebrenvde.doylcraft.handlers.MemoryHandler;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
@@ -16,10 +15,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
-import static dev.siebrenvde.doylcraft.handlers.MemoryHandler.SILENCE_PLAYERS;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
 import static net.kyori.adventure.text.Component.text;
@@ -27,6 +27,12 @@ import static net.kyori.adventure.text.Component.text;
 @SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class SilenceCommand extends CommandBase {
+
+    /**
+     * The list of players who executed the command
+     * and have not yet interacted with an entity
+     */
+    public static final Map<Player, CommandType> SILENCE_PLAYERS = new HashMap<>();
 
     public static void register(Commands commands) {
         commands.register(
@@ -36,7 +42,7 @@ public class SilenceCommand extends CommandBase {
                     .executes(withPlayer((ctx, player) -> {
                         if(!SILENCE_PLAYERS.containsKey(player)) {
                             SILENCE_PLAYERS.put(player, CommandType.QUERY);
-                            MemoryHandler.startSilenceCountdown(player);
+                            startCountdown(player);
                             player.sendMessage(text("Right click a animal to see whether it's silenced", Colours.GENERIC));
                         } else {
                             SILENCE_PLAYERS.remove(player);
@@ -95,7 +101,7 @@ public class SilenceCommand extends CommandBase {
                                     player,
                                     toSilence ? CommandType.SET_TRUE : CommandType.SET_FALSE
                                 );
-                                MemoryHandler.startSilenceCountdown(player);
+                                startCountdown(player);
                                 player.sendMessage(text(
                                     String.format("Right click a animal to %s it", toSilence ? "silence": "unsilence"),
                                     Colours.GENERIC
@@ -184,6 +190,18 @@ public class SilenceCommand extends CommandBase {
         QUERY,
         SET_TRUE,
         SET_FALSE,
+    }
+
+    /**
+     * Removes the player from {@link SilenceCommand#SILENCE_PLAYERS} after 10 seconds
+     * @param player the player
+     */
+    private static void startCountdown(Player player) {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(
+            DoylCraft.instance(),
+            () -> SILENCE_PLAYERS.remove(player),
+            200L
+        );
     }
 
 }
