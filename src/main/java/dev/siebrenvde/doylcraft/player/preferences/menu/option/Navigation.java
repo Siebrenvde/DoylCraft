@@ -42,7 +42,7 @@ public class Navigation extends MenuOption {
         }
 
         player.closeInventory();
-        Bukkit.getScheduler().runTask(DoylCraft.instance(), () -> player.openInventory(menu.getView()));
+        Bukkit.getScheduler().runTask(DoylCraft.instance(), menu::open);
         return false;
     }
 

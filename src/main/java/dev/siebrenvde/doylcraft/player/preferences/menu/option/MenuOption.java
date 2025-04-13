@@ -12,7 +12,7 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.quiltmc.config.api.values.TrackedValue;
 
-import static dev.siebrenvde.doylcraft.utils.MenuUtils.forLore;
+import static dev.siebrenvde.doylcraft.menu.MenuUtils.forLore;
 import static io.papermc.paper.datacomponent.DataComponentTypes.ATTRIBUTE_MODIFIERS;
 import static io.papermc.paper.datacomponent.DataComponentTypes.BUNDLE_CONTENTS;
 import static io.papermc.paper.datacomponent.DataComponentTypes.FIREWORKS;

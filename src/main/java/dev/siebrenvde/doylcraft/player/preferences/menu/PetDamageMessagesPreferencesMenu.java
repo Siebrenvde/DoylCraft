@@ -2,21 +2,18 @@ package dev.siebrenvde.doylcraft.player.preferences.menu;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.MenuType;
 import org.jspecify.annotations.NullMarked;
 
 import static net.kyori.adventure.text.Component.text;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class PetDamageMessagesPreferencesMenu extends PreferencesMenu {
 
     private PetDamageMessagesPreferencesMenu(Player player) {
         super(
             player,
-            MenuType.GENERIC_9X1.builder()
-                .title(text("Pet Damage Messages"))
-                .build(player)
+            9, // Temporarily hardcoded
+            text("Pet Damage Messages")
         );
 
         setOptions(
@@ -33,7 +30,7 @@ public class PetDamageMessagesPreferencesMenu extends PreferencesMenu {
     }
 
     public static void openMenu(Player player) {
-        new PetDamageMessagesPreferencesMenu(player).getView().open();
+        new PetDamageMessagesPreferencesMenu(player).open();
     }
 
 }

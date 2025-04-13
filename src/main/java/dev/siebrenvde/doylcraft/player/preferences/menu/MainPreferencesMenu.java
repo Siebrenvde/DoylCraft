@@ -4,7 +4,6 @@ import com.destroystokyo.paper.MaterialTags;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.MenuType;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.Random;
@@ -12,16 +11,14 @@ import java.util.Set;
 
 import static net.kyori.adventure.text.Component.text;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class MainPreferencesMenu extends PreferencesMenu implements Listener {
 
     private MainPreferencesMenu(Player player) {
         super(
             player,
-            MenuType.GENERIC_9X1.builder()
-                .title(text("Preferences"))
-                .build(player)
+            9, // Temporarily hardcoded
+            text("Preferences")
         );
 
         setOptions(
@@ -52,7 +49,7 @@ public class MainPreferencesMenu extends PreferencesMenu implements Listener {
     }
 
     public static void openMenu(Player player) {
-        new MainPreferencesMenu(player).getView().open();
+        new MainPreferencesMenu(player).open();
     }
 
 }

@@ -1,4 +1,4 @@
-package dev.siebrenvde.doylcraft.utils;
+package dev.siebrenvde.doylcraft.menu;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

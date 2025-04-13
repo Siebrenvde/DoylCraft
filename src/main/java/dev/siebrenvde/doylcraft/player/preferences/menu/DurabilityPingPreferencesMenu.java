@@ -3,23 +3,20 @@ package dev.siebrenvde.doylcraft.player.preferences.menu;
 import dev.siebrenvde.doylcraft.utils.Components;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.MenuType;
 import org.jspecify.annotations.NullMarked;
 
 import java.time.Duration;
 
 import static net.kyori.adventure.text.Component.text;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class DurabilityPingPreferencesMenu extends PreferencesMenu {
 
     private DurabilityPingPreferencesMenu(Player player) {
         super(
             player,
-            MenuType.GENERIC_9X1.builder()
-                .title(text("Durability Ping"))
-                .build(player)
+            9, // Temporarily hardcoded
+            text("Durability Ping")
         );
 
         setOptions(
@@ -41,7 +38,7 @@ public class DurabilityPingPreferencesMenu extends PreferencesMenu {
     }
 
     public static void openMenu(Player player) {
-        new DurabilityPingPreferencesMenu(player).getView().open();
+        new DurabilityPingPreferencesMenu(player).open();
     }
 
 }

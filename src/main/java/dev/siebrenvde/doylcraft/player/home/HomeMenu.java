@@ -15,7 +15,7 @@ public class HomeMenu extends LocationListMenu<Home> {
     private static final Component TITLE = Component.text("Homes");
 
     private HomeMenu(Player player, List<Home> homes) {
-        super(player, homes);
+        super(player, homes, TITLE);
     }
 
     public static void tryOpen(Player player) {
@@ -24,12 +24,7 @@ public class HomeMenu extends LocationListMenu<Home> {
             player.sendMessage(Component.text("You don't have any homes", NamedTextColor.RED));
             return;
         }
-        new HomeMenu(player, homes);
-    }
-
-    @Override
-    protected Component title() {
-        return TITLE;
+        new HomeMenu(player, homes).open();
     }
 
     @Override

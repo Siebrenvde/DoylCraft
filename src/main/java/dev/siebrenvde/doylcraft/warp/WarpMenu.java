@@ -14,7 +14,7 @@ public class WarpMenu extends LocationListMenu<Warp> {
     private static final Component TITLE = Component.text("Warps");
 
     private WarpMenu(Player player, List<Warp> locations) {
-        super(player, locations);
+        super(player, locations, TITLE);
     }
 
     public static void tryOpen(Player player) {
@@ -23,12 +23,7 @@ public class WarpMenu extends LocationListMenu<Warp> {
             player.sendMessage(Component.text("There are no warps", NamedTextColor.RED));
             return;
         }
-        new WarpMenu(player, warps);
-    }
-
-    @Override
-    protected Component title() {
-        return TITLE;
+        new WarpMenu(player, warps).open();
     }
 
     @Override
