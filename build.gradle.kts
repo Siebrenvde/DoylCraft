@@ -1,4 +1,5 @@
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
+import java.time.Instant
 
 plugins {
     id("java")
@@ -73,8 +74,9 @@ sourceSets.main {
     blossom.javaSources {
         property("version", project.version.toString())
         property("configLibVersion", libs.configlib.get().version)
+        property("buildTime", Instant.now().toString())
+        property("isCI", (System.getenv("CI") != null).toString())
         property("gitBranch", indraGit.branchName())
-        property("gitIsClean", indraGit.git()?.status()?.call()?.isClean.toString())
         val commit = indraGit.git()?.log()?.call()?.first()
         property("gitCommitHash", commit?.name())
         property("gitCommitMessage", commit?.shortMessage)

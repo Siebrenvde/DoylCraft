@@ -3,6 +3,7 @@ package dev.siebrenvde.doylcraft.commands;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.DebugSubCommand;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.PreferencesSubCommand;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.UtilsSubCommand;
+import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.VersionSubCommand;
 import dev.siebrenvde.doylcraft.utils.BuildParameters;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import io.papermc.paper.command.brigadier.Commands;
@@ -36,7 +37,7 @@ public class DoylCraftCommand extends CommandBase {
                         text(BuildParameters.VERSION, NamedTextColor.YELLOW)
                     );
 
-                    if (!BuildParameters.GIT_IS_CLEAN) {
+                    if (!BuildParameters.IS_CI) {
                         builder.appendSpace();
                         builder.append(text("(DEV)", NamedTextColor.RED));
                     }
@@ -67,6 +68,7 @@ public class DoylCraftCommand extends CommandBase {
                 .then(PreferencesSubCommand.get())
                 .then(DebugSubCommand.get())
                 .then(UtilsSubCommand.get())
+                .then(VersionSubCommand.get())
                 .build(),
             "The DoylCraft command"
         );

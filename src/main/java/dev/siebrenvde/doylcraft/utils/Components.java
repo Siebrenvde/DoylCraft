@@ -23,6 +23,9 @@ import java.util.Objects;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
 
+/**
+ * A collection of standardised components
+ */
 @NullMarked
 public class Components {
 
@@ -159,6 +162,15 @@ public class Components {
     @SuppressWarnings("UnstableApiUsage")
     public static Component location(Location location) {
         return text(location.blockX() + ", " + location.blockY() + ", " + location.blockZ(), NamedTextColor.GREEN);
+    }
+
+    /**
+     * Builds a boolean component
+     * @param bool the boolean
+     * @return a new boolean component
+     */
+    public static Component bool(boolean bool) {
+        return text(bool, bool ? NamedTextColor.GREEN : NamedTextColor.RED);
     }
 
     /**

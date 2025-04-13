@@ -1,11 +1,14 @@
 package dev.siebrenvde.doylcraft.utils;
 
+import java.time.Instant;
+
 @SuppressWarnings("ALL")
 public class BuildParameters {
     public static final String VERSION = "{{ version }}";
     public static final String CONFIGLIB_VERSION = "{{ configLibVersion }}";
+    public static final Instant BUILD_TIME = Instant.parse("{{ buildTime }}");
+    public static final boolean IS_CI = {{ isCI }};
     public static final String GIT_BRANCH = "{{ gitBranch }}";
-    public static final boolean GIT_IS_CLEAN = {{ gitIsClean }};
     public static final String GIT_COMMIT_HASH = "{{ gitCommitHash }}";
     public static final String GIT_COMMIT_MESSAGE = "{{ gitCommitMessage }}";
     public static final String GIT_COMMIT_AUTHOR = "{{ gitCommitAuthor }}";
