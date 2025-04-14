@@ -15,6 +15,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jspecify.annotations.NullMarked;
@@ -81,7 +82,7 @@ public class PvPCommand extends CommandBase {
                 sender.sendMessage(
                     text()
                         .append(text("PvP is "))
-                        .append(disabled.isEmpty() ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
+                        .append(disabled.isEmpty() ? text("enabled", NamedTextColor.GREEN) : text("disabled", NamedTextColor.RED))
                         .append(text(" in "))
                         .append(allWorlds())
                         .color(Colours.GENERIC)
@@ -108,7 +109,7 @@ public class PvPCommand extends CommandBase {
             sender.sendMessage(
                 text()
                     .color(Colours.GENERIC)
-                    .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
+                    .append(state ? Component.text("Enabled", NamedTextColor.GREEN) : Component.text("Disabled", NamedTextColor.RED))
                     .append(Component.text(" PvP in "))
                     .append(allWorlds())
             );
@@ -137,7 +138,7 @@ public class PvPCommand extends CommandBase {
             sender.sendMessage(
                 text()
                     .color(Colours.GENERIC)
-                    .append(state ? Component.text("Enabled", Colours.POSITIVE) : Component.text("Disabled", Colours.NEGATIVE))
+                    .append(state ? Component.text("Enabled", NamedTextColor.GREEN) : Component.text("Disabled", NamedTextColor.RED))
                     .append(Component.text(" PvP in "))
                     .append(Components.worldName(world).color(Colours.DATA))
             );
@@ -167,7 +168,7 @@ public class PvPCommand extends CommandBase {
         return
             text()
                 .append(text("PvP is ", Colours.GENERIC))
-                .append(state ? text("enabled", Colours.POSITIVE) : text("disabled", Colours.NEGATIVE))
+                .append(state ? text("enabled", NamedTextColor.GREEN) : text("disabled", NamedTextColor.RED))
                 .append(text(" in ", Colours.GENERIC))
                 .append(
                     join(

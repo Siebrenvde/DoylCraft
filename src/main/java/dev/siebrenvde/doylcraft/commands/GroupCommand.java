@@ -12,6 +12,7 @@ import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.luckperms.api.model.group.Group;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -78,7 +79,7 @@ public class GroupCommand extends CommandBase {
                     .append(text("Failed to get "))
                     .append(entity(player).color(Colours.DATA))
                     .append(text("'s group"))
-                    .color(Colours.ERROR)
+                    .color(NamedTextColor.RED)
                     .build(),
                 exception
             ));
@@ -99,7 +100,7 @@ public class GroupCommand extends CommandBase {
                     .append(text("Group "))
                     .append(text(group, Colours.DATA))
                     .append(text(" does not exist"))
-                    .color(Colours.ERROR)
+                    .color(NamedTextColor.RED)
             );
         }
 
@@ -119,7 +120,7 @@ public class GroupCommand extends CommandBase {
                     .append(text("Failed to change "))
                     .append(entity(player).color(Colours.DATA))
                     .append(text("'s group"))
-                    .color(Colours.ERROR)
+                    .color(NamedTextColor.RED)
                     .build(),
                 exception
             ));

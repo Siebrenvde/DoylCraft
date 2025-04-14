@@ -15,6 +15,7 @@ import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
@@ -97,7 +98,7 @@ public class PreferencesSubCommand extends CommandBase {
                                 text()
                                     .append(text("Invalid time zone: "))
                                     .append(text(timezone, Colours.DATA))
-                                    .color(Colours.ERROR)
+                                    .color(NamedTextColor.RED)
                             );
                             return;
                         }

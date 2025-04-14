@@ -9,6 +9,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.util.Tick;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
@@ -64,7 +65,7 @@ public class SilenceCommand extends CommandBase {
 
                                 int duration = ctx.getArgument("duration", Integer.class);
                                 if(duration > 6000) {
-                                    player.sendMessage(text("Duration cannot be longer than 5 minutes (6000 ticks)", Colours.ERROR));
+                                    player.sendMessage(text("Duration cannot be longer than 5 minutes (6000 ticks)", NamedTextColor.RED));
                                     return;
                                 }
 
@@ -160,8 +161,8 @@ public class SilenceCommand extends CommandBase {
                 .append(Components.entity(entity).color(Colours.DATA))
                 .append(text(" is "))
                 .append(entity.isSilent()
-                    ? text("silenced", Colours.POSITIVE)
-                    : text("not silenced", Colours.NEGATIVE)
+                    ? text("silenced", NamedTextColor.GREEN)
+                    : text("not silenced", NamedTextColor.RED)
                 )
         );
     }
