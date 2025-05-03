@@ -6,8 +6,10 @@ import dev.siebrenvde.doylcraft.player.home.Homes;
 import dev.siebrenvde.doylcraft.player.preferences.PlayerPreferences;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
+import org.quiltmc.config.impl.util.ConfigsImpl;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -45,22 +47,35 @@ public class PlayerData {
 
     public static void deinitPlayer(Player player) {
         UUID uuid = player.getUniqueId();
+        unloadPreferences(uuid);
         HOMES.remove(player.getUniqueId());
         LOGIN_TIMES.remove(uuid);
     }
 
     private static void loadPreferences(UUID uuid) {
-        if (!PREFERENCES.containsKey(uuid)) {
-            PREFERENCES.put(
-                uuid,
-                ConfigLib.json(
-                    DATA_PATH,
-                    uuid.toString(),
-                    "preferences",
-                    PlayerPreferences.class
-                )
-            );
+        PREFERENCES.put(
+            uuid,
+            ConfigLib.json(
+                DATA_PATH,
+                uuid.toString(),
+                "preferences",
+                PlayerPreferences.class
+            )
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void unloadPreferences(UUID uuid) {
+        PREFERENCES.remove(uuid).save();
+        Map<String, ?> configs;
+        try {
+            Field field = ConfigsImpl.class.getDeclaredField("CONFIGS");
+            field.setAccessible(true);
+            configs = (Map<String, ?>) field.get(null);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
         }
+        configs.remove(uuid.toString());
     }
 
     public static void createDir() throws IOException {
