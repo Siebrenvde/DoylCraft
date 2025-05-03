@@ -8,23 +8,21 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.minecraft.Optionull;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.Component.translatable;
+import static net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText;
 
 /**
  * Listener for {@link EntityDeathEvent}
@@ -37,69 +35,34 @@ public class VillagerDeathListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onVillagerDeath(EntityDeathEvent event) {
-        if(!(event.getEntity() instanceof Villager villager)) return;
+        if (!(event.getEntity() instanceof Villager villager)) return;
 
-        DamageSource source = event.getDamageSource();
-        String translationKey = "death.attack." + source.getDamageType().getTranslationKey();
-        List<TranslationArgument> arguments = new ArrayList<>();
+        TranslatableComponent originalDeathMessage = (TranslatableComponent) villager.getCombatTracker().getDeathMessage();
+        List<TranslationArgument> arguments = new ArrayList<>(originalDeathMessage.arguments());
 
-        Component villagerName = villager.customName();
-        arguments.add(TranslationArgument.component(Components.entity(
-            villagerName != null
-                ? villagerName.append(Component.text(" the ")).append(Component.translatable(villager.getProfession()))
-                : Component.translatable(villager.getProfession()),
+        // Add the villager's profession to their name
+        arguments.set(0, TranslationArgument.component(Components.entity(
+            Optionull.mapOrDefault(
+                villager.customName(),
+                name -> name.append(text(" the ")).append(translatable(villager.getProfession())),
+                translatable(villager.getProfession())
+            ),
             villager
         )));
 
-        Entity causingEntity = source.getCausingEntity();
-        Entity directEntity = source.getDirectEntity();
+        Component location = Components.location(villager.getLocation());
 
-        if(causingEntity == null && directEntity == null) {
-            Player killer = event.getEntity().getKiller();
-            if(killer != null) {
-                arguments.add(TranslationArgument.component(Components.entity(killer)));
-                translationKey += ".player";
-            }
-        } else {
-            if(causingEntity != null) {
-                arguments.add(TranslationArgument.component(Components.entity(causingEntity)));
+        TranslatableComponent.Builder builder = originalDeathMessage.toBuilder();
+        builder.arguments(arguments);
+        builder.color(NamedTextColor.GREEN);
+        builder.hoverEvent(HoverEvent.showText(location));
+        TranslatableComponent deathMessage = builder.build();
 
-                if(causingEntity instanceof LivingEntity livingEntity && livingEntity.getEquipment() != null) {
-                    ItemStack heldItem = livingEntity.getEquipment().getItemInMainHand();
-                    if(heldItem.getItemMeta() != null && heldItem.getItemMeta().hasDisplayName()) {
-                        arguments.add(TranslationArgument.component(
-                            Component.text()
-                                .append(heldItem.displayName())
-                                .hoverEvent(heldItem.asHoverEvent())
-                                .build()
-                        ));
-                        translationKey += ".item";
-                    }
-                }
-            } else {
-                arguments.add(TranslationArgument.component(Components.entity(directEntity)));
-            }
-        }
-
-        Location loc = event.getEntity().getLocation();
-        String formattedLocation = String.format(
-            "X: %.2f, Y: %.2f, Z: %.2f",
-            loc.x(),
-            loc.y(),
-            loc.z()
-        );
-
-        TranslatableComponent.Builder builder = Component.translatable();
-        builder.key(translationKey).arguments(arguments);
-        builder.colorIfAbsent(NamedTextColor.GREEN);
-        builder.hoverEvent(HoverEvent.showText(Component.text(formattedLocation)));
-        TranslatableComponent component = builder.build();
-
-        Bukkit.broadcast(component);
+        Bukkit.broadcast(deathMessage);
 
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor(PlainTextComponentSerializer.plainText().serialize(component));
-        embed.setDescription("A villager died at " + formattedLocation);
+        embed.setAuthor(plainText().serialize(deathMessage));
+        embed.setDescription("A villager died at " + plainText().serialize(location));
         DiscordSRVAddon.get().sendDiscordEmbed("global", embed);
 
     }
