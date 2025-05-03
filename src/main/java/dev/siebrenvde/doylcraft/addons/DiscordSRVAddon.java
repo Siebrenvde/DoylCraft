@@ -11,7 +11,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.GuildMe
 import github.scarsz.discordsrv.dependencies.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.events.user.update.UserUpdateNameEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.hooks.ListenerAdapter;
-import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.jspecify.annotations.NullMarked;
@@ -22,6 +22,8 @@ import java.util.Objects;
 
 @NullMarked
 public class DiscordSRVAddon {
+
+    public static final String GLOBAL_CHANNEL = "global";
 
     @Nullable private static DiscordSRVAddon instance;
 
@@ -37,18 +39,18 @@ public class DiscordSRVAddon {
      * @param textChannel the channel to send the message to
      * @param message the message
      */
-    public void sendDiscordMessage(String textChannel, String message) {
+    public void sendMessage(String textChannel, String message) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
         tc.sendMessage(message).queue();
     }
 
     /**
-     * Send a {@link TextComponent} to a text channel
+     * Send a {@link Component} to a text channel
      * @param textChannel the channel to send the message to
      * @param message the message
      */
-    public void sendDiscordMessage(String textChannel, TextComponent message) {
-        sendDiscordMessage(textChannel, PlainTextComponentSerializer.plainText().serialize(message));
+    public void sendMessage(String textChannel, Component message) {
+        sendMessage(textChannel, PlainTextComponentSerializer.plainText().serialize(message));
     }
 
     /**
@@ -56,7 +58,7 @@ public class DiscordSRVAddon {
      * @param textChannel the channel to send the message to
      * @param embed the embed
      */
-    public void sendDiscordEmbed(String textChannel, EmbedBuilder embed) {
+    public void sendEmbed(String textChannel, EmbedBuilder embed) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
         tc.sendMessageEmbeds(embed.build()).queue();
     }
@@ -142,7 +144,7 @@ public class DiscordSRVAddon {
         @Override
         public void onUserUpdateName(UserUpdateNameEvent event) {
             Member member = discord.getMainGuild().getMember(event.getUser());
-            if(member == null || member.getNickname() != null) return;
+            if (member == null || member.getNickname() != null) return;
             updateNameCompletions(
                 event.getOldName(),
                 event.getNewName()
@@ -160,6 +162,8 @@ public class DiscordSRVAddon {
 
     }
 
-    public static DiscordSRVAddon get() { return Objects.requireNonNull(instance); }
+    public static DiscordSRVAddon get() {
+        return Objects.requireNonNull(instance);
+    }
 
 }

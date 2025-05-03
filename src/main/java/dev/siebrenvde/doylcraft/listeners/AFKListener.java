@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jspecify.annotations.NullMarked;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Listener for Essentials' {@link AfkStatusChangeEvent}
@@ -23,11 +23,16 @@ public class AFKListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAFKStateChange(AfkStatusChangeEvent event) {
         Player affected = event.getAffected().getBase();
-        if(event.getValue()) {
-            DiscordSRVAddon.get().sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is now AFK", null, DiscordSRV.getAvatarUrl(affected)).setColor(Color.decode("#ff0000")));
-        } else {
-            DiscordSRVAddon.get().sendDiscordEmbed("global", new EmbedBuilder().setAuthor(affected.getName() + " is no longer AFK", null, DiscordSRV.getAvatarUrl(affected)).setColor(Color.decode("#00ff00")));
-        }
+        DiscordSRVAddon.get().sendEmbed(
+            DiscordSRVAddon.GLOBAL_CHANNEL,
+            new EmbedBuilder()
+                .setAuthor(
+                    affected.getName() + (event.getValue() ? " is now AFK" : " is no longer AFK"),
+                    null,
+                    DiscordSRV.getAvatarUrl(affected)
+                )
+                .setColor(Color.decode(event.getValue() ? "#ff0000" : "#00ff00"))
+        );
     }
 
 }

@@ -63,7 +63,7 @@ public class VillagerDeathListener implements Listener {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(plainText().serialize(deathMessage));
         embed.setDescription("A villager died at " + plainText().serialize(location));
-        DiscordSRVAddon.get().sendDiscordEmbed("global", embed);
+        DiscordSRVAddon.get().sendEmbed(DiscordSRVAddon.GLOBAL_CHANNEL, embed);
 
     }
 

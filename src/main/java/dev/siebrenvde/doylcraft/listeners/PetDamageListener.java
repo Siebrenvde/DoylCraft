@@ -41,6 +41,7 @@ public class PetDamageListener implements Listener {
     private final DecimalFormat df;
 
     private static final TextColor MESSAGE_COLOUR = NamedTextColor.RED;
+    private static final String PET_LOG_CHANNEL = "pet-log";
 
     public PetDamageListener() {
         df = new DecimalFormat("#.#");
@@ -112,7 +113,7 @@ public class PetDamageListener implements Listener {
             }
         }
 
-        DiscordSRVAddon.get().sendDiscordMessage("pet-log",
+        DiscordSRVAddon.get().sendMessage(PET_LOG_CHANNEL,
             text()
                 .append(text(":heart: "))
                 .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
@@ -145,7 +146,7 @@ public class PetDamageListener implements Listener {
                 );
             });
 
-            DiscordSRVAddon.get().sendDiscordMessage("pet-log",
+            DiscordSRVAddon.get().sendMessage(PET_LOG_CHANNEL,
                 text()
                     .append(text(":skull: "))
                     .append(text(MarkdownSanitizer.escape(damager.getName(), true)))

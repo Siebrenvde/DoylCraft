@@ -29,8 +29,8 @@ public class PlayerSleepListener implements Listener {
             .colorIfAbsent(NamedTextColor.AQUA)
             .build();
         Bukkit.broadcast(message);
-        DiscordSRVAddon.get().sendDiscordMessage(
-            "global",
+        DiscordSRVAddon.get().sendMessage(
+            DiscordSRVAddon.GLOBAL_CHANNEL,
             text(":sunrise: **").append(message).append(text("**"))
         );
     }
