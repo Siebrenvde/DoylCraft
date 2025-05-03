@@ -6,7 +6,6 @@ import dev.siebrenvde.doylcraft.player.home.Homes;
 import dev.siebrenvde.doylcraft.player.preferences.PlayerPreferences;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,10 +30,6 @@ public class PlayerData {
 
     public static Homes homes(Player player) {
         return HOMES.get(player.getUniqueId());
-    }
-
-    public static @Nullable Homes homes(UUID uuid) {
-        return HOMES.get(uuid);
     }
 
     public static Instant loginTime(Player player) {
