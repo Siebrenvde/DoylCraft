@@ -6,6 +6,7 @@ import java.time.Instant;
 public class BuildParameters {
     public static final String VERSION = "{{ version }}";
     public static final String CONFIGLIB_VERSION = "{{ configLibVersion }}";
+    public static final String J2HTML_VERSION = "{{ j2htmlVersion }}";
     public static final Instant BUILD_TIME = Instant.parse("{{ buildTime }}");
     public static final boolean IS_CI = {{ isCI }};
     public static final String GIT_BRANCH = "{{ gitBranch }}";

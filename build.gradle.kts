@@ -52,6 +52,7 @@ dependencies {
     compileOnly(libs.voicechat)
     compileOnly(libs.bluemap)
     compileOnly(libs.configlib)
+    compileOnly(libs.j2html)
 }
 
 paperPluginYaml {
@@ -74,6 +75,7 @@ sourceSets.main {
     blossom.javaSources {
         property("version", project.version.toString())
         property("configLibVersion", libs.configlib.get().version)
+        property("j2htmlVersion", libs.j2html.get().version)
         property("buildTime", Instant.now().toString())
         property("isCI", (System.getenv("CI") != null).toString())
         property("gitBranch", indraGit.branchName())

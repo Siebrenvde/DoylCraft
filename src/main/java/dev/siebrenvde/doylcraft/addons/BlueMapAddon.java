@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText;
+import static dev.siebrenvde.doylcraft.utils.HTMLComponentSerialiser.html;
 
 /**
  * BlueMap addon for adding warp markers
@@ -59,7 +59,7 @@ public class BlueMapAddon {
                 warp.key(),
                 new Vector3d(loc.x(), loc.y(), loc.z())
             );
-            marker.setDetail(plainText().serialize(warp.displayName()));
+            marker.setDetail(html().serialize(warp.displayName()));
             markerSets.get(world).put(warp.key(), marker);
         });
     }

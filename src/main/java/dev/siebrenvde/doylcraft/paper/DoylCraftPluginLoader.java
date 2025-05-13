@@ -15,19 +15,25 @@ public class DoylCraftPluginLoader implements PluginLoader {
 
     @Override
     public void classloader(PluginClasspathBuilder classpathBuilder) {
-        MavenLibraryResolver resolver = new MavenLibraryResolver();
-
-        resolver.addRepository(new RemoteRepository.Builder(
+        classpathBuilder.addLibrary(createResolver(
             "siebrenvde",
-            "default",
-            "https://repo.siebrenvde.dev/releases/"
-        ).build());
-        resolver.addDependency(new Dependency(
-            new DefaultArtifact("dev.siebrenvde:ConfigLib:" + BuildParameters.CONFIGLIB_VERSION),
-            null
+            "https://repo.siebrenvde.dev/releases/",
+            "dev.siebrenvde:ConfigLib:" + BuildParameters.CONFIGLIB_VERSION
         ));
+        classpathBuilder.addLibrary(createResolver(
+            "maven-central",
+            "https://repo.maven.apache.org/maven2/",
+            "com.j2html:j2html:" + BuildParameters.J2HTML_VERSION
+        ));
+    }
 
-        classpathBuilder.addLibrary(resolver);
+    private MavenLibraryResolver createResolver(String repoId, String repoUrl, String... dependencies) {
+        MavenLibraryResolver resolver = new MavenLibraryResolver();
+        resolver.addRepository(new RemoteRepository.Builder(repoId, "default", repoUrl).build());
+        for (String dependency : dependencies) {
+            resolver.addDependency(new Dependency(new DefaultArtifact(dependency), null));
+        }
+        return resolver;
     }
 
 }

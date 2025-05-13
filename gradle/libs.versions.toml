@@ -9,6 +9,7 @@ essentials = "net.essentialsx:EssentialsX:2.20.1"
 voicechat = "de.maxhenkel.voicechat:voicechat-api:2.5.0"
 bluemap = "de.bluecolored:bluemap-api:2.7.3"
 configlib = "dev.siebrenvde:ConfigLib:0.3.0"
+j2html = "com.j2html:j2html:1.6.0"
 
 [plugins]
 paperweight = { id = "io.papermc.paperweight.userdev", version = "2.0.0-beta.16" }
