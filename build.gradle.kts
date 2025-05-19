@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "dev.siebrenvde"
-version = "1.7.0"
+version = "1.8.0-pre1"
 
 repositories {
     mavenCentral()
