@@ -1,5 +1,6 @@
 package dev.siebrenvde.doylcraft.commands;
 
+import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.ConfigSubCommand;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.DebugSubCommand;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.PreferencesSubCommand;
 import dev.siebrenvde.doylcraft.commands.subcommands.doylcraft.UtilsSubCommand;
@@ -69,6 +70,7 @@ public class DoylCraftCommand extends CommandBase {
                 .then(DebugSubCommand.get())
                 .then(UtilsSubCommand.get())
                 .then(VersionSubCommand.get())
+                .then(ConfigSubCommand.get())
                 .build(),
             "The DoylCraft command"
         );

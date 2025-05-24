@@ -1,6 +1,7 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
+import dev.siebrenvde.doylcraft.handlers.DaylightCycleHandler;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.addons.VoicechatAddon;
 import dev.siebrenvde.doylcraft.player.PlayerData;
@@ -33,11 +34,13 @@ public class ConnectionListener implements Listener {
                 .map(m -> "@" + m.getEffectiveName())
                 .collect(Collectors.toList())
         );
+        DaylightCycleHandler.handlePlayerJoin(player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         PlayerData.deinitPlayer(event.getPlayer());
+        DaylightCycleHandler.handlePlayerQuit(event.getPlayer());
     }
 
 }
