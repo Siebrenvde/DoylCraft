@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import dev.siebrenvde.doylcraft.addons.*;
 import dev.siebrenvde.doylcraft.commands.*;
+import dev.siebrenvde.doylcraft.config.Config;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
 import dev.siebrenvde.doylcraft.listeners.*;
 import dev.siebrenvde.doylcraft.player.PlayerData;
@@ -120,15 +121,23 @@ public final class DoylCraft extends JavaPlugin {
     /**
      * Adds our server links
      */
-    @SuppressWarnings("UnstableApiUsage")
     private void addServerLinks() {
+        addServerLink(
+            Component.text("Discord"),
+            DiscordSRVAddon.get().getInviteLink()
+        );
+        addServerLink(
+            Component.text("BlueMap"),
+            Config.config().blueMapUrl()
+        );
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private void addServerLink(Component name, String url) {
         try {
-            getServer().getServerLinks().addLink(
-                Component.text("Discord"),
-                new URI(DiscordSRVAddon.get().getInviteLink())
-            );
+            getServer().getServerLinks().addLink(name, new URI(url));
         } catch(URISyntaxException e) {
-            logger().error("Failed to add Discord invite link", e);
+            logger().error("Failed to add server link '{}'", name, e);
         }
     }
 

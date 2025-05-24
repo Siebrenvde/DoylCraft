@@ -6,6 +6,7 @@ import dev.siebrenvde.doylcraft.DoylCraft;
 import org.jspecify.annotations.NullMarked;
 import org.quiltmc.config.api.ReflectiveConfig;
 import org.quiltmc.config.api.annotations.Comment;
+import org.quiltmc.config.api.annotations.SerializedName;
 import org.quiltmc.config.api.annotations.SerializedNameConvention;
 import org.quiltmc.config.api.metadata.NamingSchemes;
 import org.quiltmc.config.api.values.TrackedValue;
@@ -20,8 +21,16 @@ public class Config extends ReflectiveConfig {
     @Comment("Whether the daylight cycle should be enabled")
     public final TrackedValue<Boolean> daylightCycle = value(true);
 
+    @Comment("The BlueMap url for use in the server links")
+    @SerializedName("bluemap_url")
+    public final TrackedValue<String> blueMapUrl = value("");
+
     public boolean daylightCycle() {
         return daylightCycle.getRealValue();
+    }
+
+    public String blueMapUrl() {
+        return blueMapUrl.getRealValue();
     }
 
     private static final Config INSTANCE = ConfigLib.toml(
