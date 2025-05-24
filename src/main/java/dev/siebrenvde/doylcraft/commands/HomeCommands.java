@@ -45,8 +45,12 @@ public class HomeCommands extends CommandBase {
             .requires(isPlayer())
             .executes(ctx -> {
                 Player player = (Player) ctx.getSource().getSender();
-                if (homes(player).has("home")) {
-                    teleportToHome(player, homes(player).getOrThrow("home"));
+                Homes homes = homes(player);
+                if (homes.size() == 1) {
+                    teleportToHome(player, homes.iterator().next());
+                    return 1;
+                } else if (homes.has("home")) {
+                    teleportToHome(player, homes.getOrThrow("home"));
                     return 1;
                 }
                 return openOrListHomes(ctx);
