@@ -23,6 +23,7 @@ public class PlayerSleepListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onDeepSleep(PlayerDeepSleepEvent event) {
+        if (Bukkit.getOnlinePlayers().size() == 1) return;
         Component message = text()
             .append(Components.entity(event.getPlayer()))
             .append(text(" went to sleep. Good morning!"))
