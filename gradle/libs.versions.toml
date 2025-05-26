@@ -7,7 +7,7 @@ worldguard = "com.sk89q.worldguard:worldguard-bukkit:7.0.9"
 discordsrv = "com.discordsrv:discordsrv:1.28.0"
 essentials = "net.essentialsx:EssentialsX:2.20.1"
 voicechat = "de.maxhenkel.voicechat:voicechat-api:2.5.27"
-bluemap = "de.bluecolored:bluemap-api:2.7.3"
+bluemap = "de.bluecolored:bluemap-api:2.7.4"
 configlib = "dev.siebrenvde:ConfigLib:0.3.0"
 j2html = "com.j2html:j2html:1.6.0"
 
