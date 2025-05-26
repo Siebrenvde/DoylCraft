@@ -5,7 +5,7 @@ import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
+import dev.siebrenvde.doylcraft.utils.Permissions;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.util.Tick;
@@ -19,7 +19,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
@@ -51,7 +50,7 @@ public class SilenceCommand extends CommandBase {
                         }
                     }))
                     .then(argument("entities", ArgumentTypes.entities())
-                        .requires(hasSubPermission("query.selector"))
+                        .requires(Permissions.COMMAND_SILENCE_QUERY_SELECTOR)
                         .then(argument("duration", ArgumentTypes.time())
                             .executes(withPlayer((ctx, player) -> {
                                 // Gets all silent selected animals
@@ -113,7 +112,7 @@ public class SilenceCommand extends CommandBase {
                             }
                         }))
                         .then(argument("entities", ArgumentTypes.entities())
-                            .requires(hasSubPermission("set.selector"))
+                            .requires(Permissions.COMMAND_SILENCE_SET_SELECTOR)
                             .executes(withPlayer((ctx, player) -> {
                                 boolean toSilence = BoolArgumentType.getBool(ctx, "state");
                                 List<Entity> entities = resolveEntities(ctx).stream()
@@ -149,10 +148,6 @@ public class SilenceCommand extends CommandBase {
                 .build(),
             "Silence an animal"
         );
-    }
-
-    private static Predicate<CommandSourceStack> hasSubPermission(String permission) {
-        return hasPermission("doylcraft.command.silence." + permission);
     }
 
     public static void query(Player player, Entity entity) {

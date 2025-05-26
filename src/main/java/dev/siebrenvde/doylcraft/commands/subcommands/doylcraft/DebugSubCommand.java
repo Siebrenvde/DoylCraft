@@ -5,6 +5,7 @@ import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
+import dev.siebrenvde.doylcraft.utils.Permissions;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.text.TextComponent;
@@ -32,7 +33,7 @@ public class DebugSubCommand extends CommandBase {
 
     public static LiteralArgumentBuilder<CommandSourceStack> get() {
         return literal("debug")
-            .requires(hasPermission("doylcraft.command.debug"))
+            .requires(Permissions.COMMAND_DEBUG)
             .then(literal("spawn_wandering_trader")
                 .requires(isPlayer())
                 .executes(withPlayer((ctx, player) -> {

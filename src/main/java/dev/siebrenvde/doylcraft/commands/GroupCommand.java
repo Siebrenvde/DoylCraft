@@ -10,6 +10,7 @@ import dev.siebrenvde.doylcraft.addons.LuckPermsAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
+import dev.siebrenvde.doylcraft.utils.Permissions;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -35,7 +36,7 @@ public class GroupCommand extends CommandBase {
 
         commands.register(
             Commands.literal("group")
-                .requires(hasPermission("doylcraft.command.group"))
+                .requires(Permissions.COMMAND_GROUP)
                 .then(Commands.argument("player", OfflinePlayerArgumentType.offlinePlayer())
                     .executes(GroupCommand::getPlayerGroup)
                     .then(Commands.argument("group", StringArgumentType.word())

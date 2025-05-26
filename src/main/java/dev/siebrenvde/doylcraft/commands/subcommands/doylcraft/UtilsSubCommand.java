@@ -5,6 +5,7 @@ import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
+import dev.siebrenvde.doylcraft.utils.Permissions;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.util.Tick;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Entity;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
@@ -30,7 +30,7 @@ public class UtilsSubCommand extends CommandBase {
     public static LiteralArgumentBuilder<CommandSourceStack> get() {
         return literal("utils")
             .then(literal("highlight_entities")
-                .requires(isPlayer().and(hasSubPermission("highlight-entities")))
+                .requires(isPlayer().and(Permissions.COMMAND_UTILS_HIGHLIGHT_ENTITIES))
                 .then(argument("entities", ArgumentTypes.entities())
                     .then(argument("duration", ArgumentTypes.time())
                         .executes(withPlayer((ctx, player) -> {
@@ -61,10 +61,6 @@ public class UtilsSubCommand extends CommandBase {
                     )
                 )
             );
-    }
-
-    private static Predicate<CommandSourceStack> hasSubPermission(String permission) {
-        return hasPermission("doylcraft.command.utils." + permission);
     }
 
 }

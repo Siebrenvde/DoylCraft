@@ -20,10 +20,6 @@ public class CommandBase {
         return source -> source.getSender() instanceof Player;
     }
 
-    protected static Predicate<CommandSourceStack> hasPermission(String permission) {
-        return source -> source.getSender().hasPermission(permission);
-    }
-
     protected static List<Entity> resolveEntities(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         return context.getArgument("entities", EntitySelectorArgumentResolver.class).resolve(context.getSource());
     }

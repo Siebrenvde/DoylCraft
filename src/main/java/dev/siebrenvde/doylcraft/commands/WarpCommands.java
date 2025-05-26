@@ -7,6 +7,7 @@ import dev.siebrenvde.doylcraft.addons.BlueMapAddon;
 import dev.siebrenvde.doylcraft.addons.EssentialsAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
+import dev.siebrenvde.doylcraft.utils.Permissions;
 import dev.siebrenvde.doylcraft.warp.Warp;
 import dev.siebrenvde.doylcraft.warp.WarpMenu;
 import dev.siebrenvde.doylcraft.warp.Warps;
@@ -63,7 +64,7 @@ public class WarpCommands extends CommandBase {
         );
 
         commands.register(literal("setwarp")
-            .requires(isPlayer().and(hasPermission("doylcraft.command.setwarp")))
+            .requires(isPlayer().and(Permissions.COMMAND_SETWARP))
             .then(argument("key", word())
                 .then(argument("display_name", greedyString())
                     .executes(ctx -> {
@@ -107,7 +108,7 @@ public class WarpCommands extends CommandBase {
         );
 
         commands.register(literal("delwarp")
-            .requires(hasPermission("doylcraft.command.delwarp"))
+            .requires(Permissions.COMMAND_DELWARP)
                 .then(argument("warp", warp())
                     .executes(withWarp((ctx, sender, warp) -> {
                         WARPS.remove(warp.key());
@@ -132,7 +133,7 @@ public class WarpCommands extends CommandBase {
                 .executes(WarpCommands::listWarps)
             )
             .then(literal("reload")
-                .requires(hasPermission("doylcraft.command.warps.reload"))
+                .requires(Permissions.COMMAND_WARPS_RELOAD)
                 .executes(ctx -> {
                     WARPS.clear();
                     Warps.loadWarps(false);
@@ -149,7 +150,7 @@ public class WarpCommands extends CommandBase {
                 })
             )
             .then(literal("edit")
-                .requires(hasPermission("doylcraft.command.warps.edit"))
+                .requires(Permissions.COMMAND_WARPS_EDIT)
                 .then(argument("warp", warp())
                     .then(literal("display_name")
                         .then(argument("display_name", greedyString())

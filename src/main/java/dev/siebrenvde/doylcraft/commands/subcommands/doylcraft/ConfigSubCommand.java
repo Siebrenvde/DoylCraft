@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.siebrenvde.doylcraft.config.Config;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
+import dev.siebrenvde.doylcraft.utils.Permissions;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.jspecify.annotations.NullMarked;
 
@@ -16,7 +17,7 @@ public class ConfigSubCommand extends CommandBase {
 
     public static LiteralArgumentBuilder<CommandSourceStack> get() {
         return literal("config")
-            .requires(hasPermission("doylcraft.command.config"))
+            .requires(Permissions.COMMAND_CONFIG)
             .then(literal("reload")
                 .executes(ctx -> {
                     Config.reload();

@@ -4,6 +4,7 @@ import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
+import dev.siebrenvde.doylcraft.utils.Permissions;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
@@ -45,7 +46,7 @@ public class GetOwnerCommand extends CommandBase {
                     }
                 }))
                 .then(Commands.argument("entities", ArgumentTypes.entities())
-                    .requires(source -> source.getSender().hasPermission("doylcraft.command.getowner.selector"))
+                    .requires(Permissions.COMMAND_GETOWNER_SELECTOR)
                     .executes(withPlayer((ctx, player) -> {
                         resolveEntities(ctx).forEach(entity -> {
                             handle(player, entity);

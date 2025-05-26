@@ -8,6 +8,7 @@ import dev.siebrenvde.doylcraft.addons.WorldGuardAddon;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
 import dev.siebrenvde.doylcraft.utils.Components;
+import dev.siebrenvde.doylcraft.utils.Permissions;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
@@ -22,7 +23,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static net.kyori.adventure.text.Component.*;
@@ -38,17 +38,17 @@ public class PvPCommand extends CommandBase {
     public static void register(Commands commands) {
         commands.register(
             Commands.literal("pvp")
-                .requires(hasSubPermission("query"))
+                .requires(Permissions.COMMAND_PVP_QUERY)
                 .executes(queryAllWorldStates())
                 .then(Commands.literal("on")
-                    .requires(hasSubPermission("update"))
+                    .requires(Permissions.COMMAND_PVP_UPDATE)
                     .executes(updateAllWorldStates(true))
                     .then(Commands.argument("world", ArgumentTypes.world())
                         .executes(updateWorldState(true))
                     )
                 )
                 .then(Commands.literal("off")
-                    .requires(hasSubPermission("update"))
+                    .requires(Permissions.COMMAND_PVP_UPDATE)
                     .executes(updateAllWorldStates(false))
                     .then(Commands.argument("world", ArgumentTypes.world())
                         .executes(updateWorldState(false))
@@ -57,10 +57,6 @@ public class PvPCommand extends CommandBase {
                 .build(),
             "Toggle PvP on or off"
         );
-    }
-
-    private static Predicate<CommandSourceStack> hasSubPermission(String permission) {
-        return hasPermission("doylcraft.command.pvp." + permission);
     }
 
     private static Command<CommandSourceStack> queryAllWorldStates() {
