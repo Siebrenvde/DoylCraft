@@ -13,7 +13,7 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public final class Warp extends NamedLocation {
 
-    public static final Codec<Warp> CODEC = createCodec(Warp.class);
+    public static final Codec<Warp> CODEC = createCodec(Warp::new);
 
     public Warp(String key, Location location, Component displayName) {
         this(key, location, displayName, DEFAULT_ICON);

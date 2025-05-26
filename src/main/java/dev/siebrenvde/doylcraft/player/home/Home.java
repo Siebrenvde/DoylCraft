@@ -13,7 +13,7 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public final class Home extends NamedLocation {
 
-    public static final Codec<Home> CODEC = createCodec(Home.class);
+    public static final Codec<Home> CODEC = createCodec(Home::new);
 
     public Home(String key, Location location, Component displayName) {
         this(key, location, displayName, DEFAULT_ICON);

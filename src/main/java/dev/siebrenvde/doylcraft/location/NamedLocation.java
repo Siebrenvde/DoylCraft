@@ -1,5 +1,6 @@
 package dev.siebrenvde.doylcraft.location;
 
+import com.mojang.datafixers.util.Function4;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.siebrenvde.doylcraft.utils.Codecs;
@@ -101,24 +102,13 @@ public abstract class NamedLocation implements ComponentLike {
         this.icon = icon;
     }
 
-    protected static <T extends NamedLocation> Codec<T> createCodec(Class<T> clazz) {
+    protected static <T extends NamedLocation> Codec<T> createCodec(Function4<String, Location, Component, ItemType, T> constructor) {
         return RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.fieldOf("key").forGetter(NamedLocation::key),
             Codecs.LOCATION.fieldOf("location").forGetter(NamedLocation::location),
             AdventureCodecs.COMPONENT_CODEC.fieldOf("display_name").forGetter(NamedLocation::displayName),
             Codecs.ITEM_TYPE.optionalFieldOf("icon", DEFAULT_ICON).forGetter(NamedLocation::icon)
-        ).apply(instance, (key, location, displayName, icon) -> {
-            try {
-                return clazz.getDeclaredConstructor(
-                    String.class,
-                    Location.class,
-                    Component.class,
-                    ItemType.class
-                ).newInstance(key, location, displayName, icon);
-            } catch (ReflectiveOperationException e) {
-                throw new RuntimeException(e);
-            }
-        }));
+        ).apply(instance, constructor));
     }
 
     public static final MiniMessage DISPLAY_NAME_MM = MiniMessage.builder()
