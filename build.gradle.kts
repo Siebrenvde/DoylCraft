@@ -81,7 +81,7 @@ sourceSets.main {
         property("gitBranch", indraGit.branchName())
         val commit = indraGit.git()?.log()?.call()?.first()
         property("gitCommitHash", commit?.name())
-        property("gitCommitMessage", commit?.shortMessage)
+        property("gitCommitMessage", commit?.shortMessage?.replace("\"", "\\\""))
         property("gitCommitAuthor", commit?.authorIdent?.name)
     }
 }
