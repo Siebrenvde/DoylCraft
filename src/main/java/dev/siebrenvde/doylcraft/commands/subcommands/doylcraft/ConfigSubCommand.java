@@ -1,6 +1,7 @@
 package dev.siebrenvde.doylcraft.commands.subcommands.doylcraft;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.config.Config;
 import dev.siebrenvde.doylcraft.utils.Colours;
 import dev.siebrenvde.doylcraft.utils.CommandBase;
@@ -21,6 +22,7 @@ public class ConfigSubCommand extends CommandBase {
             .then(literal("reload")
                 .executes(ctx -> {
                     Config.reload();
+                    DoylCraft.instance().reloadServerLinks();
                     ctx.getSource().getSender().sendMessage(text("Reloaded config", Colours.GENERIC));
                     return 1;
                 })
