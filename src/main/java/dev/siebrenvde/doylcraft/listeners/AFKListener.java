@@ -1,8 +1,6 @@
 package dev.siebrenvde.doylcraft.listeners;
 
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
-import github.scarsz.discordsrv.DiscordSRV;
-import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import net.ess3.api.events.AfkStatusChangeEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,13 +23,10 @@ public class AFKListener implements Listener {
         Player affected = event.getAffected().getBase();
         DiscordSRVAddon.get().sendEmbed(
             DiscordSRVAddon.GLOBAL_CHANNEL,
-            new EmbedBuilder()
-                .setAuthor(
-                    affected.getName() + (event.getValue() ? " is now AFK" : " is no longer AFK"),
-                    null,
-                    DiscordSRV.getAvatarUrl(affected)
-                )
-                .setColor(Color.decode(event.getValue() ? "#ff0000" : "#00ff00"))
+            DiscordSRVAddon.playerEmbed(
+                affected,
+                event.getValue() ? "is now AFK" : "is no longer AFK"
+            ).setColor(event.getValue() ? Color.RED : Color.GREEN)
         );
     }
 

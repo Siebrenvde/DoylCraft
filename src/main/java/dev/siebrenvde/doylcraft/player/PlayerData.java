@@ -4,6 +4,7 @@ import dev.siebrenvde.configlib.ConfigLib;
 import dev.siebrenvde.doylcraft.DoylCraft;
 import dev.siebrenvde.doylcraft.player.home.Homes;
 import dev.siebrenvde.doylcraft.player.preferences.PlayerPreferences;
+import dev.siebrenvde.doylcraft.player.revenge.RevengeList;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 import org.quiltmc.config.impl.util.ConfigsImpl;
@@ -25,6 +26,7 @@ public class PlayerData {
     private static final Map<UUID, PlayerPreferences> PREFERENCES = new HashMap<>();
     private static final Map<UUID, Homes> HOMES = new HashMap<>();
     private static final Map<UUID, Instant> LOGIN_TIMES = new HashMap<>();
+    private static final Map<UUID, RevengeList> REVENGE_LISTS = new HashMap<>();
 
     public static PlayerPreferences preferences(Player player) {
         return PREFERENCES.get(player.getUniqueId());
@@ -38,11 +40,16 @@ public class PlayerData {
         return LOGIN_TIMES.get(player.getUniqueId());
     }
 
+    public static RevengeList revengeList(Player player) {
+        return REVENGE_LISTS.get(player.getUniqueId());
+    }
+
     public static void initPlayer(Player player) {
         UUID uuid = player.getUniqueId();
         loadPreferences(uuid);
         HOMES.put(uuid, new Homes(player));
         LOGIN_TIMES.put(uuid, Instant.now());
+        REVENGE_LISTS.put(uuid, new RevengeList());
     }
 
     public static void deinitPlayer(Player player) {
@@ -50,6 +57,8 @@ public class PlayerData {
         unloadPreferences(uuid);
         HOMES.remove(player.getUniqueId());
         LOGIN_TIMES.remove(uuid);
+        REVENGE_LISTS.get(uuid).cancelAll();
+        REVENGE_LISTS.remove(uuid);
     }
 
     private static void loadPreferences(UUID uuid) {

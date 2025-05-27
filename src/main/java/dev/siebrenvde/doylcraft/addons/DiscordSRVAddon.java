@@ -14,6 +14,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.hooks.ListenerAdapter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -61,6 +62,26 @@ public class DiscordSRVAddon {
     public void sendEmbed(String textChannel, EmbedBuilder embed) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
         tc.sendMessageEmbeds(embed.build()).queue();
+    }
+
+    /**
+     * Creates an EmbedBuilder with a player head
+     * @param player the player whose head to use
+     * @param message the message
+     * @return a new EmbedBuilder
+     */
+    public static EmbedBuilder playerEmbed(Player player, String message) {
+        return new EmbedBuilder().setAuthor(message, null, DiscordSRV.getAvatarUrl(player));
+    }
+
+    /**
+     * Creates an EmbedBuilder with a player head
+     * @param player the player whose head to use
+     * @param message the message
+     * @return a new EmbedBuilder
+     */
+    public static EmbedBuilder playerEmbed(Player player, Component message) {
+        return playerEmbed(player, PlainTextComponentSerializer.plainText().serialize(message));
     }
 
     /**
