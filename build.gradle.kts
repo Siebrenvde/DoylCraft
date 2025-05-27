@@ -63,7 +63,7 @@ paperPluginYaml {
     website = "https://github.com/Siebrenvde/DoylCraft"
     dependencies {
         server("LuckPerms", PaperPluginYaml.Load.BEFORE)
-        //server("WorldGuard", PaperPluginYaml.Load.BEFORE)
+        server("WorldGuard", PaperPluginYaml.Load.BEFORE)
         server("DiscordSRV", PaperPluginYaml.Load.BEFORE)
         server("Essentials", PaperPluginYaml.Load.BEFORE)
         server("voicechat", PaperPluginYaml.Load.BEFORE)
