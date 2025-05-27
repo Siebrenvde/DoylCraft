@@ -25,7 +25,7 @@ public class AFKListener implements Listener {
             DiscordSRVAddon.GLOBAL_CHANNEL,
             DiscordSRVAddon.playerEmbed(
                 affected,
-                event.getValue() ? "is now AFK" : "is no longer AFK"
+                affected.getName() + (event.getValue() ? " is now AFK" : " is no longer AFK")
             ).setColor(event.getValue() ? Color.RED : Color.GREEN)
         );
     }
