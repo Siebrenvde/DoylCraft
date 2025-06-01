@@ -79,7 +79,7 @@ public class ItemDamageListener implements Listener {
         player.playSound(
             player,
             Sound.BLOCK_ANVIL_LAND,
-            1,
+            0.3f,
             1
         );
     }
