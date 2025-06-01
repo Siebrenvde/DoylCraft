@@ -49,7 +49,7 @@ public class PlayerData {
         loadPreferences(uuid);
         HOMES.put(uuid, new Homes(player));
         LOGIN_TIMES.put(uuid, Instant.now());
-        REVENGE_LISTS.put(uuid, new RevengeList());
+        REVENGE_LISTS.put(uuid, new RevengeList(player));
     }
 
     public static void deinitPlayer(Player player) {
@@ -57,8 +57,7 @@ public class PlayerData {
         unloadPreferences(uuid);
         HOMES.remove(player.getUniqueId());
         LOGIN_TIMES.remove(uuid);
-        REVENGE_LISTS.get(uuid).cancelAll();
-        REVENGE_LISTS.remove(uuid);
+        REVENGE_LISTS.remove(uuid).cancelAll();
     }
 
     private static void loadPreferences(UUID uuid) {

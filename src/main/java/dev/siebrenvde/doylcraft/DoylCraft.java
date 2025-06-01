@@ -106,7 +106,7 @@ public final class DoylCraft extends JavaPlugin {
             new WanderingTraderListener(),
             new ItemDamageListener(),
             new GameRuleListener(),
-            new RevengeListener()
+            new PlayerDeathListener()
         );
     }
 
