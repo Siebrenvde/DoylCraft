@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Optional;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
@@ -36,15 +37,13 @@ public class Components {
      * @return a new entity component
      */
     public static Component entity(Component component, Entity entity) {
-        return text()
-            .append(component)
+        return component
             .hoverEvent(entity.asHoverEvent())
             .clickEvent(
                 entity instanceof Player player
                     ? ClickEvent.suggestCommand("/msg " + player.getName() + " ")
                     : ClickEvent.copyToClipboard(entity.getUniqueId().toString())
-            )
-            .build();
+            );
     }
 
     /**
@@ -56,9 +55,7 @@ public class Components {
         return entity(
             entity instanceof Player player
                 ? text(player.getName())
-                : entity.customName() != null
-                    ? Objects.requireNonNull(entity.customName())
-                    : translatable(entity.getType()),
+                : Optional.ofNullable(entity.customName()).orElse(translatable(entity.getType())),
             entity
         );
     }
@@ -78,17 +75,16 @@ public class Components {
      * @return a new entity component
      */
     public static Component entity(@Nullable OfflinePlayer offlinePlayer) {
-        if(offlinePlayer == null || offlinePlayer.getName() == null) return text("Unknown Player");
-        if(offlinePlayer.isOnline()) return entity(Objects.requireNonNull(offlinePlayer.getPlayer()));
-        return text()
-            .content(offlinePlayer.getName())
+        if (offlinePlayer == null || offlinePlayer.getName() == null) return text("Unknown Player");
+        if (offlinePlayer.isOnline()) return entity(Objects.requireNonNull(offlinePlayer.getPlayer()));
+        String name = offlinePlayer.getName();
+        return text(name)
             .hoverEvent(HoverEvent.showEntity(
                 EntityType.PLAYER,
                 offlinePlayer.getUniqueId(),
-                text(offlinePlayer.getName())
+                text(name)
             ))
-            .clickEvent(ClickEvent.suggestCommand("/mail send " + offlinePlayer.getName() + " "))
-            .build();
+            .clickEvent(ClickEvent.suggestCommand("/mail send " + name + " "));
     }
 
     /**
@@ -97,7 +93,7 @@ public class Components {
      * @return a new world name component
      */
     public static Component worldName(World world) {
-        return text(world.getKey().getKey()).hoverEvent(HoverEvent.showText(text(world.getKey().toString())));
+        return text(world.key().value()).hoverEvent(HoverEvent.showText(text(world.key().asString())));
     }
 
     /**
@@ -106,7 +102,7 @@ public class Components {
      * @return a new ItemStack component
      */
     public static Component itemStack(ItemStack item) {
-        if(item.getType() == Material.AIR) return translatable(item);
+        if (item.getType() == Material.AIR) return translatable(item);
         return item.effectiveName().hoverEvent(item.asHoverEvent());
     }
 
@@ -116,7 +112,7 @@ public class Components {
      * @return a new duration component
      */
     public static Component duration(Duration duration) {
-        if(duration.isNegative()) return text("Invalid Duration");
+        if (duration.isNegative()) return text("Invalid Duration");
 
         long days = duration.toDays();
         long hours = duration.toHoursPart();
@@ -130,16 +126,16 @@ public class Components {
 
         StringBuilder builder = new StringBuilder();
 
-        if(hasDays) appendTimeUnit(builder, days, "day");
-        if(hasHours) appendTimeUnit(builder, hours, "hour");
-        if(hasMinutes) appendTimeUnit(builder, minutes, "minute");
-        if(hasSeconds) appendTimeUnit(builder, seconds, "second");
+        if (hasDays) appendTimeUnit(builder, days, "day");
+        if (hasHours) appendTimeUnit(builder, hours, "hour");
+        if (hasMinutes) appendTimeUnit(builder, minutes, "minute");
+        if (hasSeconds) appendTimeUnit(builder, seconds, "second");
 
         return text(builder.toString());
     }
 
     private static void appendTimeUnit(StringBuilder builder, long time, String unit) {
-        if(!builder.isEmpty()) builder.append(", ");
+        if (!builder.isEmpty()) builder.append(", ");
         builder.append(String.format("%s %s%s", time, unit, time != 1 ? "s" : ""));
     }
 
@@ -182,7 +178,7 @@ public class Components {
     public static Component exception(Component message, Exception exception) {
         TextComponent.Builder builder = text();
         builder.content(exception.getClass().getSimpleName()).color(NamedTextColor.RED);
-        if(exception.getMessage() != null) {
+        if (exception.getMessage() != null) {
             builder.appendNewline();
             builder.append(text(exception.getMessage(), NamedTextColor.WHITE));
         }
