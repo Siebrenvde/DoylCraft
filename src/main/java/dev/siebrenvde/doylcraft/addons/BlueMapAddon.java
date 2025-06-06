@@ -23,13 +23,10 @@ import static dev.siebrenvde.doylcraft.utils.HTMLComponentSerialiser.html;
 @NullMarked
 public class BlueMapAddon {
 
-    @Nullable private static BlueMapAddon instance;
+    @Nullable private static BlueMapAPI bluemap;
+    private static final Map<BlueMapWorld, MarkerSet> markerSets = new HashMap<>();
 
-    @Nullable private BlueMapAPI bluemap;
-    private final Map<BlueMapWorld, MarkerSet> markerSets = new HashMap<>();
-
-    public BlueMapAddon() {
-        instance = this;
+    public static void init() {
         BlueMapAPI.onEnable(api -> {
             bluemap = api;
             populateWarps();
@@ -41,7 +38,7 @@ public class BlueMapAddon {
      *
      * @param world the world the MarkerSet should be for
      */
-    private void createMarkerSet(BlueMapWorld world) {
+    private static void createMarkerSet(BlueMapWorld world) {
         MarkerSet markerSet = new MarkerSet("Warps");
         markerSets.put(world, markerSet);
         world.getMaps().forEach(map -> map.getMarkerSets().put("doylcraft-warps", markerSet));
@@ -51,7 +48,7 @@ public class BlueMapAddon {
      * Adds a new warp marker at the given location
      * @param warp the warp
      */
-    public void addMarker(Warp warp) {
+    public static void addMarker(Warp warp) {
         Location loc = warp.location();
         bluemap().getWorld(loc.getWorld()).ifPresent(world -> {
             if (!markerSets.containsKey(world)) createMarkerSet(world);
@@ -68,7 +65,7 @@ public class BlueMapAddon {
      * Removes an existing warp marker
      * @param warp the warp
      */
-    public void removeMarker(Warp warp) {
+    public static void removeMarker(Warp warp) {
         bluemap().getWorld(warp.location().getWorld()).ifPresent(world -> {
             if (!markerSets.containsKey(world)) return;
             markerSets.get(world).remove(warp.key());
@@ -80,7 +77,7 @@ public class BlueMapAddon {
      * @param oldWarp the old warp
      * @param newWarp the new warp
      */
-    public void updateMarker(Warp oldWarp, Warp newWarp) {
+    public static void updateMarker(Warp oldWarp, Warp newWarp) {
         removeMarker(oldWarp);
         addMarker(newWarp);
     }
@@ -88,12 +85,13 @@ public class BlueMapAddon {
     /**
      * Adds all existing warps as markers
      */
-    public void populateWarps() {
+    public static void populateWarps() {
         markerSets.clear();
-        Warps.WARPS.values().forEach(this::addMarker);
+        Warps.WARPS.values().forEach(BlueMapAddon::addMarker);
     }
 
-    public static BlueMapAddon get() { return Objects.requireNonNull(instance); }
-    private BlueMapAPI bluemap() { return Objects.requireNonNull(bluemap); }
+    private static BlueMapAPI bluemap() {
+        return Objects.requireNonNull(bluemap);
+    }
 
 }

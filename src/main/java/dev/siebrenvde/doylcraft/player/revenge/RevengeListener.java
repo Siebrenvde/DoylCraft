@@ -37,7 +37,7 @@ public record RevengeListener(RevengeList list, Entity entity) implements Listen
             .build();
 
         Bukkit.broadcast(message);
-        DiscordSRVAddon.get().sendEmbed(
+        DiscordSRVAddon.sendEmbed(
             DiscordSRVAddon.GLOBAL_CHANNEL,
             DiscordSRVAddon.playerEmbed(player, message).setColor(NamedTextColor.GRAY.value())
         );

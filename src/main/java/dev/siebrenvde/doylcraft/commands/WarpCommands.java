@@ -98,7 +98,7 @@ public class WarpCommands extends CommandBase {
                                 .color(Colours.GENERIC)
                         );
 
-                        BlueMapAddon.get().addMarker(warp);
+                        BlueMapAddon.addMarker(warp);
                         saveWarps();
                         return 1;
                     })
@@ -119,7 +119,7 @@ public class WarpCommands extends CommandBase {
                                 .append(text("]"))
                                 .color(Colours.GENERIC)
                         );
-                        BlueMapAddon.get().removeMarker(warp);
+                        BlueMapAddon.removeMarker(warp);
                         saveWarps();
                         return 1;
                     }))
@@ -137,7 +137,7 @@ public class WarpCommands extends CommandBase {
                 .executes(ctx -> {
                     WARPS.clear();
                     Warps.loadWarps(false);
-                    BlueMapAddon.get().populateWarps();
+                    BlueMapAddon.populateWarps();
                     int amount = WARPS.size();
                     ctx.getSource().getSender().sendMessage(
                         text()
@@ -158,7 +158,7 @@ public class WarpCommands extends CommandBase {
                                 Warp oldWarp = warp.copy();
                                 warp.displayName(DISPLAY_NAME_MM.deserialize(getString(ctx, "display_name")));
                                 saveWarps();
-                                BlueMapAddon.get().updateMarker(oldWarp, warp);
+                                BlueMapAddon.updateMarker(oldWarp, warp);
                                 ctx.getSource().getSender().sendMessage(
                                     text()
                                         .append(text("Changed display name to ["))

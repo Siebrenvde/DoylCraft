@@ -16,23 +16,18 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
 @NullMarked
 public class DiscordSRVAddon {
 
     public static final String GLOBAL_CHANNEL = "global";
 
-    @Nullable private static DiscordSRVAddon instance;
+    private static final DiscordSRV discord = DiscordSRV.getPlugin();
 
-    private final DiscordSRV discord = DiscordSRV.getPlugin();
-
-    public DiscordSRVAddon() {
-        instance = this;
-        DiscordSRV.api.subscribe(new Listeners(discord));
+    public static void init() {
+        DiscordSRV.api.subscribe(new Listeners());
     }
 
     /**
@@ -40,7 +35,7 @@ public class DiscordSRVAddon {
      * @param textChannel the channel to send the message to
      * @param message the message
      */
-    public void sendMessage(String textChannel, String message) {
+    public static void sendMessage(String textChannel, String message) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
         tc.sendMessage(message).queue();
     }
@@ -50,7 +45,7 @@ public class DiscordSRVAddon {
      * @param textChannel the channel to send the message to
      * @param message the message
      */
-    public void sendMessage(String textChannel, Component message) {
+    public static void sendMessage(String textChannel, Component message) {
         sendMessage(textChannel, PlainTextComponentSerializer.plainText().serialize(message));
     }
 
@@ -59,7 +54,7 @@ public class DiscordSRVAddon {
      * @param textChannel the channel to send the message to
      * @param embed the embed
      */
-    public void sendEmbed(String textChannel, EmbedBuilder embed) {
+    public static void sendEmbed(String textChannel, EmbedBuilder embed) {
         TextChannel tc = discord.getDestinationTextChannelForGameChannelName(textChannel);
         tc.sendMessageEmbeds(embed.build()).queue();
     }
@@ -87,52 +82,23 @@ public class DiscordSRVAddon {
     /**
      * {@return a list of members in the main guild}
      */
-    public List<Member> getMembers() {
+    public static List<Member> getMembers() {
         return discord.getMainGuild().getMembers();
     }
 
     /**
      * {@return the invite link}
      */
-    public String getInviteLink() {
+    public static String getInviteLink() {
         return DiscordSRV.config().getString("DiscordInviteLink");
     }
 
     private static class Listeners extends ListenerAdapter {
 
-        private final DiscordSRV discord;
-
-        public Listeners(DiscordSRV discord) {
-            this.discord = discord;
-        }
-
         @Subscribe
         public void onDiscordReady(DiscordReadyEvent ignored) {
             discord.getJda().addEventListener(this);
         }
-
-        // Temporarily? disable
-        // Might fix this later
-        /*@SubscribeEvent
-        public void onMessageReceived(MessageReceivedEvent event) {
-            if(!event.isFromType(ChannelType.TEXT)) return;
-
-            if(event.getAuthor().getId().equals("864703528496398356")) {
-
-                String[] strings = event.getMessage().getContentRaw().split("\n");
-
-                String streamer = strings[0].split(" ")[0].replace("\\", "");
-
-                Bukkit.broadcast(
-                    text().color(Colours.TWITCH)
-                        .append(text("[Twitch] "), text(streamer), text(" is now live!"))
-                        .hoverEvent(HoverEvent.showText(text(strings[1]))) // Show title
-                        .clickEvent(ClickEvent.openUrl(strings[2])) // Open stream on click
-                        .build()
-                );
-
-            }
-        }*/
 
         @Override
         public void onGuildMemberJoin(GuildMemberJoinEvent event) {
@@ -181,10 +147,6 @@ public class DiscordSRVAddon {
             });
         }
 
-    }
-
-    public static DiscordSRVAddon get() {
-        return Objects.requireNonNull(instance);
     }
 
 }

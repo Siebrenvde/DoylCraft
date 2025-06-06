@@ -14,21 +14,25 @@ import java.util.concurrent.CompletableFuture;
 @NullMarked
 public class EssentialsAddon {
 
-    private static final EssentialsAddon instance = new EssentialsAddon();
-    private final IEssentials essentials;
+    //private static final EssentialsAddon instance = new EssentialsAddon();
+    private static final IEssentials essentials;
 
-    private EssentialsAddon() {
+    /*private EssentialsAddon() {
         essentials = (IEssentials) Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Essentials"));
-    }
+    }*/
 
     public static IUser getUser(Player player) {
-        return instance.essentials.getUser(player);
+        return essentials.getUser(player);
     }
 
     public static CompletableFuture<Boolean> teleport(Player player, Location location, TeleportCause cause) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
         getUser(player).getAsyncTeleport().teleport(location, null, cause, future);
         return future;
+    }
+
+    static {
+        essentials = (IEssentials) Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Essentials"));
     }
 
 }

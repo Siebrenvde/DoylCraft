@@ -56,14 +56,13 @@ public class GroupCommand extends CommandBase {
         OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
 
         try {
-            LuckPermsAddon.get().getPlayerGroup(player).thenAcceptAsync(group -> {
-
-                if(group != null) {
+            LuckPermsAddon.getPlayerGroup(player).thenAcceptAsync(group -> {
+                if (group.isPresent()) {
                     sender.sendMessage(
                         text()
                             .append(entity(player).color(Colours.DATA))
                             .append(text(" is a member of ", Colours.GENERIC))
-                            .append(text(group, Colours.DATA))
+                            .append(text(group.get(), Colours.DATA))
                     );
                 } else {
                     sender.sendMessage(
@@ -72,7 +71,6 @@ public class GroupCommand extends CommandBase {
                             .append(text(" is not a member of any group", Colours.GENERIC))
                     );
                 }
-
             });
         } catch(Exception exception) {
             sender.sendMessage(Components.exception(
@@ -95,7 +93,7 @@ public class GroupCommand extends CommandBase {
         OfflinePlayer player = context.getArgument("player", OfflinePlayer.class);
         String group = context.getArgument("group", String.class);
 
-        if(!LuckPermsAddon.get().groupExists(group)) {
+        if(!LuckPermsAddon.groupExists(group)) {
             sender.sendMessage(
                 text()
                     .append(text("Group "))
@@ -106,7 +104,7 @@ public class GroupCommand extends CommandBase {
         }
 
         try {
-            LuckPermsAddon.get().setPlayerGroup(player, group);
+            LuckPermsAddon.setPlayerGroup(player, group);
             sender.sendMessage(
                 text()
                     .append(text("Changed "))
@@ -132,7 +130,7 @@ public class GroupCommand extends CommandBase {
     }
 
     private static CompletableFuture<Suggestions> getGroups(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        LuckPermsAddon.get().getGroups().stream()
+        LuckPermsAddon.getGroups().stream()
             .map(Group::getName)
             .filter(s -> s.toLowerCase().startsWith(builder.getRemaining().toLowerCase()))
             .forEach(builder::suggest);

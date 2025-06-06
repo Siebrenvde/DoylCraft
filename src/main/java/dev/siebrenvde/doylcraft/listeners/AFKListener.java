@@ -21,7 +21,7 @@ public class AFKListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAFKStateChange(AfkStatusChangeEvent event) {
         Player affected = event.getAffected().getBase();
-        DiscordSRVAddon.get().sendEmbed(
+        DiscordSRVAddon.sendEmbed(
             DiscordSRVAddon.GLOBAL_CHANNEL,
             DiscordSRVAddon.playerEmbed(
                 affected,
