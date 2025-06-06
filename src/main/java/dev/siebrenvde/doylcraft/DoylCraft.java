@@ -3,11 +3,39 @@ package dev.siebrenvde.doylcraft;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.maxhenkel.voicechat.api.BukkitVoicechatService;
-import dev.siebrenvde.doylcraft.addons.*;
-import dev.siebrenvde.doylcraft.commands.*;
+import dev.siebrenvde.doylcraft.addons.BlueMapAddon;
+import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
+import dev.siebrenvde.doylcraft.addons.LuckPermsAddon;
+import dev.siebrenvde.doylcraft.addons.VoicechatAddon;
+import dev.siebrenvde.doylcraft.addons.WorldGuardAddon;
+import dev.siebrenvde.doylcraft.commands.DoylCraftCommand;
+import dev.siebrenvde.doylcraft.commands.GetOwnerCommand;
+import dev.siebrenvde.doylcraft.commands.GroupCommand;
+import dev.siebrenvde.doylcraft.commands.HomeCommands;
+import dev.siebrenvde.doylcraft.commands.PlayTimeCommand;
+import dev.siebrenvde.doylcraft.commands.PvPCommand;
+import dev.siebrenvde.doylcraft.commands.RemainingBiomesCommand;
+import dev.siebrenvde.doylcraft.commands.SilenceCommand;
+import dev.siebrenvde.doylcraft.commands.WarpCommands;
 import dev.siebrenvde.doylcraft.config.Config;
 import dev.siebrenvde.doylcraft.handlers.ScoreboardHandler;
-import dev.siebrenvde.doylcraft.listeners.*;
+import dev.siebrenvde.doylcraft.listeners.AFKListener;
+import dev.siebrenvde.doylcraft.listeners.BullseyeListener;
+import dev.siebrenvde.doylcraft.listeners.ChatListener;
+import dev.siebrenvde.doylcraft.listeners.ConnectionListener;
+import dev.siebrenvde.doylcraft.listeners.DismountEntityListener;
+import dev.siebrenvde.doylcraft.listeners.DoubleDoorListener;
+import dev.siebrenvde.doylcraft.listeners.GameRuleListener;
+import dev.siebrenvde.doylcraft.listeners.ItemDamageListener;
+import dev.siebrenvde.doylcraft.listeners.MobGriefingListener;
+import dev.siebrenvde.doylcraft.listeners.PetDamageListener;
+import dev.siebrenvde.doylcraft.listeners.PlayerChangedWorldListener;
+import dev.siebrenvde.doylcraft.listeners.PlayerDeathListener;
+import dev.siebrenvde.doylcraft.listeners.PlayerInteractEntityListener;
+import dev.siebrenvde.doylcraft.listeners.PlayerSleepListener;
+import dev.siebrenvde.doylcraft.listeners.SilenceEntityListener;
+import dev.siebrenvde.doylcraft.listeners.VillagerDeathListener;
+import dev.siebrenvde.doylcraft.listeners.WanderingTraderListener;
 import dev.siebrenvde.doylcraft.player.PlayerData;
 import dev.siebrenvde.doylcraft.warp.Warps;
 import io.papermc.paper.command.brigadier.Commands;
@@ -57,7 +85,7 @@ public final class DoylCraft extends JavaPlugin {
         new LuckPermsAddon();
         new WorldGuardAddon();
         BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
-        if(voicechatService != null) voicechatService.registerPlugin(new VoicechatAddon());
+        if (voicechatService != null) voicechatService.registerPlugin(new VoicechatAddon());
     }
 
     /**
@@ -116,7 +144,7 @@ public final class DoylCraft extends JavaPlugin {
      * @param listeners the listeners to register
      */
     private void registerListeners(Listener... listeners) {
-        for(Listener listener : listeners) {
+        for (Listener listener : listeners) {
             getServer().getPluginManager().registerEvents(listener, this);
         }
     }
@@ -164,7 +192,12 @@ public final class DoylCraft extends JavaPlugin {
         }
     }
 
-    public static DoylCraft instance() { return requireNonNull(instance); }
-    public static ComponentLogger logger() { return instance().getComponentLogger(); }
+    public static DoylCraft instance() {
+        return requireNonNull(instance);
+    }
+
+    public static ComponentLogger logger() {
+        return instance().getComponentLogger();
+    }
 
 }
