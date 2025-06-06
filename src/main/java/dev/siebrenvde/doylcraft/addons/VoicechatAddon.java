@@ -1,5 +1,6 @@
 package dev.siebrenvde.doylcraft.addons;
 
+import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import de.maxhenkel.voicechat.api.VoicechatConnection;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.VoicechatServerApi;
@@ -18,8 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Objects;
-
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.text;
 
 @NullMarked
@@ -28,12 +28,17 @@ public class VoicechatAddon implements VoicechatPlugin {
     private static final String MODRINTH_URL = "https://modrinth.com/plugin/simple-voice-chat";
     private static final String CURSEFORGE_URL = "https://www.curseforge.com/minecraft/mc-mods/simple-voice-chat";
 
-    private static String VOICECHAT_VERSION = "";
-
+    private static final String VOICECHAT_VERSION;
     @Nullable private static VoicechatServerApi serverApi;
 
+    public static void init() {
+        requireNonNull(Bukkit.getServicesManager().load(BukkitVoicechatService.class)).registerPlugin(new VoicechatAddon());
+    }
+
     @Override
-    public String getPluginId() { return "doylcraft"; }
+    public String getPluginId() {
+        return "doylcraft";
+    }
 
     @Override
     public void registerEvents(EventRegistration registration) {
@@ -42,7 +47,6 @@ public class VoicechatAddon implements VoicechatPlugin {
 
     private void onServerStart(VoicechatServerStartedEvent event) {
         serverApi = event.getVoicechat();
-        VOICECHAT_VERSION = Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("voicechat")).getPluginMeta().getVersion();
     }
 
     /**
@@ -50,7 +54,7 @@ public class VoicechatAddon implements VoicechatPlugin {
      * @param player the player to check
      */
     public static void checkVoicechatInstalled(Player player) {
-        if(!PlayerData.preferences(player).voicechatReminder()) return;
+        if (!PlayerData.preferences(player).voicechatReminder()) return;
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -78,6 +82,13 @@ public class VoicechatAddon implements VoicechatPlugin {
             .hoverEvent(HoverEvent.showText(text(url)));
     }
 
-    private static VoicechatServerApi serverApi() { return Objects.requireNonNull(serverApi); }
+    private static VoicechatServerApi serverApi() {
+        return requireNonNull(serverApi);
+    }
+
+    static {
+        //noinspection UnstableApiUsage
+        VOICECHAT_VERSION = requireNonNull(Bukkit.getPluginManager().getPlugin("voicechat")).getPluginMeta().getVersion();
+    }
 
 }

@@ -30,7 +30,7 @@ public class ConnectionListener implements Listener {
         ScoreboardHandler.get().initPlayer(player);
         VoicechatAddon.checkVoicechatInstalled(player);
         player.addCustomChatCompletions(
-            DiscordSRVAddon.get().getMembers().stream()
+            DiscordSRVAddon.getMembers().stream()
                 .map(m -> "@" + m.getEffectiveName())
                 .collect(Collectors.toList())
         );

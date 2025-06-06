@@ -2,12 +2,9 @@ package dev.siebrenvde.doylcraft;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import dev.siebrenvde.doylcraft.addons.BlueMapAddon;
 import dev.siebrenvde.doylcraft.addons.DiscordSRVAddon;
-import dev.siebrenvde.doylcraft.addons.LuckPermsAddon;
 import dev.siebrenvde.doylcraft.addons.VoicechatAddon;
-import dev.siebrenvde.doylcraft.addons.WorldGuardAddon;
 import dev.siebrenvde.doylcraft.commands.DoylCraftCommand;
 import dev.siebrenvde.doylcraft.commands.GetOwnerCommand;
 import dev.siebrenvde.doylcraft.commands.GroupCommand;
@@ -80,12 +77,9 @@ public final class DoylCraft extends JavaPlugin {
      * Initialise addon classes
      */
     private void initAddons() {
-        new BlueMapAddon();
-        new DiscordSRVAddon();
-        new LuckPermsAddon();
-        new WorldGuardAddon();
-        BukkitVoicechatService voicechatService = getServer().getServicesManager().load(BukkitVoicechatService.class);
-        if (voicechatService != null) voicechatService.registerPlugin(new VoicechatAddon());
+        BlueMapAddon.init();
+        DiscordSRVAddon.init();
+        VoicechatAddon.init();
     }
 
     /**
@@ -155,7 +149,7 @@ public final class DoylCraft extends JavaPlugin {
     private void addServerLinks() {
         addServerLink(
             Component.text("Discord"),
-            DiscordSRVAddon.get().getInviteLink()
+            DiscordSRVAddon.getInviteLink()
         );
         addServerLink(
             Component.text("BlueMap"),

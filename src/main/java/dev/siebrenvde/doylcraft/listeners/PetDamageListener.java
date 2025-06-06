@@ -113,7 +113,7 @@ public class PetDamageListener implements Listener {
             }
         }
 
-        DiscordSRVAddon.get().sendMessage(PET_LOG_CHANNEL,
+        DiscordSRVAddon.sendMessage(PET_LOG_CHANNEL,
             text()
                 .append(text(":heart: "))
                 .append(text(MarkdownSanitizer.escape(damager.getName(), true)))
@@ -146,7 +146,7 @@ public class PetDamageListener implements Listener {
                 );
             });
 
-            DiscordSRVAddon.get().sendMessage(PET_LOG_CHANNEL,
+            DiscordSRVAddon.sendMessage(PET_LOG_CHANNEL,
                 text()
                     .append(text(":skull: "))
                     .append(text(MarkdownSanitizer.escape(damager.getName(), true)))

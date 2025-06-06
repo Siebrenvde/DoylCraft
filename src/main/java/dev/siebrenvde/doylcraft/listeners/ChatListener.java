@@ -37,7 +37,7 @@ public class ChatListener implements Listener {
         if(!messageContent.contains("@")) { return; }
 
 
-        for(Member member : DiscordSRVAddon.get().getMembers()) {
+        for(Member member : DiscordSRVAddon.getMembers()) {
             // Message must contain effective name of member
             if(!messageContent.toLowerCase().contains("@" + member.getEffectiveName().toLowerCase())) { continue; }
 

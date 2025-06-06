@@ -8,7 +8,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.World;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -16,20 +15,12 @@ import java.util.Optional;
 @NullMarked
 public class WorldGuardAddon {
 
-    @Nullable private static WorldGuardAddon instance;
-    private final RegionContainer container;
+    private static final String GLOBAL_REGION_ID = "__global__";
 
-    public WorldGuardAddon() {
-        instance = this;
-        container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-    }
+    private static final RegionContainer container;
 
-    private RegionManager getRegionManager(World world) {
+    private static RegionManager getRegionManager(World world) {
         return Objects.requireNonNull(container.get(BukkitAdapter.adapt(world)));
-    }
-
-    public static WorldGuardAddon get() {
-        return Objects.requireNonNull(instance);
     }
 
     /**
@@ -37,7 +28,7 @@ public class WorldGuardAddon {
      * @param world the world the region is in
      * @param region the name of the region
      */
-    public Optional<ProtectedRegion> getRegion(World world, String region) {
+    public static Optional<ProtectedRegion> getRegion(World world, String region) {
         return Optional.ofNullable(getRegionManager(world).getRegion(region));
     }
 
@@ -47,13 +38,17 @@ public class WorldGuardAddon {
      * Creates the region if it does not yet exist
      * @param world the world
      */
-    public ProtectedRegion getOrCreateGlobalRegion(World world) {
-        ProtectedRegion region = getRegionManager(world).getRegion("__global__");
-        if (region == null) {
-            region = new GlobalProtectedRegion("__global__");
-            getRegionManager(world).addRegion(region);
-        }
-        return region;
+    public static ProtectedRegion getOrCreateGlobalRegion(World world) {
+        return Optional.ofNullable(getRegionManager(world).getRegion(GLOBAL_REGION_ID))
+            .orElseGet(() -> {
+                ProtectedRegion region = new GlobalProtectedRegion(GLOBAL_REGION_ID);
+                getRegionManager(world).addRegion(region);
+                return region;
+            });
+    }
+
+    static {
+        container = WorldGuard.getInstance().getPlatform().getRegionContainer();
     }
 
 }

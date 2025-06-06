@@ -143,13 +143,13 @@ public class PvPCommand extends CommandBase {
     }
 
     private static boolean getState(World world) {
-        ProtectedRegion region = WorldGuardAddon.get().getOrCreateGlobalRegion(world);
+        ProtectedRegion region = WorldGuardAddon.getOrCreateGlobalRegion(world);
         StateFlag.State state = region.getFlag(Flags.PVP);
         return state == StateFlag.State.ALLOW || state == null;
     }
 
     private static void setState(World world, boolean state) {
-        ProtectedRegion region = WorldGuardAddon.get().getOrCreateGlobalRegion(world);
+        ProtectedRegion region = WorldGuardAddon.getOrCreateGlobalRegion(world);
         region.setFlag(Flags.PVP, state ? StateFlag.State.ALLOW : StateFlag.State.DENY);
     }
 
