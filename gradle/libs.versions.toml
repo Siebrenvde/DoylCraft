@@ -3,7 +3,7 @@ paper = "1.21.5-R0.1-SNAPSHOT"
 
 [libraries]
 luckperms = "net.luckperms:api:5.5"
-worldguard = "com.sk89q.worldguard:worldguard-bukkit:7.0.13"
+worldguard = "com.sk89q.worldguard:worldguard-bukkit:7.0.14"
 discordsrv = "com.discordsrv:discordsrv:1.29.0"
 essentials = "net.essentialsx:EssentialsX:2.21.1"
 voicechat = "de.maxhenkel.voicechat:voicechat-api:2.5.27"
