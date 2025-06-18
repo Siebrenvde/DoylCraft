@@ -61,7 +61,7 @@ paperPluginYaml {
     main = "dev.siebrenvde.doylcraft.DoylCraft"
     loader = "dev.siebrenvde.doylcraft.paper.DoylCraftPluginLoader"
     author = "Siebrenvde"
-    apiVersion = "1.21.5"
+    apiVersion = "1.21.6"
     website = "https://github.com/Siebrenvde/DoylCraft"
     dependencies {
         server("LuckPerms", PaperPluginYaml.Load.BEFORE)
@@ -74,7 +74,7 @@ paperPluginYaml {
 }
 
 tasks.runServer {
-    minecraftVersion("1.21.5")
+    minecraftVersion("1.21.6")
     downloadPlugins {
         modrinth("luckperms", "v5.5.0-bukkit")
         modrinth("worldedit", "DYf6XJqU") // 7.3.15-beta-01
