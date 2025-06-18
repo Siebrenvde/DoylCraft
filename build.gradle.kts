@@ -59,11 +59,11 @@ paperPluginYaml {
     main = "dev.siebrenvde.doylcraft.DoylCraft"
     loader = "dev.siebrenvde.doylcraft.paper.DoylCraftPluginLoader"
     author = "Siebrenvde"
-    apiVersion = "1.21.5"
+    apiVersion = "1.21.6"
     website = "https://github.com/Siebrenvde/DoylCraft"
     dependencies {
         server("LuckPerms", PaperPluginYaml.Load.BEFORE)
-        server("WorldGuard", PaperPluginYaml.Load.BEFORE)
+        //server("WorldGuard", PaperPluginYaml.Load.BEFORE)
         server("DiscordSRV", PaperPluginYaml.Load.BEFORE)
         server("Essentials", PaperPluginYaml.Load.BEFORE)
         server("voicechat", PaperPluginYaml.Load.BEFORE)
