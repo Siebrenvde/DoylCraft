@@ -15,7 +15,8 @@ version = "1.8.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/") {
+    //maven("https://repo.papermc.io/repository/maven-public/") {
+    maven("https://maven-prs.papermc.io/Paper/pr12671/") {
         name = "papermc"
     }
     maven("https://oss.sonatype.org/content/groups/public/") {
