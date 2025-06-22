@@ -34,7 +34,6 @@ public class Codecs {
         Codec.FLOAT.fieldOf("pitch").forGetter(Location::getPitch)
     ).apply(instance, Location::new));
 
-    @SuppressWarnings("UnstableApiUsage")
     public static final Codec<ItemType> ITEM_TYPE = Item.CODEC.xmap(
         item -> CraftItemType.minecraftToBukkitNew(item.value()),
         material -> BuiltInRegistries.ITEM.wrapAsHolder(CraftItemType.bukkitToMinecraftNew(material))

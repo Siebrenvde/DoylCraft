@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NullMarked;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public final class Home extends NamedLocation {
 
