@@ -2,7 +2,8 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 import java.time.Instant
 
 plugins {
-    id("java")
+    id("java-library")
+    id("maven-publish")
     alias(libs.plugins.paperweight)
     alias(libs.plugins.resource.factory)
     alias(libs.plugins.indra.git)
@@ -43,16 +44,16 @@ repositories {
 
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
-    compileOnly(libs.luckperms)
-    compileOnly(libs.worldguard)
-    compileOnly(libs.discordsrv)
-    compileOnly(libs.essentials) {
+    compileOnlyApi(libs.luckperms)
+    compileOnlyApi(libs.worldguard)
+    compileOnlyApi(libs.discordsrv)
+    compileOnlyApi(libs.essentials) {
         exclude(module = "spigot-api")
     }
-    compileOnly(libs.voicechat)
-    compileOnly(libs.bluemap)
-    compileOnly(libs.configlib)
-    compileOnly(libs.j2html)
+    compileOnlyApi(libs.voicechat)
+    compileOnlyApi(libs.bluemap)
+    compileOnlyApi(libs.configlib)
+    compileOnlyApi(libs.j2html)
 }
 
 paperPluginYaml {
@@ -83,6 +84,25 @@ sourceSets.main {
         property("gitCommitHash", commit?.name())
         property("gitCommitMessage", commit?.shortMessage?.replace("\"", "\\\""))
         property("gitCommitAuthor", commit?.authorIdent?.name)
+    }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+        repositories.maven {
+            val repo = if (version.toString().endsWith("-SNAPSHOT")) "snapshots" else "releases"
+            url = uri("https://repo.siebrenvde.dev/${repo}/")
+            name = "siebrenvde"
+            credentials(PasswordCredentials::class)
+        }
     }
 }
 
