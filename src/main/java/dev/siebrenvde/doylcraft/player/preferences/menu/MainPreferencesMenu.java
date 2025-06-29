@@ -34,6 +34,9 @@ public class MainPreferencesMenu extends PreferencesMenu implements Listener {
             option(Material.ENDER_PEARL, text("Use Teleportation Menus"))
                 .description(text("Whether to open a menu for the home and warp commands"))
                 .toggleable(preferences.useTeleportMenus),
+            option(Material.NETHER_PORTAL, text("Show Dimension Titles"))
+                .description(text("Show a title when switching dimensions"))
+                .toggleable(preferences.showDimensionTitles),
             option(Material.BELL, text("Durability Ping"))
                 .description(text("Receive a warning when your tools are low on durability"))
                 .navigation(DurabilityPingPreferencesMenu.class),
