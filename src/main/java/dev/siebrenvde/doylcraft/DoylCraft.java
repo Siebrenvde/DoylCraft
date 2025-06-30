@@ -107,7 +107,8 @@ public final class DoylCraft extends JavaPlugin {
             new ItemDamageListener(),
             new GameRuleListener(),
             new PlayerDeathListener(),
-            new PlayerChangedWorldListener()
+            new PlayerChangedWorldListener(),
+            new DoubleDoorListener()
         );
     }
 

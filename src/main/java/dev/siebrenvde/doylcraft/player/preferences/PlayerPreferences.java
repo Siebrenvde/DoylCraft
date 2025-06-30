@@ -19,6 +19,7 @@ public class PlayerPreferences extends ReflectiveConfig {
     public final TrackedValue<Boolean> replaceHomes = value(false);
     public final TrackedValue<Boolean> useTeleportMenus = value(true);
     public final TrackedValue<Boolean> showDimensionTitles = value(true);
+    public final TrackedValue<Boolean> openDoubleDoors =  value(true);
 
     public final PrefDurabilityPing durabilityPing = new PrefDurabilityPing();
     public final PrefPetDamageMessages petDamageMessages = new PrefPetDamageMessages();
@@ -48,5 +49,6 @@ public class PlayerPreferences extends ReflectiveConfig {
     public boolean replaceHomes() { return replaceHomes.getRealValue(); }
     public boolean useTeleportMenus() { return useTeleportMenus.getRealValue(); }
     public boolean showDimensionTitles() { return showDimensionTitles.getRealValue(); }
+    public boolean openDoubleDoors() { return openDoubleDoors.getRealValue(); }
 
 }
