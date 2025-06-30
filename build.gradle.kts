@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.indra.git)
     alias(libs.plugins.blossom)
     alias(libs.plugins.idea.ext)
+    alias(libs.plugins.run.paper)
 }
 
 group = "dev.siebrenvde"
@@ -72,6 +73,19 @@ paperPluginYaml {
     }
 }
 
+tasks.runServer {
+    minecraftVersion("1.21.5")
+    downloadPlugins {
+        modrinth("luckperms", "v5.5.0-bukkit")
+        modrinth("worldedit", "DYf6XJqU") // 7.3.15-beta-01
+        modrinth("worldguard", "7.0.14")
+        modrinth("discordsrv", "1.29.0")
+        modrinth("essentialsx", "2.21.1")
+        modrinth("simple-voice-chat", "bukkit-2.5.31")
+        modrinth("bluemap", "5.9-paper")
+    }
+}
+
 sourceSets.main {
     blossom.javaSources {
         property("version", project.version.toString())
@@ -122,4 +136,13 @@ tasks.withType<JavaCompile> {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible) {
         options.release.set(targetJavaVersion)
     }
+}
+
+tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
+    javaLauncher = javaToolchains.launcherFor {
+        @Suppress("UnstableApiUsage")
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+    jvmArgs("-XX:+AllowEnhancedClassRedefinition")
 }

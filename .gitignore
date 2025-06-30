@@ -1,6 +1,7 @@
 .idea
 .gradle/
 build/
+run/
 
 # Script I use to copy the build file to my test server
 copy-to-server.sh
