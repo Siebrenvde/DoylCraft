@@ -1,6 +1,3 @@
-[versions]
-paper = "1.21.5-R0.1-SNAPSHOT"
-
 [libraries]
 luckperms = "net.luckperms:api:5.5"
 worldguard = "com.sk89q.worldguard:worldguard-bukkit:7.0.13"
