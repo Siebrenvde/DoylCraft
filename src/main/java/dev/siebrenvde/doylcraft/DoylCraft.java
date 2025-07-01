@@ -70,7 +70,6 @@ public final class DoylCraft extends JavaPlugin {
     /**
      * Register all commands using Brigadier
      */
-    @SuppressWarnings("UnstableApiUsage")
     private void registerCommands() {
         LifecycleEventManager<Plugin> lifecycleManager = this.getLifecycleManager();
         lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {

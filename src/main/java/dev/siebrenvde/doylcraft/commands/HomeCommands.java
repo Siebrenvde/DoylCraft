@@ -35,7 +35,6 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
 import static net.kyori.adventure.text.event.ClickEvent.callback;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class HomeCommands extends CommandBase {
 

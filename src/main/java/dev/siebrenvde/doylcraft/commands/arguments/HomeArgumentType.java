@@ -14,7 +14,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class HomeArgumentType extends NamedLocationArgumentType<Home> {
 

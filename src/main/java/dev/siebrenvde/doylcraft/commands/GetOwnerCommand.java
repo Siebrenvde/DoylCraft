@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * Command to get the owner of a clicked entity
  */
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class GetOwnerCommand extends CommandBase {
 

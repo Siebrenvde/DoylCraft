@@ -15,7 +15,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 abstract class NamedLocationArgumentType<T extends NamedLocation> implements CustomArgumentType<T, String> {
 

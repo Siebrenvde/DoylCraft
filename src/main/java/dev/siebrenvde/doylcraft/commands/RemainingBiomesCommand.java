@@ -24,7 +24,6 @@ import static net.kyori.adventure.text.Component.*;
  * Command to get the biomes a player hasn't yet explored for the
  * Adventuring Time and Hot Tourist Destinations advancements
  */
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class RemainingBiomesCommand extends CommandBase {
 

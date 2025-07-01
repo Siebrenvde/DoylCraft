@@ -12,7 +12,6 @@ import org.jspecify.annotations.NullMarked;
 import static io.papermc.paper.command.brigadier.Commands.literal;
 import static net.kyori.adventure.text.Component.text;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class ConfigSubCommand extends CommandBase {
 

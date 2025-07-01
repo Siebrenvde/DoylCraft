@@ -31,7 +31,6 @@ import static org.bukkit.Bukkit.getWorlds;
 /**
  * Command to toggle PvP on or off globally or for a specific world
  */
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class PvPCommand extends CommandBase {
 

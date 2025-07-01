@@ -36,7 +36,6 @@ import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.resource
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class WarpCommands extends CommandBase {
 

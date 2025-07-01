@@ -24,7 +24,6 @@ import static io.papermc.paper.command.brigadier.Commands.argument;
 import static io.papermc.paper.command.brigadier.Commands.literal;
 import static net.kyori.adventure.text.Component.text;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class SilenceCommand extends CommandBase {
 

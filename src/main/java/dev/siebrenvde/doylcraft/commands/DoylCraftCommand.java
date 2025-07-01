@@ -19,7 +19,6 @@ import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 import static io.papermc.paper.command.brigadier.Commands.literal;
 import static net.kyori.adventure.text.Component.text;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class DoylCraftCommand extends CommandBase {
 

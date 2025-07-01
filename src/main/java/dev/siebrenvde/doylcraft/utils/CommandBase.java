@@ -12,7 +12,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.function.Predicate;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class CommandBase {
 

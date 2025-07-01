@@ -23,7 +23,6 @@ import static net.kyori.adventure.text.Component.text;
  * Subcommand for {@link dev.siebrenvde.doylcraft.commands.DoylCraftCommand}
  * that provides some utility commands
  */
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class UtilsSubCommand extends CommandBase {
 
