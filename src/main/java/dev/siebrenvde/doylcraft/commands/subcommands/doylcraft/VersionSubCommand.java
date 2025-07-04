@@ -20,7 +20,6 @@ import java.time.ZoneOffset;
 import static io.papermc.paper.command.brigadier.Commands.literal;
 import static net.kyori.adventure.text.Component.text;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class VersionSubCommand extends CommandBase {
 

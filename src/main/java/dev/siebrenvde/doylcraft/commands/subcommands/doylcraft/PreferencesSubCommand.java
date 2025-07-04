@@ -30,7 +30,6 @@ import static net.kyori.adventure.text.Component.text;
  * Subcommand for {@link dev.siebrenvde.doylcraft.commands.DoylCraftCommand}
  * that allows players to view and edit their preferences
  */
-@SuppressWarnings({"UnstableApiUsage", "CodeBlock2Expr"})
 @NullMarked
 public class PreferencesSubCommand extends CommandBase {
 

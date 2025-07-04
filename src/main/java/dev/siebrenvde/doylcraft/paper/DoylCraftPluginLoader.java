@@ -22,7 +22,7 @@ public class DoylCraftPluginLoader implements PluginLoader {
         ));
         classpathBuilder.addLibrary(createResolver(
             "maven-central",
-            "https://repo.maven.apache.org/maven2/",
+            MavenLibraryResolver.MAVEN_CENTRAL_DEFAULT_MIRROR,
             "com.j2html:j2html:" + BuildParameters.J2HTML_VERSION
         ));
     }

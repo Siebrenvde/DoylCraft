@@ -40,7 +40,6 @@ public class VoicechatAddon implements VoicechatPlugin {
         registration.registerEvent(VoicechatServerStartedEvent.class, this::onServerStart);
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     private void onServerStart(VoicechatServerStartedEvent event) {
         serverApi = event.getVoicechat();
         VOICECHAT_VERSION = Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("voicechat")).getPluginMeta().getVersion();

@@ -28,7 +28,7 @@ import static net.kyori.adventure.text.Component.text;
 /**
  * Command to get or set a player's group
  */
-@SuppressWarnings({"UnstableApiUsage", "CallToPrintStackTrace"})
+@SuppressWarnings({"CallToPrintStackTrace"})
 @NullMarked
 public class GroupCommand extends CommandBase {
 

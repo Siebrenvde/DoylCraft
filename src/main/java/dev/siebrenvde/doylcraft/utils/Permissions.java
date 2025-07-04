@@ -30,7 +30,6 @@ public class Permissions {
         return perm;
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     public static class CommandPermission extends Permission implements Predicate<CommandSourceStack> {
 
         private CommandPermission(String name) {

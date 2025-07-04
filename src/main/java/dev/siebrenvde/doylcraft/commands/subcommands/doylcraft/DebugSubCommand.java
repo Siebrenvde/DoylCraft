@@ -27,7 +27,6 @@ import static net.kyori.adventure.text.Component.text;
  * Subcommand for {@link dev.siebrenvde.doylcraft.commands.DoylCraftCommand}
  * that provides some debug commands
  */
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class DebugSubCommand extends CommandBase {
 

@@ -12,7 +12,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-@SuppressWarnings("UnstableApiUsage")
 @NullMarked
 public class WarpArgumentType extends NamedLocationArgumentType<Warp> {
 
