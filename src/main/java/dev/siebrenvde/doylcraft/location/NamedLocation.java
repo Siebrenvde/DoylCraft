@@ -76,7 +76,7 @@ public abstract class NamedLocation implements ComponentLike {
      * {@return the display name}
      */
     public Component displayName() {
-        return displayName;
+        return displayName.colorIfAbsent(NamedTextColor.WHITE);
     }
 
     /**
