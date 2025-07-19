@@ -15,7 +15,7 @@ plugins {
 group = "dev.siebrenvde"
 version = "1.8.2-SNAPSHOT"
 
-val minecraftVersion = "1.21.7"
+val minecraftVersion = "1.21.8"
 
 repositories {
     mavenCentral()
