@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "dev.siebrenvde"
-version = "1.9.0"
+version = "1.9.1-SNAPSHOT"
 
 val minecraftVersion = "1.21.8"
 
