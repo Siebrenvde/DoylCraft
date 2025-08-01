@@ -20,7 +20,6 @@ import static net.kyori.adventure.text.Component.text;
 @NullMarked
 public record RevengeListener(RevengeList list, Entity entity) implements Listener {
 
-    @SuppressWarnings("UnstableApiUsage")
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     private void onEntityDeath(EntityDeathEvent event) {
         if (!event.getEntity().equals(entity)) return;

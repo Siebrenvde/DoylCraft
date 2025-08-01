@@ -12,7 +12,6 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 public class PlayerDeathListener implements Listener {
 
-    @SuppressWarnings("UnstableApiUsage")
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     private void onPlayerDeath(PlayerDeathEvent event) {
         Entity entity = event.getDamageSource().getCausingEntity();
