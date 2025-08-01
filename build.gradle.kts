@@ -79,12 +79,12 @@ tasks.runServer {
     minecraftVersion(minecraftVersion)
     downloadPlugins {
         modrinth("luckperms", "v5.5.0-bukkit")
-        modrinth("worldedit", "DYf6XJqU") // 7.3.15-beta-01
+        modrinth("worldedit", "Jk1z2u7n") // 7.3.16
         modrinth("worldguard", "7.0.14")
-        modrinth("discordsrv", "1.29.0")
+        modrinth("discordsrv", "1.30.0")
         modrinth("essentialsx", "2.21.1")
-        modrinth("simple-voice-chat", "bukkit-2.5.31")
-        modrinth("bluemap", "5.9-paper")
+        modrinth("simple-voice-chat", "bukkit-2.5.35")
+        modrinth("bluemap", "5.10-paper")
     }
 }
 
