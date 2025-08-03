@@ -82,7 +82,7 @@ tasks.runServer {
         modrinth("worldedit", "Jk1z2u7n") // 7.3.16
         modrinth("worldguard", "7.0.14")
         modrinth("discordsrv", "1.30.0")
-        modrinth("essentialsx", "2.21.1")
+        modrinth("essentialsx", "2.21.2")
         modrinth("simple-voice-chat", "bukkit-2.5.35")
         modrinth("bluemap", "5.10-paper")
     }
