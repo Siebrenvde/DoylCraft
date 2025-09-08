@@ -1,7 +1,7 @@
 [libraries]
 luckperms = "net.luckperms:api:5.5"
 worldguard = "com.sk89q.worldguard:worldguard-bukkit:7.0.14"
-discordsrv = "com.discordsrv:discordsrv:1.30.0"
+discordsrv = "com.discordsrv:discordsrv:1.30.1"
 essentials = "net.essentialsx:EssentialsX:2.21.2"
 voicechat = "de.maxhenkel.voicechat:voicechat-api:2.6.0"
 bluemap = "de.bluecolored:bluemap-api:2.7.5"
